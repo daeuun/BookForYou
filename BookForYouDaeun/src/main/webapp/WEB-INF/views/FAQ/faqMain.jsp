@@ -105,7 +105,7 @@ display:inline-block;
 </style>
 </head>
 <body>
-<jsp:include page="../menubar.jsp"/>
+<jsp:include page="../common/menubar.jsp"/>
 <div class="body1">
 <div class="quetitle">자주 묻는 질문</div>
 <div class="quelist1">
@@ -168,7 +168,7 @@ display:inline-block;
 
 
 </div>
-<jsp:include page="../footer.jsp"/>
+<jsp:include page="../common/footer.jsp"/>
 <script>
         $(function(){
             $(".que").click(function(){

@@ -74,7 +74,7 @@
 </style>
 </head>
 <body>
-<jsp:include page="../menubar.jsp"/>
+<jsp:include page="../common/menubar.jsp"/>
 <div class="body1">
 <div class="noticeTitle">공지사항</div>
 
@@ -89,6 +89,6 @@
  
 <div class="ListButton">목록으로</div>
 </div>
-<jsp:include page="../footer.jsp"/>
+<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

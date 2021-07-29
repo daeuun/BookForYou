@@ -150,7 +150,7 @@
 
 <body>
 
-<jsp:include page="../menubar.jsp"/>
+<jsp:include page="../common/menubar.jsp"/>
 	<div class="body1">
 	
 		<div class="faqTitle">1:1문의 내역</div>
@@ -251,6 +251,6 @@
         </div>
 	</div>
 	
-	<jsp:include page="../footer.jsp"/>
+	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

@@ -73,7 +73,7 @@
 </style>
 </head>
 <body>
-<jsp:include page="../menubar.jsp"/>
+<jsp:include page="../common/menubar.jsp"/>
 <div class="body1">
 <div class="faqTitle">자주 묻는 질문</div>
 	
@@ -113,7 +113,7 @@
 		</div>
 		<div class="back">목록으로</div>
 </div>
-<jsp:include page="../footer.jsp"/>
+<jsp:include page="../common/footer.jsp"/>
 
 </body>
 </html>

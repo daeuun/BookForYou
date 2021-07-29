@@ -119,7 +119,7 @@
 
 <body>
 
-<jsp:include page="../menubar.jsp"/>
+<jsp:include page="../common/menubar.jsp"/>
 	<div class="body1">
 	
 		<div class="reportTitle">신고사유</div>
@@ -223,6 +223,6 @@
         <div class="writeButton">신고 사유 작성</div>
         </div>
 	</div>
-	<jsp:include page="../footer.jsp"/>
+	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

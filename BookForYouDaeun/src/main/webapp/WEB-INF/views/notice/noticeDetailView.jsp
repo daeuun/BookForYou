@@ -65,7 +65,7 @@
 </head>
 
 <body>
-<jsp:include page="../menubar.jsp"/>
+<jsp:include page="../common/menubar.jsp"/>
 	<div class="noticeDetail">
 	<div class="noticeDetailTitle">북포유 이용안내</div>
 	<div class="noticeDate">2021-07-01</div>
@@ -80,6 +80,6 @@
 	
 	<div class="ListButton">목록으로</div>
 	</div>
-	<jsp:include page="../footer.jsp"/>
+	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

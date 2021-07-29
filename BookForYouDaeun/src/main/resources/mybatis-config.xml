@@ -7,11 +7,17 @@
 	</settings>
 	
 	<typeAliases>
+		<typeAlias type="com.bookforyou.bk4u.member.model.vo.Member" alias="Member"/>
 		<typeAlias type="com.bookforyou.bk4u.board.model.vo.Board" alias="Board"/>
+		<typeAlias type="com.bookforyou.bk4u.booklist.model.vo.Booklist" alias="Booklist"/>
+		<typeAlias type="com.bookforyou.bk4u.subscription.model.vo.Subscription" alias="Subscription"/>
 	</typeAliases>
 	
 	<mappers>
+		<mapper resource="/mappers/member-mapper.xml"/>
 		<mapper resource="/mappers/board-mapper.xml"/>
+		<mapper resource="/mappers/booklist-mapper.xml"/>
+		<mapper resource="/mappers/subscription-mapper.xml"/>
 	</mappers>
 	
 </configuration>

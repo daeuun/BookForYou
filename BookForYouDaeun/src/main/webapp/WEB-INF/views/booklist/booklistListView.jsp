@@ -17,9 +17,14 @@
         div{box-sizing: border-box;}
         .wrap {width: 1200px; margin: auto;}
         input:focus {outline:none;}
-        a{text-decoration:none;}
+        a{color: #000;}
+        a:hover{color: #000; text-decoration:none;}
+        li{list-style-type:none;}
 
-        .head-title{width:100%; height:100px; padding: 20px; display:flex;} 
+        .head-title{
+            display:flex; margin-top:150px;
+            width:100%; height:100px; padding: 20px; 
+            background-image: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);} 
         .mylist_nickname{font-size:25px; font-weight:600;}
         .mylist_nick_info{font-size:25px;}
         .mylist_head{font-size:17px;}
@@ -31,8 +36,8 @@
         .btn_booklist:hover{text-decoration:none; color:#000; background:#ffecd2;}
         
         /**독서록서재*/
-        .mylist_area{width:100%; height:80px; margin:60px 0; border:1px solid #dedede; border-radius:6px;}
-        .mylist-item{width:100%; height:80px; color:#000; padding:14px 25px; display:flex; }
+        .mylist_area{width:100%; height:100px; margin:60px 0; border:1px solid #dedede; border-radius:6px;}
+        .mylist-item{width:100%; height:100px; color:#000; padding:23px 25px; display:flex; }
         .mylist-item:hover{text-decoration:none; color:#000;}
         .mylist_txt{margin-left:20px;}
         .mylist_title{font-size:20px;}
@@ -41,7 +46,7 @@
         /*북포유인기독서록*/
         .top_list_head{font-size:20px; margin:40px 0;}
         .top_list_item{display:flex; width:100;}
-        .list-item, .list-item_{width:50%; height:400px; padding:25px; border:1px solid #dedede; border-radius:10px; color:#000;} 
+        .list-item, .list-item_{width:50%; height:400px; padding:25px; background:#fff9f1; border-radius:10px; color:#000;} 
         .list-item:hover, .list-item_:hover{color:#000; text-decoration:none;}
         /*타이틀*/
         .list_title{font-size:18px; text-align:center; margin-bottom:30px;}
@@ -55,25 +60,50 @@
         .list_content{height:90px; margin:5px 0; font-size:15px; color:#5c5c5c;}
         .list_writer_box{font-size:14px; font-weight:500;} 
         .list_writer{margin-left:6px;}
-        .list_date_like{display:flex; margin: 10px 0; font-size:13px; color:#5c5c5c;}
+        .list_date_like, .booklist_date_like{display:flex; margin:10px 0; font-size:13px; color:#5c5c5c;}
         .list_like{margin-left:auto;}
         
-        /**독서록_책area*/
-        .book_area{display:flex; border:1px solid #dedede; border-radius:6px; padding:10px; margin-top:10px;}
+        /**독서록_책정보*/
+        .book_area, .booklist_book_area{display:flex; border:1px solid #dedede; border-radius:6px; padding:10px; margin-top:10px;}
         .book_img{margin:0 10px;}
         .book_title{font-size:15px; font-weight:bold;}
         .book_writer, .book_publish{font-size:12px; color:#8b8b8b; padding:1px 0;}
         .book_stars{font-size:12px;}
+        
+        /**독서록리스트*/
+        .booklist_outer{margin-top:150px;}
+        .booklist-wrap{margin:0; padding:0; }
+        .booklist_item{margin:30px 0; height:180px; padding:10px; border:1px solid #ebebeb;}
+        .booklist_item a:hover{text-decoration:none;}
+        /*독서록내용*/
+        .booklist_container{display:flex;}
+        .booklist_book_wrap{margin-left: auto; margin-right:30px; width:400px;}
+        .booklist_title{color: #000;}
+        .booklist_content{width:690px; height:70px; margin:5px 0; padding-left:10px; font-size:14px; color:#5c5c5c;}
+        .booklist_writer{font-size:14px; color:#5c5c5c;}
+        /*독서록리스트_책정보*/
+        .booklist_book_wrap .book_title{color:#000; font-weight:400;}
+        
+        /*페이징*/
+        #paging-wrap, #search-wrap, .custom-select ,input::placeholder{font-size: 14px;}
+        #paging-wrap{width:fit-content; margin:auto;}
+        .page-link, .page-link:hover{color:rgb(252, 190, 52);}
+        /*검색바*/
+        #search-wrap{margin:30px 0 100px 0;}
+        .select, .text-input{display: inline-block; vertical-align: top;}
+        .searchBtn{background:rgb(252, 190, 52); border:none; border-radius:5px; padding: 8px 20px;}
+        .custom-select{height: 38px;}
+        .form-control{width: 350px;}
 </style>
 </head>
 <body>
 <jsp:include page="../common/menubar.jsp"/>
     
-    <div class="wrap">
+<div class="wrap">
         
         <div class="header">
             <div class="header_area">
-                <div class="head-title" style="background-image: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);">
+                <div class="head-title">
                     <div>
                         <span class="mylist_nickname">이다은</span> 
                         <span class="mylist_nick_info">님 어서오세요 :)</span> 
@@ -82,12 +112,11 @@
                     <!--독서록작성버튼-->
                     <div class="enroll_booklist-wrap">
                         <div class="enroll_booklist">
-                            <a href="" class="btn_booklist">독서록 작성하기</a>
+                            <a href="enrollForm.bl" class="btn_booklist">독서록 작성하기</a>
                         </div>
                     </div>
                 </div>
             </div>
-            
         </div>
         
         <div class="content">
@@ -149,7 +178,6 @@
                         <a href="" class="list-item">
                             <div class="list_title">
                                 <span class="title_point">고양이는... 참으로 귀엽습니다</span>
-                                
                             </div>
                             <div class="list_content">
                                 귀엽고 사랑스럽고 짱짱이다 고양이만세 저희집 고양이 구경하실래요? ... 더보기
@@ -176,8 +204,91 @@
                         </a>
                     </div>
                 </div>
-                
 
+                <!--독서록리스트-->
+                <div class="booklist_outer">
+                    <ul class="booklist-wrap">
+                    	
+                    	<c:forEach var="bl" items="${ list }">
+	                        <li class="booklist_item">
+	                            <div class="booklist_container">
+	                                <div class="booklist_content">
+	                                    <a href="" class="booklist-item">
+	                                    	<input type="hidden" name="blNo" value="${ bl.blNo }">
+	                                        <div class="booklist_title">
+	                                            <span class="title_point">${ bl.blTitle }</span>
+	                                        </div>
+	                                        <div class="booklist_content">
+	                                            ${ bl.blContent }
+	                                        </div>
+	                                        <div class="booklist_writer_box">
+	                                            <img src="" alt="" width="20px" height="20px">
+	                                            <span class="booklist_writer">${ bl.blWriter }</span> 
+	                                        </div>
+	                                        <div class="booklist_date_like">
+	                                            <span>${ bl.blCdate }</span>
+	                                            <span class="list_like">좋아요 ${ bl.blLike }</span>
+	                                        </div>
+	                                    </a>
+	                                </div>
+	                                <div class="booklist_book_wrap">
+	                                    <a href="" class="book_info-area">
+	                                        <div class="book_area">
+	                                            <span class="book_img">
+	                                                <img src="" alt="" id="book_img-item" width="70px" height="100px">
+	                                            </span>
+	                                            <div class="book_info-wrap">
+	                                                <div class="book_title">고양이님, 저랑 살 만하신가요?</div>
+	                                                <div class="book_writer">이학범</div>
+	                                                <div class="book_publish">팜파스</div>
+	                                                <div class="book_stars">⭐⭐⭐⭐⭐</div>
+	                                            </div>
+	                                        </div>
+	                                    </a>
+	                                </div>
+	                            </div>
+	                        </li>
+                        </c:forEach>
+
+                    </ul>
+                    
+                    <script>
+                    	$(function(){
+                    		$(".booklist-item").click(function(){
+                    			location.href = "deatil.bl?bno=" + $(this).children("#blNo").text();
+                    		})
+                    	})
+                    </script>
+
+                    <div id="paging-wrap">
+                        <ul class="pagination">
+                            <li class="page-item disabled"><a class="page-link">이전</a></li>
+                            <li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">1</a></li>
+                            <li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">2</a></li>
+                            <li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">3</a></li>
+                            <li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">4</a></li>
+                            <li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">5</a></li>
+                            <li class="page-item disabled"><a class="page-link">다음</a></li>
+                        </ul>
+                    </div>
+            
+                    <div id="search-wrap">
+                        <form id="searchForm" action="" method="Get" align="center">
+                            <div class="select">
+                                <select class="custom-select" name="condition">
+                                    <option value="writer">작성자</option>
+                                    <option value="title">제목</option>
+                                    <option value="content">내용</option>
+                                </select>
+                            </div>
+                            <div class="text-input">
+                                <input type="text" class="form-control" name="keyword" placeholder="검색어를 입력해주세요">
+                            </div>
+                            <button type="submit" class="searchBtn">검색</button>
+                        </form>
+                    </div>
+
+                </div>
                 
 
             </div>

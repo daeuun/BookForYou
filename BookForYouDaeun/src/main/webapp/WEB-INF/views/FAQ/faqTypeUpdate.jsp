@@ -93,7 +93,7 @@ display:inline-block;
 
 </head>
 <body>
-<jsp:include page="../menubar.jsp"/>
+<jsp:include page="../common/menubar.jsp"/>
 <div class="body1">
 <div class="quetitle">문의 유형별 도움말</div>
 <div class="quelist">
@@ -110,7 +110,7 @@ display:inline-block;
 
 <div class="ListButton">목록으로</div>
 </div>
-<jsp:include page="../footer.jsp"/>
+<jsp:include page="../common/footer.jsp"/>
 <script>
         $(function(){
             $("#add").click(function(){
