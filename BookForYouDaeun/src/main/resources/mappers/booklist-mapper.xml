@@ -17,6 +17,12 @@
 		<result column="bl_scrap" property="blScrap"/>
 	</resultMap>
 	
+	<resultMap id="bookResult" type="Book">
+		<result column="bk_no" property="bkNo"/>
+		<result column="bk_title" property="bkTitle"/>
+		<result column="writer_name" property="writerName"/>
+	</resultMap>
+	
 	<!-- 독서록 게시글 갯수 조회용 -->
 	<!-- @author daeunlee -->
 	<select id="selectListCount" resultType="_int">
@@ -70,5 +76,43 @@
 		     , #{blRate}
 		     )
 	</insert>
+	
+	<!-- 도서 검색 모달창(1) : 도서 갯수 조회용 -->
+	<!-- @author daeunlee -->
+	<select id="selectSearchListCount" resultType="_int">
+		select
+		       count(*)
+		  from book
+		 where bk_selstatus = 'Y'
+	 	<choose>
+	 		<when test="condition == 'bkTitle'">
+	 			and bk_title
+	 		</when>
+	 		<when test="condition == 'writerName'">
+	 			and bk_writer
+	 		</when>
+	 	</choose>
+	 	       like '%' || #{keyword} || '%'	
+	</select>
+	
+	<!-- 도서 검색 모달창(2) : 도서 조회용 -->
+	<!-- @author daeunlee -->
+	<select id="selectSearchList" resultMap="bookResult">
+		select
+		       bk_no
+             , bk_title
+             , writer_name
+		  from book
+		 where bk_selstatus = 'Y'
+	 	<choose>
+	 		<when test="condition == 'bkTitle'">
+	 			and bk_title
+	 		</when>
+	 		<when test="condition == 'writerName'">
+	 			and bk_writer
+	 		</when>
+	 	</choose>
+	 	       like '%' || #{keyword} || '%'	
+	</select>
 
 </mapper>

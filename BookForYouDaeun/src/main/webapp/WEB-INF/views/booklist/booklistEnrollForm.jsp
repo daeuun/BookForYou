@@ -56,6 +56,8 @@
 
         /**책선택모달창*/
         .modal-body{text-align: center;}
+        .modal-body .select{width:20%; display:inline-block;}
+        .modal-body #searchKeyword{width:60%; display:inline-block;}
         .btn_search, .btn_choose{background:rgb(252, 190, 52); color: #fff; border:none; border-radius:4px; padding:5px 20px; margin-bottom:20px;}
         /*검색결과*/
         .search_title{background:rgb(248, 248, 248); line-height:40px; height:40px;}
@@ -74,13 +76,13 @@
 	        <div class="header">
 	            <div class="container">
 	                <!--로고-->
-	                <div>
-	                    <img src="" alt="" width="140px" height="40px">
-	                </div>
+	                <div class=""><img src="" alt="" width="140px" height="40px"></div>
+	                
 	                <!--별점-->
 	                <div class="choose_star">
 	                    <div class="make_star">
-					        <div class="rating" data-rate="#" id="blRate" name="blRate">
+	                    	<input type="hidden" id="blRate" name="blRate">
+					        <div class="rating" data-rate="#" id="starRating">
 					            <i class="fas fa-star"></i>
 					            <i class="fas fa-star"></i>
 					            <i class="fas fa-star"></i>
@@ -90,10 +92,12 @@
 					    </div>
 	                    <div class="star_txt">독서록 별점</div> 
 	                </div>
+	                
 	                <!--작성버튼-->
 	                <div class="btn_area">
 	                    <button type="submit" class="btn btn_submit">작성하기</button>
 	                </div>
+	                
 	            </div>
 	        </div>
         
@@ -114,67 +118,81 @@
 	                    </div>
 	                </div>
 	            </div>
+	            
 	            <!--책선택-->
 	            <div id="dropzone">
 	                <div class="dz-message needsclick">    
 	                	<!-- 모달의 원리 : 이 버튼 클릭시 data-target에 제시되어있는 해당 아이디의 div가 보이는 거임 -->
 	                    <a data-toggle="modal" href="#myModal" id="point_txt">독서록을 작성할 책을 선택해주세요!</a>
-	                    <input type="number" id="bkNo" name="bkNo">
-	                </div>
-	            </div>
-	
-	            <!-- Modal -->
-	            <!-- 책선택 클릭 시 뜨는 모달 (기존에는 안보이다가 위의 a 클릭시 보임) -->
-	            <div class="modal fade" id="myModal"> <!-- 사용자 지정 부분① : id명 -->
-	                <div class="modal-dialog modal-lg">
-	                    <div class="modal-content">
-	                    <!-- Modal Header -->
-	                    <div class="modal-header">
-	                        <h4 class="modal-title">책선택</h4>
-	                        <button type="button" class="close" data-dismiss="modal">&times;</button> 
-	                    </div>
-	                    <!-- Modal Body -->
-	                    <div class="modal-body">
-	                        <label for="" class="mr-sm-2">검색할 도서명</label>
-	                        <input type="text" class="form-control mb-2 mr-sm-2" id="" name="">
-	                        <button class="btn_search">검색</button>
-	                        <div class="search_title">검색결과</div>
-	                        <ul>
-	                            <li class="search_result">
-	                                <a href="#" class="bookitem_add" data-book-seq="179471951" data-book-name="이슬람에서 여성으로 산다는 것" data-author="오은경" data-publisher-name="시대의창" data-sub-title="정신분석을 통해 본 이슬람, 전쟁, 테러 그리고 여성" data-publish-date="20150315000000" data-book-image-src="https://img.millie.co.kr/200x/service/cover/179471951/ced772b06c2242ac892bd7de7966a574.jpg">
-	                                    <div class="bookitem_wrap">
-	                                        <div class="bookitem_img">
-	                                            <span class="hover">
-	                                                <img alt="이슬람에서 여성으로 산다는 것" src="https://img.millie.co.kr/200x/service/cover/179471951/ced772b06c2242ac892bd7de7966a574.jpg">
-	                                            </span>
-	                                        </div>
-	                                    </div>
-	                                    <p class="book_title">이슬람에서 여성으로 산다는 것</p>
-	                                    <p class="book_writer">이승원</p>
-	                                </a>
-	                            </li>
-	                        </ul>
-	                        </div>
-	                    <!-- Modal footer -->
-	                    <div class="modal-footer">
-	                        <button type="submit" class="btn btn_choose">선택</button>
-	                    </div>
-	                    </div>
+	                    <input type="hidden" id="bkNo" name="bkNo">
 	                </div>
 	            </div>
 	        </div>
-	        
 		</form>
+		
+		<!------- Modal ------->
+	    <!-- 책선택 클릭 시 뜨는 모달 (기존에는 안보이다가 위의 a 클릭시 보임) -->
+	    <div class="modal fade" id="myModal"> <!-- 사용자 지정 부분① : id명 -->
+	    	<div class="modal-dialog modal-lg">
+	    		<div class="modal-content">
+	    		<!-- Modal Header -->
+	    		<div class="modal-header">
+	    			<h4 class="modal-title">책선택</h4>
+	    			<button type="button" class="close" data-dismiss="modal">&times;</button> 
+	    		</div>
+	    		<!-- Modal Body -->
+	    		<div class="modal-body">
+	    			<form id="searchForm" action="search.bk" method="get">
+		    			<div class="select">
+			                <select class="custom-select" name="condition">
+			                    <option value="bkTitle">도서명</option>
+			                    <option value="writerName">작가</option>
+			                </select>
+			            </div>
+		    			<input type="text" class="form-control mb-2 mr-sm-2" id="searchKeyword" name="keyword" value="${ keyword }">
+		    			<button type="submit" class="btn_search">검색</button>
+	    			</form>
+	    			<div class="search_title">검색결과</div>
+	    				<ul>
+	    					<li class="search_result">
+	    						<a href="#" class="bookitem_add" data-book-seq="179471951" data-book-name="이슬람에서 여성으로 산다는 것" data-author="오은경" data-publisher-name="시대의창" data-sub-title="정신분석을 통해 본 이슬람, 전쟁, 테러 그리고 여성" data-publish-date="20150315000000" data-book-image-src="https://img.millie.co.kr/200x/service/cover/179471951/ced772b06c2242ac892bd7de7966a574.jpg">
+	    							<div class="bookitem_wrap">
+	    								<div class="bookitem_img">
+	    									<span class="hover">
+	    										<img alt="이슬람에서 여성으로 산다는 것" src="https://img.millie.co.kr/200x/service/cover/179471951/ced772b06c2242ac892bd7de7966a574.jpg">
+	    									</span>
+	    								</div>
+	    							</div>
+	    							<p class="book_title">이슬람에서 여성으로 산다는 것</p>
+	    							<p class="book_writer">이승원</p>
+	    						</a>
+	    					</li>
+	    				</ul>
+	    		</div>
+	    		<!-- Modal footer -->
+	    		<div class="modal-footer">
+	    			<button type="submit" class="btn btn_choose">선택</button>
+	    		</div>
+	    		</div>
+	    	</div>
+	    </div> <!-- 모달끝 -->
 		
 		<script>
 			// 별점
 			$(function(){
 				//별 아이콘을 클릭하면 할 일
 	            $(' .make_star i ').click(function(){
-	                //index는 0부터 시작하니까 +1해줘야 targetNum이랑 값이 같아짐
+	            	
+	                // index는 0부터 시작하니까 +1해줘야 targetNum이랑 값이 같아짐
 	                var targetNum = $(this).index()+1;
 	                $(' .make_star i ').css( {color:'#dedede'});
 	                $(' .make_star i:nth-child(-n+ ' + targetNum + ')').css({color:'rgb(252, 190, 52)'});
+					
+	                // targetNum = 별점   
+	                // #blRate의 value값으로 targetNum 별점 설정함
+	                $('#blRate').val(targetNum);
+	                var blRate = $('#blRate').val();
+	                console.log(blRate);
 	            })
 			})
 		
@@ -208,6 +226,12 @@
 	        function postForm() {
 	            $('textarea[name="blContent"]').val($('.summernote').summernote('code'));
 	        }
+	        
+	        $(function(){
+        		if("${condition}" != ""){
+        			$("option[value=${condition}]").attr("selected", true);
+        		}
+        	})
 		
 	    </script>
         
