@@ -1,6 +1,7 @@
 package com.bookforyou.bk4u.booklist.conroller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -9,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.bookforyou.bk4u.book.model.vo.Book;
 import com.bookforyou.bk4u.booklist.model.service.BooklistService;
 import com.bookforyou.bk4u.booklist.model.vo.Booklist;
 import com.bookforyou.bk4u.common.model.vo.PageInfo;
@@ -66,8 +69,34 @@ public class BooklistController {
 		}
 	}
 	
-	
-	
+	/** 도서 검색 모달창(1) : 도서 갯수 조회용
+	 * 	도서 검색 모달창(2) : 도서 조회용
+	 * @author daeunlee
+	 */
+	@RequestMapping("search.bk")
+	public ModelAndView selectSearchList(String condition, String keyword, ModelAndView mv,
+											@RequestParam(value="currentPage", defaultValue="1") int currentPage){
+		
+		// HashMap은 key+value 세트로 구성. Map 자료구조를 사용
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+		
+		System.out.println(map);
+		
+		int listCount = blService.selectSearchListCount(map);
+		
+		PageInfo pi = Pagination.getpageInfo(listCount, currentPage, 10, 5);
+		ArrayList<Book> list = blService.selectSearchList(pi, map);
+		
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .addObject("condition", condition)
+		  .addObject("keyword", keyword);
+		
+		return mv;
+		
+	}
 	
 	
 	

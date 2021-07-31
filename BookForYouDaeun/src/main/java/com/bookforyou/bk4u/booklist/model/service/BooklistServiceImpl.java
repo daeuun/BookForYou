@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bookforyou.bk4u.book.model.vo.Book;
 import com.bookforyou.bk4u.booklist.model.dao.BooklistDao;
 import com.bookforyou.bk4u.booklist.model.vo.Booklist;
 import com.bookforyou.bk4u.common.model.vo.PageInfo;
@@ -43,7 +44,23 @@ public class BooklistServiceImpl implements BooklistService{
 	public int insertBooklist(Booklist bl) {
 		return blDao.insertBooklist(sqlSession, bl);
 	}
-
+	
+	/** 도서 검색 모달창(1) : 도서 갯수 조회용
+	 * @author daeunlee
+	 */
+	@Override
+	public int selectSearchListCount(HashMap<String, String> map) {
+		return blDao.selectSearchListCount(sqlSession, map);
+	}
+	
+	/** 도서 검색 모달창(2) : 도서 조회용
+	 * @author daeunlee
+	 */
+	@Override
+	public ArrayList<Book> selectSearchList(PageInfo pi, HashMap<String, String> map) {
+		return blDao.selectSearchList(sqlSession, map, pi);
+	}
+	
 	@Override
 	public int increaseCount(int blNo) {
 		// TODO Auto-generated method stub
@@ -80,17 +97,6 @@ public class BooklistServiceImpl implements BooklistService{
 		return 0;
 	}
 
-	@Override
-	public int selectSerchListCount(HashMap<String, String> map) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public ArrayList<Booklist> selectSearchList(PageInfo pi, HashMap<String, String> map) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public ArrayList<Booklist> selectTopBooklistList() {

@@ -142,31 +142,17 @@
 	    		</div>
 	    		<!-- Modal Body -->
 	    		<div class="modal-body">
-	    			<form id="searchForm" action="search.bk" method="get">
-		    			<div class="select">
-			                <select class="custom-select" name="condition">
-			                    <option value="bkTitle">도서명</option>
-			                    <option value="writerName">작가</option>
-			                </select>
-			            </div>
-		    			<input type="text" class="form-control mb-2 mr-sm-2" id="searchKeyword" name="keyword" value="${ keyword }">
-		    			<button type="submit" class="btn_search">검색</button>
-	    			</form>
+		    		<div class="select">
+				        <select class="custom-select" name="condition">
+					        <option value="bkTitle">도서명</option>
+					        <option value="writerName">작가</option>
+				        </select>
+			        </div>
+		    		<input type="text" class="form-control mb-2 mr-sm-2" id="searchKeyword" name="keyword" value="${ keyword }">
+		    		<button type="submit" class="btn_search" onclick="searchBk();">검색</button>
 	    			<div class="search_title">검색결과</div>
-	    				<ul>
-	    					<li class="search_result">
-	    						<a href="#" class="bookitem_add" data-book-seq="179471951" data-book-name="이슬람에서 여성으로 산다는 것" data-author="오은경" data-publisher-name="시대의창" data-sub-title="정신분석을 통해 본 이슬람, 전쟁, 테러 그리고 여성" data-publish-date="20150315000000" data-book-image-src="https://img.millie.co.kr/200x/service/cover/179471951/ced772b06c2242ac892bd7de7966a574.jpg">
-	    							<div class="bookitem_wrap">
-	    								<div class="bookitem_img">
-	    									<span class="hover">
-	    										<img alt="이슬람에서 여성으로 산다는 것" src="https://img.millie.co.kr/200x/service/cover/179471951/ced772b06c2242ac892bd7de7966a574.jpg">
-	    									</span>
-	    								</div>
-	    							</div>
-	    							<p class="book_title">이슬람에서 여성으로 산다는 것</p>
-	    							<p class="book_writer">이승원</p>
-	    						</a>
-	    					</li>
+	    				<ul id="searchBk_result">
+	    					<!-- ajax 결과 출력자리 -->
 	    				</ul>
 	    		</div>
 	    		<!-- Modal footer -->
@@ -176,6 +162,8 @@
 	    		</div>
 	    	</div>
 	    </div> <!-- 모달끝 -->
+	    
+	    
 		
 		<script>
 			// 별점
@@ -227,11 +215,51 @@
 	            $('textarea[name="blContent"]').val($('.summernote').summernote('code'));
 	        }
 	        
-	        $(function(){
-        		if("${condition}" != ""){
+	        
+	        // 모달창:도서검색 ajax/json
+	        function searchBk(){
+	        	if("${condition}" != ""){
         			$("option[value=${condition}]").attr("selected", true);
-        		}
-        	})
+	        	}
+	        	
+	        	$.ajax({
+	        		url:"search.bk",
+	        		method: "post",
+	    			dataType: "json",
+	    			contentType : "application/json; charset:UTF-8",
+	        		success:function(list){
+	        			
+	        			var result = "";
+	        			
+	        			for(var i in list){
+	        				
+	        				result +=
+	        					
+	        				"<li class='search_result'>" +
+	    						"<a href='#' class='bookitem_add'>" +
+	    							"<div class='bookitem_wrap'>" +
+	    								"<div class='bookitem_img'>" +
+	    									"<span class='hover'>" +
+	    										"<img alt=" + list[i].bkTitle + "' src='" + list[i].introOriginName + " '>" + 
+	    									"</span>" +
+	    								"</div>" +
+	    							"</div>" +
+	    							"<p class='book_title'>" + list[i].bkTitle + "</p>" +
+	    							"<p class='book_writer'>" + list[i].writerName + "</p>" +
+	    						"</a>" +
+    						"</li>"
+	        				
+	        			}
+	        		
+	        			$('#searchBk_result').html(result);
+	        			
+	        		},error:function(){
+	        			console.log("도서 검색 모달창 ajax 통신실패");
+	        		}
+	        	});
+        		
+        	}
+        	
 		
 	    </script>
         

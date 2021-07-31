@@ -1,6 +1,7 @@
 package com.bookforyou.bk4u.book.model.vo;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,5 +38,7 @@ public class Book {
 	public String writerChangeName;
 	public String bkContent;
 	public double bkGrade;
+	
+	public ArrayList<Book> bookList;
 	
 }

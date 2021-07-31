@@ -21,6 +21,7 @@
 		<result column="bk_no" property="bkNo"/>
 		<result column="bk_title" property="bkTitle"/>
 		<result column="writer_name" property="writerName"/>
+		<result column="intro_originname" property="introOriginName"/>
 	</resultMap>
 	
 	<!-- 독서록 게시글 갯수 조회용 -->
@@ -102,6 +103,7 @@
 		       bk_no
              , bk_title
              , writer_name
+             , intro_originname
 		  from book
 		 where bk_selstatus = 'Y'
 	 	<choose>
