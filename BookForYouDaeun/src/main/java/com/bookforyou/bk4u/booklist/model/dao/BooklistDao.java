@@ -47,11 +47,21 @@ public class BooklistDao {
 	/** 도서 검색 모달창(2) : 도서 조회용
 	 * @author daeunlee
 	 */
-	public ArrayList<Book> selectSearchList(SqlSessionTemplate sqlSession, HashMap<String, String> map, PageInfo pi){
-		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return (ArrayList)sqlSession.selectList("booklistMapper.selectSearchList", map, rowBounds);
+	public ArrayList<Book> selectBookSearchList(SqlSessionTemplate sqlSession, HashMap<String, String> map){
+		return (ArrayList)sqlSession.selectList("booklistMapper.selectBookSearchList", map);
 	}
 	
-
+	/** 독서록 상세조회용 : 조회수 증가
+	 * @author daeunlee
+	 */
+	public int increaseCount(SqlSessionTemplate sqlSession, int blNo) {
+		return sqlSession.update("booklistMapper.increaseCount", blNo);
+	}
+	
+	/** 독서록 상세조회용 : 해당게시글 조회
+	 * @author daeunlee
+	 */
+	public Booklist selectBooklist(SqlSessionTemplate sqlSession, int blNo) {
+		return sqlSession.selectOne("booklistMapper.selectBooklist", blNo);
+	}
 }

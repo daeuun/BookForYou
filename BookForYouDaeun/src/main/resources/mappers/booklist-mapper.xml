@@ -98,7 +98,7 @@
 	
 	<!-- 도서 검색 모달창(2) : 도서 조회용 -->
 	<!-- @author daeunlee -->
-	<select id="selectSearchList" resultMap="bookResult">
+	<select id="selectBookSearchList" resultMap="bookResult">
 		select
 		       bk_no
              , bk_title
@@ -115,6 +115,33 @@
 	 		</when>
 	 	</choose>
 	 	       like '%' || #{keyword} || '%'	
+	</select>
+	
+	<update id="increaseCount">
+		update 
+		       booklist
+		   set bl_count = bl_count+1
+		 where bl_no = ${blNo}
+		   and bl_status='Y'
+	</update>
+	
+	<select id="selectBooklist" resultMap="booklistResult">
+		select 
+		       bl_no
+		     , mem_nickname
+		     , bk_no
+		     , bl_title
+		     , bl_content
+		     , bl_count
+		     , bl_rate
+		     , bl_cdate
+		     , bl_mdate
+		     , bl_like
+		     , bl_scrap
+		  from booklist
+		  join members using(mem_no)
+		 where bl_no = ${blNo}
+		   and bl_status='Y'
 	</select>
 
 </mapper>

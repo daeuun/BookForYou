@@ -57,20 +57,24 @@ public class BooklistServiceImpl implements BooklistService{
 	 * @author daeunlee
 	 */
 	@Override
-	public ArrayList<Book> selectSearchList(PageInfo pi, HashMap<String, String> map) {
-		return blDao.selectSearchList(sqlSession, map, pi);
+	public ArrayList<Book> selectBookSearchList(HashMap<String, String> map) {
+		return blDao.selectBookSearchList(sqlSession, map);
 	}
 	
+	/** 독서록 상세조회용 : 조회수 증가
+	 * @author daeunlee
+	 */
 	@Override
 	public int increaseCount(int blNo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return blDao.increaseCount(sqlSession, blNo);
 	}
-
+	
+	/** 독서록 상세조회용 : 해당게시글 조회
+	 * @author daeunlee
+	 */
 	@Override
 	public Booklist selectBooklist(int blNo) {
-		// TODO Auto-generated method stub
-		return null;
+		return blDao.selectBooklist(sqlSession, blNo);
 	}
 
 	@Override

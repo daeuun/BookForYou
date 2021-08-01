@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bookforyou.bk4u.book.model.vo.Book;
@@ -59,7 +60,6 @@ public class BooklistController {
 		
 		int result = blService.insertBooklist(bl);
 		
-		System.out.println(bl.blRate);
 		if(result > 0) {
 			session.setAttribute("alertMsg", "독서록이 작성되었습니다!");
 			return "redirect:list.bl";
@@ -73,8 +73,9 @@ public class BooklistController {
 	 * 	도서 검색 모달창(2) : 도서 조회용
 	 * @author daeunlee
 	 */
-	@RequestMapping("search.bk")
-	public ModelAndView selectSearchList(String condition, String keyword, ModelAndView mv,
+	/*
+	@RequestMapping("searchBk.bl")
+	public ModelAndView selectBookSearchList(String condition, String keyword, ModelAndView mv,
 											@RequestParam(value="currentPage", defaultValue="1") int currentPage){
 		
 		// HashMap은 key+value 세트로 구성. Map 자료구조를 사용
@@ -97,7 +98,46 @@ public class BooklistController {
 		return mv;
 		
 	}
+	*/
 	
+	@ResponseBody
+	@RequestMapping(value="searchBk.bl", produces="application/json; charset=utf-8")
+	public String selectBookSearchList(Model model, String condition, String keyword) {
+		
+		// HashMap은 key+value 세트로 구성. Map 자료구조를 사용
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+		
+		int listCount = blService.selectSearchListCount(map);
+		ArrayList<Book> list = blService.selectBookSearchList(map);
+		
+		model.addAttribute("condition", condition);
+		model.addAttribute("keyword", keyword);
+		
+		return "booklist/booklistEnrollForm";
+	}
+	
+	/** 독서록 상세조회용
+	 * @author daeunlee
+	 */
+	@RequestMapping("detail.bl")
+	public ModelAndView selectBooklist(int blNo, ModelAndView mv){
+		
+		// 해당 게시글 조회수 증가용 서비스 호출 => update
+		int result = blService.increaseCount(blNo);
+		
+		System.out.println(blNo);
+		
+		if(result > 0) {
+			// 게시글 조회용 서비스 호출
+			Booklist bl = blService.selectBooklist(blNo);
+			mv.addObject("bl", bl).setViewName("booklist/booklistDetailView");
+		}else {
+			mv.addObject("errorMsg", "상세조회 실패").setViewName("common/errorPage");
+		}
+		return mv;
+	}
 	
 	
 

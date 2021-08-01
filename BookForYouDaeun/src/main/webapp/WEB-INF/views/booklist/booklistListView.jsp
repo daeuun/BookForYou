@@ -213,7 +213,7 @@
 	                        <li class="booklist_item">
 	                            <div class="booklist_container">
 	                                <div class="booklist_content">
-	                                    <a href="" class="booklist-item">
+	                                    <a href="javascript:clickBl();" class="booklist-item">
 	                                    	<input type="hidden" name="blNo" value="${ bl.blNo }">
 	                                        <div class="booklist_title">
 	                                            <span class="title_point">${ bl.blTitle }</span>
@@ -232,7 +232,7 @@
 	                                    </a>
 	                                </div>
 	                                <div class="booklist_book_wrap">
-	                                    <a href="" class="book_info-area">
+	                                    <a href="javascript:clickBk()" class="book_info-area">
 	                                        <div class="book_area">
 	                                            <span class="book_img">
 	                                                <img src="" alt="" id="book_img-item" width="70px" height="100px">
@@ -253,11 +253,16 @@
                     </ul>
                     
                     <script>
-                    	$(function(){
-                    		$(".booklist-item").click(function(){
-                    			location.href = "deatil.bl?bno=" + $(this).children("#blNo").text();
-                    		})
-                    	})
+                    // 독서록상세조회 스크립트
+                    function clickBl() {
+                    	location.href = "detail.bl?blno=" + $(this).children("#blNo").text();
+                    }
+                    
+                 	// 도서조회 스크립트
+                    function clickBk() {
+                    	location.href = "detail.bk?bkno=" + $(this).children("#bkNo").text();
+                    }
+                    
                     </script>
 
                     <div id="paging-wrap">

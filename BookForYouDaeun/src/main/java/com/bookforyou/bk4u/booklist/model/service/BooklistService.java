@@ -21,7 +21,7 @@ public interface BooklistService {
 	 */
 	int insertBooklist(Booklist bl);
 	
-	/** 3. 독서록 상세조회
+	/** 3. 독서록 상세조회 (조회수증가+해당독서록조회)
 	 * @author daeunlee
 	 */
 	int increaseCount(int blNo);
@@ -52,7 +52,7 @@ public interface BooklistService {
 	 * @author daeunlee
 	 */
 	public int selectSearchListCount(HashMap<String, String> map);
-	public ArrayList<Book> selectSearchList(PageInfo pi, HashMap<String, String> map);
+	public ArrayList<Book> selectBookSearchList(HashMap<String, String> map);
 	
 	/** 9. 인기 독서록 정렬
 	 * @author daeunlee

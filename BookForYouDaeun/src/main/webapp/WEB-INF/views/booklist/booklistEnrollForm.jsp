@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <!-- 부트스트랩에서 제공하고 있는 스타일 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <!-- 부트스트랩에서 제공하고 있는 스크립트 -->
@@ -57,7 +57,7 @@
         /**책선택모달창*/
         .modal-body{text-align: center;}
         .modal-body .select{width:20%; display:inline-block;}
-        .modal-body #searchKeyword{width:60%; display:inline-block;}
+        .modal-body #keyword{width:60%; display:inline-block;}
         .btn_search, .btn_choose{background:rgb(252, 190, 52); color: #fff; border:none; border-radius:4px; padding:5px 20px; margin-bottom:20px;}
         /*검색결과*/
         .search_title{background:rgb(248, 248, 248); line-height:40px; height:40px;}
@@ -114,7 +114,7 @@
 	            <div class="editor_area">
 	                <div class="editor">
 	                    <div class="editor_content">
-							<textarea class="summernote" name="blContent"></textarea>  
+							<textarea class="summernote" id="blContent" name="blContent"></textarea>  
 	                    </div>
 	                </div>
 	            </div>
@@ -143,13 +143,13 @@
 	    		<!-- Modal Body -->
 	    		<div class="modal-body">
 		    		<div class="select">
-				        <select class="custom-select" name="condition">
+				        <select class="custom-select" id="condition" name="condition">
 					        <option value="bkTitle">도서명</option>
 					        <option value="writerName">작가</option>
 				        </select>
 			        </div>
-		    		<input type="text" class="form-control mb-2 mr-sm-2" id="searchKeyword" name="keyword" value="${ keyword }">
-		    		<button type="submit" class="btn_search" onclick="searchBk();">검색</button>
+		    		<input type="text" class="form-control mb-2 mr-sm-2" id="keyword" name="keyword" value="${ keyword }">
+		    		<button type="button" class="btn_search" onclick="searchBk()">검색</button>
 	    			<div class="search_title">검색결과</div>
 	    				<ul id="searchBk_result">
 	    					<!-- ajax 결과 출력자리 -->
@@ -180,7 +180,7 @@
 	                // #blRate의 value값으로 targetNum 별점 설정함
 	                $('#blRate').val(targetNum);
 	                var blRate = $('#blRate').val();
-	                console.log(blRate);
+	                //console.log(blRate);
 	            })
 			})
 		
@@ -216,18 +216,22 @@
 	        }
 	        
 	        
+	      
+	                
+	        
 	        // 모달창:도서검색 ajax/json
 	        function searchBk(){
-	        	if("${condition}" != ""){
-        			$("option[value=${condition}]").attr("selected", true);
-	        	}
+	        	if($("#condition").val() != ""){
+	        	
+	        	 var condition = $("#condition option:selected").val();
+	        	 var keyword = $('#keyword').val();
+	        	 var allData = { "condition": condition, "keyword": keyword};
 	        	
 	        	$.ajax({
-	        		url:"search.bk",
-	        		method: "post",
-	    			dataType: "json",
-	    			contentType : "application/json; charset:UTF-8",
+	        		url:"searchBk.bl",
+	    			data: allData,
 	        		success:function(list){
+		        		console.log(list);
 	        			
 	        			var result = "";
 	        			
@@ -257,8 +261,12 @@
 	        			console.log("도서 검색 모달창 ajax 통신실패");
 	        		}
 	        	});
-        		
+	        	
+	        	
+	        	}
+	        	
         	}
+	       
         	
 		
 	    </script>
