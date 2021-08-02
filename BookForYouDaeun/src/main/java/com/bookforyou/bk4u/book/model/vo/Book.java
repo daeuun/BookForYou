@@ -38,6 +38,7 @@ public class Book {
 	public String writerChangeName;
 	public String bkContent;
 	public double bkGrade;
+	public String bkIntroduce;
 	
 	public ArrayList<Book> bookList;
 	

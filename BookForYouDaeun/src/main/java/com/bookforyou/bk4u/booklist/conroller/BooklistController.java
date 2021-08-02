@@ -18,6 +18,7 @@ import com.bookforyou.bk4u.booklist.model.service.BooklistService;
 import com.bookforyou.bk4u.booklist.model.vo.Booklist;
 import com.bookforyou.bk4u.common.model.vo.PageInfo;
 import com.bookforyou.bk4u.common.template.Pagination;
+import com.google.gson.Gson;
 
 @Controller
 public class BooklistController {
@@ -101,7 +102,7 @@ public class BooklistController {
 	*/
 	
 	@ResponseBody
-	@RequestMapping(value="searchBk.bl", produces="application/json; charset=utf-8")
+	@RequestMapping(value="searchBk.bl", produces = "application/json; charset=utf-8")
 	public String selectBookSearchList(Model model, String condition, String keyword) {
 		
 		// HashMap은 key+value 세트로 구성. Map 자료구조를 사용
@@ -109,13 +110,9 @@ public class BooklistController {
 		map.put("condition", condition);
 		map.put("keyword", keyword);
 		
-		int listCount = blService.selectSearchListCount(map);
 		ArrayList<Book> list = blService.selectBookSearchList(map);
 		
-		model.addAttribute("condition", condition);
-		model.addAttribute("keyword", keyword);
-		
-		return "booklist/booklistEnrollForm";
+		return new Gson().toJson(list);
 	}
 	
 	/** 독서록 상세조회용

@@ -6,19 +6,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- 부트스트랩에서 제공하고 있는 스타일 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <!-- 부트스트랩에서 제공하고 있는 스크립트 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!--awesome icons--> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://kit.fontawesome.com/69851f8880.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/69851f8880.js"></script>
 	<!-- include summernote css/js -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.css" rel="stylesheet"> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script>
-
 <style>
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
         body{font-family: "Noto Sans KR", sans-serif !important;}
@@ -49,7 +47,7 @@
         .editor_content{width:100%; margin:20px 0;}
 
         /*책선택area*/
-        #dropzone{height:160px; border: 1px solid #dedede; border-radius: 3px; text-align: center; margin-bottom:120px;}
+        #dropzone{height:160px; border: 1px solid #dedede; border-radius: 3px; text-align: center; margin-bottom:50px;}
         #dropzone:hover{border: 1px dashed rgb(252, 190, 52);}
         #dropzone #point_txt{line-height:160px; color:rgb(252, 190, 52);}
         #dropzone #point_txt:hover{text-decoration:underline; cursor:pointer;}
@@ -63,9 +61,21 @@
         .search_title{background:rgb(248, 248, 248); line-height:40px; height:40px;}
         ul{list-style-type:none; margin: auto;}
         li{width:160px; display:inline-block;}
-        .bookitem_add{color:#000;}
-        .bookitem_add:hover{text-decoration:none; color:#000;}
+        .bookitem_add{color:#000; cursor:pointer;}
+        .bookitem_add:hover{color:#000; text-decoration:none;}
         .book_title, .book_writer{text-align:left;}
+        
+        /**책선택결과area*/
+        .select_book_area{display:none; width:720px; height:310px; margin:auto; padding:50px; border:1px solid rgb(252, 190, 52); border-radius:10px; margin-bottom: 50px;}
+        .select_book_area a:hover{color:#000; text-decoration:none;}
+        .book_area-wrap{display:flex; height:210px;}
+        /*책이미지*/
+        .book_img{width: 30%; margin-right:40px; background-color: rgb(223, 223, 223);}
+        /*책정보내용area*/
+        .book_info-wrap{width:75%;}
+        .book_title{font-size:18px; font-weight:500; color:rgb(236, 87, 59);}
+        .book_content{width:100%; height:100px; padding: 20px 0 90px 0; font-size:13px; color:rgb(90, 90, 90);}
+        .book_writer, .book_stars{font-size:13px; color:rgb(90, 90, 90);}
 </style>
 </head>
 <body>
@@ -128,42 +138,59 @@
 	                </div>
 	            </div>
 	        </div>
-		</form>
 		
-		<!------- Modal ------->
-	    <!-- 책선택 클릭 시 뜨는 모달 (기존에는 안보이다가 위의 a 클릭시 보임) -->
-	    <div class="modal fade" id="myModal"> <!-- 사용자 지정 부분① : id명 -->
-	    	<div class="modal-dialog modal-lg">
-	    		<div class="modal-content">
-	    		<!-- Modal Header -->
-	    		<div class="modal-header">
-	    			<h4 class="modal-title">책선택</h4>
-	    			<button type="button" class="close" data-dismiss="modal">&times;</button> 
-	    		</div>
-	    		<!-- Modal Body -->
-	    		<div class="modal-body">
-		    		<div class="select">
-				        <select class="custom-select" id="condition" name="condition">
-					        <option value="bkTitle">도서명</option>
-					        <option value="writerName">작가</option>
-				        </select>
-			        </div>
-		    		<input type="text" class="form-control mb-2 mr-sm-2" id="keyword" name="keyword" value="${ keyword }">
-		    		<button type="button" class="btn_search" onclick="searchBk()">검색</button>
-	    			<div class="search_title">검색결과</div>
-	    				<ul id="searchBk_result">
-	    					<!-- ajax 결과 출력자리 -->
-	    				</ul>
-	    		</div>
-	    		<!-- Modal footer -->
-	    		<div class="modal-footer">
-	    			<button type="submit" class="btn btn_choose">선택</button>
-	    		</div>
-	    		</div>
-	    	</div>
-	    </div> <!-- 모달끝 -->
+		
+			<!------- Modal ------->
+		    <!-- 책선택 클릭 시 뜨는 모달 (기존에는 안보이다가 위의 a 클릭시 보임) -->
+		    <div class="modal fade" id="myModal"> <!-- 사용자 지정 부분① : id명 -->
+		    	<div class="modal-dialog modal-lg">
+		    		<div class="modal-content">
+		    		<!-- Modal Header -->
+		    		<div class="modal-header">
+		    			<h4 class="modal-title">책선택</h4>
+		    			<button type="button" class="close" data-dismiss="modal">&times;</button> 
+		    		</div>
+		    		<!-- Modal Body -->
+		    		<div class="modal-body">
+			    		<div class="select">
+					        <select class="custom-select" id="condition" name="condition">
+						        <option value="bkTitle">도서명</option>
+						        <option value="writerName">작가</option>
+					        </select>
+				        </div>
+			    		<input type="text" class="form-control mb-2 mr-sm-2" id="keyword" name="keyword" value="${ keyword }">
+			    		<button type="button" class="btn_search" onclick="searchBk();">검색</button>
+		    			<div class="search_title">검색결과</div>
+		    				<ul id="searchBk_result">
+		    					<!-- ajax 결과 출력자리 -->
+		    				</ul>
+		    		</div>
+		    		<!-- Modal footer -->
+		    		<div class="modal-footer">
+		    			<button type="button" class="btn btn_choose" onclick="enrollBk();">선택</button>
+		    		</div>
+		    		</div>
+		    	</div>
+		    </div> <!-- 모달끝 -->
 	    
-	    
+		    <!--책선택결과-->
+	        <div class="select_book_area">
+	        	<div class="book_area-wrap">
+	        		<input type="hidden" id="bkNo">
+	        		<span class="book_img">
+	        			<img src="" alt="" id="book_img-item">
+	        		</span>
+	        		<div class="book_info-wrap">
+	        			<div class="book_title">고양이님, 저랑 살 만하신가요?</div>
+	        			<div class="book_content">
+	        				저자가 반려묘와 10년 동안 살아오면서 겪은 현실적인 반려생활기와 함께 같은 공간을 공유하고 삶을 함께 살아가는 존재로서 고양이와 삶을 공유할 때 필요한 지식, 이해, 배려에 대해 이야기하는 책이다.
+	                    </div>
+	                    <div class="book_writer">이학범</div>
+	                    <div class="book_stars">⭐⭐⭐⭐⭐</div>
+	        		</div>
+	        	</div>
+	       </div>
+       </form>
 		
 		<script>
 			// 별점
@@ -216,59 +243,81 @@
 	        }
 	        
 	        
-	      
-	                
-	        
 	        // 모달창:도서검색 ajax/json
+	        
 	        function searchBk(){
 	        	if($("#condition").val() != ""){
-	        	
-	        	 var condition = $("#condition option:selected").val();
-	        	 var keyword = $('#keyword').val();
-	        	 var allData = { "condition": condition, "keyword": keyword};
-	        	
-	        	$.ajax({
-	        		url:"searchBk.bl",
-	    			data: allData,
-	        		success:function(list){
-		        		console.log(list);
-	        			
-	        			var result = "";
-	        			
-	        			for(var i in list){
-	        				
-	        				result +=
-	        					
-	        				"<li class='search_result'>" +
-	    						"<a href='#' class='bookitem_add'>" +
-	    							"<div class='bookitem_wrap'>" +
-	    								"<div class='bookitem_img'>" +
-	    									"<span class='hover'>" +
-	    										"<img alt=" + list[i].bkTitle + "' src='" + list[i].introOriginName + " '>" + 
-	    									"</span>" +
-	    								"</div>" +
-	    							"</div>" +
-	    							"<p class='book_title'>" + list[i].bkTitle + "</p>" +
-	    							"<p class='book_writer'>" + list[i].writerName + "</p>" +
-	    						"</a>" +
-    						"</li>"
-	        				
-	        			}
 	        		
-	        			$('#searchBk_result').html(result);
-	        			
-	        		},error:function(){
-	        			console.log("도서 검색 모달창 ajax 통신실패");
-	        		}
-	        	});
-	        	
-	        	
+	        		var condition = $("#condition option:selected").val();
+	        		var keyword = $('#keyword').val();
+	        		var allData = {"condition" : condition, "keyword" : keyword};
+	        		
+	        		//console.log(condition);
+	        		//console.log(keyword);
+	        		//console.log(allData);
+		        		
+		        	 $.ajax({
+		        		url:"searchBk.bl",
+		    			data:allData, 
+		    			success:function(list){
+		        			
+		        			var result = "";
+		        			
+		        			for(var i in list){
+		        				
+		        				result +=
+		        					
+		        				"<li class='search_result'>" +
+		    						"<a href='#' class='bookitem_add' id='dataBk' onclick='selectBk();' data-bktitle='"+ list[i].bkTitle +"' data-introoriginname="+ list[i].introOriginName +" data-writername='"+ list[i].writerName +"' data-bkno="+ list[i].bkNo +" data-bkintroduce='"+list[i].bkIntroduce+"' '>" +
+		    							"<div class='bookitem_wrap'>" +
+		    								"<div class='bookitem_img'>" +
+		    									"<span class='hover'>" +
+		    										"<img alt=" + list[i].bkTitle + "' src='" + list[i].introOriginName + " '>" + 
+		    									"</span>" +
+		    								"</div>" +
+		    							"</div>" +
+		    							"<p class='book_title'>" + list[i].bkTitle + "</p>" +
+		    							"<p class='book_writer'>" + list[i].writerName + "</p>" +
+		    						"</a>" +
+	    						"</li>"
+		        				
+		        			}
+		        		
+		        			$('#searchBk_result').html(result);
+		        			
+		        		},error : function(jqXHR, textStatus, errorThrown){ 
+		        			console.log(jqXHR); 
+		        			console.log(textStatus); 
+		        			console.log(errorThrown); 
+		        		}
+
+		        	});
 	        	}
+	        }
+	        
+	        function selectBk(){
+	        	var bkno = $("#dataBk").data("bkno");
+	        	var bktitle = $("#dataBk").data("bktitle");
+	        	var writername = $("#dataBk").data("writername");
+	        	var introoriginname = $("#dataBk").data("introoriginname");
+	        	var bkintroduce = $("#dataBk").data("bkintroduce");
 	        	
-        	}
-	       
-        	
-		
+	        	if($("#dataBk").data("bkno") != ""){
+	        		
+	        		$('.select_book_area').show();
+	        		
+	        		$("#bkNo").val(bkno);
+	        		$(".book_title").html(bktitle);
+	        		$(".book_writer").html(writername);
+	        		$(".book_content").html(bkintroduce);
+	        		$("#book_img-item").html(introoriginname);
+	        		
+	        		$('#myModal').modal("hide");
+	        		
+	        	}
+	        }
+	        
+	        
 	    </script>
         
     </div>

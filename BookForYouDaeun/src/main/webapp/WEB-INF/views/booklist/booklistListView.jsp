@@ -112,7 +112,7 @@
                     <!--독서록작성버튼-->
                     <div class="enroll_booklist-wrap">
                         <div class="enroll_booklist">
-                            <a href="enrollForm.bl" class="btn_booklist">독서록 작성하기</a>
+                            <a href="#" class="btn_booklist" onclick="enrollClick();">독서록 작성하기</a>
                         </div>
                     </div>
                 </div>
@@ -253,6 +253,23 @@
                     </ul>
                     
                     <script>
+                    // 독서록 작성 로그인한 회원만 가능
+                    function enrollClick(){
+                    	
+                    	var loginUser = "<c:out value='${loginUser}'/>";
+                    	//console.log(loginUser);
+                    	if(!loginUser){
+                    		var conf = confirm("로그인이 필요한 서비스입니다. 로그인 하시겠습니까?");
+                    		if(conf == true){ // 로그인창
+                    			location.href = "loginForm.me"
+                    		}else{ // 화면
+                    			return;
+                    		}
+                    	}else{
+                    		location.href = "enrollForm.bl"
+                    	};
+                    }
+                    
                     // 독서록상세조회 스크립트
                     function clickBl() {
                     	location.href = "detail.bl?blno=" + $(this).children("#blNo").text();

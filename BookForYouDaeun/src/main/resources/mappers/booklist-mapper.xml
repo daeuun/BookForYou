@@ -22,6 +22,7 @@
 		<result column="bk_title" property="bkTitle"/>
 		<result column="writer_name" property="writerName"/>
 		<result column="intro_originname" property="introOriginName"/>
+		<result column="bk_introduce" property="bkIntroduce"/>
 	</resultMap>
 	
 	<!-- 독서록 게시글 갯수 조회용 -->
@@ -89,9 +90,9 @@
 	 		<when test="condition == 'bkTitle'">
 	 			and bk_title
 	 		</when>
-	 		<when test="condition == 'writerName'">
-	 			and bk_writer
-	 		</when>
+	 		<otherwise>
+	 			and writer_name
+	 		</otherwise>
 	 	</choose>
 	 	       like '%' || #{keyword} || '%'	
 	</select>
@@ -104,15 +105,16 @@
              , bk_title
              , writer_name
              , intro_originname
+             , bk_introduce
 		  from book
 		 where bk_selstatus = 'Y'
 	 	<choose>
 	 		<when test="condition == 'bkTitle'">
 	 			and bk_title
 	 		</when>
-	 		<when test="condition == 'writerName'">
-	 			and bk_writer
-	 		</when>
+	 		<otherwise>
+	 			and writer_name
+	 		</otherwise>
 	 	</choose>
 	 	       like '%' || #{keyword} || '%'	
 	</select>
