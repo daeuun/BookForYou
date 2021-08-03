@@ -6,7 +6,6 @@
 		<result column="bl_no" property="blNo"/>
 		<result column="mem_no" property="memNo"/>
 		<result column="mem_nickname" property="blWriter"/>
-		<result column="bk_no" property="bkNo"/>
 		<result column="bl_title" property="blTitle"/>
 		<result column="bl_content" property="blContent"/>
 		<result column="bl_count" property="blCount"/>
@@ -15,6 +14,7 @@
 		<result column="bl_mdate" property="blMdate"/>
 		<result column="bl_like" property="blLike"/>
 		<result column="bl_scrap" property="blScrap"/>
+		<result column="bk_no" property="bkNo"/>
 	</resultMap>
 	
 	<resultMap id="bookResult" type="Book">
@@ -25,6 +25,19 @@
 		<result column="bk_introduce" property="bkIntroduce"/>
 	</resultMap>
 	
+	<resultMap id="replyResult" type="Reply">
+		<result column="reply_no" property="replyNo"/>
+		<result column="mem_no" property="memNo"/>
+		<result column="reply_type" property="replyType"/>
+		<result column="ref_post" property="refPost"/>
+		<result column="reply_content" property="replyContent"/>
+		<result column="reply_cdate" property="replyCdate"/>
+		<result column="reply_mdate" property="replyMdate"/>
+		<result column="delete_status" property="deleteStatus"/>
+		<result column="reply_refNo" property="replyRefNo"/>
+		<result column="depth" property="depth"/>
+	</resultMap>
+
 	<!-- 독서록 게시글 갯수 조회용 -->
 	<!-- @author daeunlee -->
 	<select id="selectListCount" resultType="_int">
@@ -119,19 +132,22 @@
 	 	       like '%' || #{keyword} || '%'	
 	</select>
 	
+	<!-- 독서록 상세조회용 : 조회수 증가 -->
+	<!-- @author daeunlee -->
 	<update id="increaseCount">
 		update 
 		       booklist
 		   set bl_count = bl_count+1
-		 where bl_no = ${blNo}
+		 where bl_no = #{blNo}
 		   and bl_status='Y'
 	</update>
 	
+	<!-- 독서록 상세조회용 : 해당게시글 조회 -->
+	<!-- @author daeunlee -->
 	<select id="selectBooklist" resultMap="booklistResult">
 		select 
 		       bl_no
 		     , mem_nickname
-		     , bk_no
 		     , bl_title
 		     , bl_content
 		     , bl_count
@@ -140,10 +156,47 @@
 		     , bl_mdate
 		     , bl_like
 		     , bl_scrap
+		     , bk_no
 		  from booklist
 		  join members using(mem_no)
-		 where bl_no = ${blNo}
+		 where bl_no = #{blNo}
 		   and bl_status='Y'
+	</select>
+	
+	<!-- 독서록 상세조회용 : 해당 게시글의 책정보 조회 -->
+	<!-- @author daeunlee -->
+	<select id="selectBook" resultMap="bookResult">
+		select 
+		       bk_no
+		     , bk_title
+		     , writer_name
+		     , bk_introduce
+		  from booklist
+		  join book using(bk_no)		  
+		 where bl_no = #{blNo}
+		   and bl_status='Y'
+	</select>
+	
+	<!-- 댓글 리스트 조회 -->
+	<!-- @author daeunlee -->
+	<select id="selectReplyList" resultMap="replyResult">
+		select 
+		       reply_no
+		     , mem_no
+		     , reply_type
+		     , ref_post
+		     , reply_content
+		     , reply_cdate
+		     , reply_mdate
+		     , delete_status
+		     , reply_refNo
+		     , depth
+		  from reply
+		 where reply_type = 2
+		   and ref_post = #{blNo}
+		 start with reply_refno = 0
+		connect by prior reply_no = reply_refno
+		order siblings by reply_cdate desc
 	</select>
 
 </mapper>

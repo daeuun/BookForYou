@@ -12,6 +12,7 @@
 		<typeAlias type="com.bookforyou.bk4u.board.model.vo.Board" alias="Board"/>
 		<typeAlias type="com.bookforyou.bk4u.booklist.model.vo.Booklist" alias="Booklist"/>
 		<typeAlias type="com.bookforyou.bk4u.subscription.model.vo.Subscription" alias="Subscription"/>
+		<typeAlias type="com.bookforyou.bk4u.reply.model.vo.Reply" alias="Reply"/>
 	</typeAliases>
 	
 	<mappers>

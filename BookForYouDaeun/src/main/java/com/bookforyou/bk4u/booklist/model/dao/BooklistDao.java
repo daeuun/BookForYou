@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.bookforyou.bk4u.book.model.vo.Book;
 import com.bookforyou.bk4u.booklist.model.vo.Booklist;
 import com.bookforyou.bk4u.common.model.vo.PageInfo;
+import com.bookforyou.bk4u.reply.model.vo.Reply;
 
 @Repository
 public class BooklistDao {
@@ -40,9 +41,10 @@ public class BooklistDao {
 	/** 도서 검색 모달창(1) : 도서 갯수 조회용
 	 * @author daeunlee
 	 */
+	/*
 	public int selectSearchListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
 		return sqlSession.selectOne("booklistMapper.selectSearchListCount", map);
-	}
+	}*/
 	
 	/** 도서 검색 모달창(2) : 도서 조회용
 	 * @author daeunlee
@@ -63,5 +65,19 @@ public class BooklistDao {
 	 */
 	public Booklist selectBooklist(SqlSessionTemplate sqlSession, int blNo) {
 		return sqlSession.selectOne("booklistMapper.selectBooklist", blNo);
+	}
+	
+	/** 독서록 상세조회용 : 해당 게시글의 책정보 조회
+	 * @author daeunlee
+	 */
+	public Book selectBook(SqlSessionTemplate sqlSession, int blNo) {
+		return sqlSession.selectOne("booklistMapper.selectBook", blNo);
+	}
+	
+	/** 댓글 리스트 조회
+	 * @author daeunlee
+	 */
+	public ArrayList<Reply> selectReplyList(SqlSessionTemplate sqlSession, int blNo){
+		return (ArrayList)sqlSession.selectList("booklistMapper.selectReplyList", blNo);
 	}
 }

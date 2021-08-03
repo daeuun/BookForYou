@@ -1,6 +1,7 @@
 package com.bookforyou.bk4u.reply.model.vo;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,4 +22,6 @@ public class Reply {
 	private String deleteStatus;
 	private int replyRefNo;
 	private int depth;
+	
+	public ArrayList<Reply> replyList;
 }

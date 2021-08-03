@@ -20,7 +20,8 @@
         li{list-style:none;}
 
         /**글쓰기내용전체area*/
-        .content_area{width:900px; padding:30px; margin:auto;}
+        .content{width:900px; padding:30px; margin:auto;}
+        .content_area{margin-top:150px;}
 
         /*카테고리select*/
         .select_item{font-size:12px; color:#fff; background:rgb(252, 190, 52); padding:2px 5px; border-radius:5px;}
@@ -143,6 +144,7 @@
                 </div>
                 
                 <form action="postForm" method="post">
+                	<!--글번호-->
                 	<input type="hidden" name="blNo" value="${ bl.blNo }">
                 </form>
                 
@@ -164,7 +166,7 @@
                     </a>
                     <div class="writer_nick_box" style="display:inline-block;">
                         <div class="writer_nick_info">
-                            <a id="" href="" class="writer_nickname">${ bl.blWriter }</a>
+                            <a id="blWriter" href="" class="writer_nickname">${ bl.blWriter }</a>
                         </div>
                     </div>
                 </div>
@@ -191,12 +193,11 @@
                             <img src="" alt="" id="book_img-item">
                         </span>
                         <div class="book_info-wrap">
-                            <div class="book_title">고양이님, 저랑 살 만하신가요?</div>
-                            <div class="book_content">
-                                저자가 반려묘와 10년 동안 살아오면서 겪은 현실적인 반려생활기와 함께 같은 공간을 공유하고 삶을 함께 살아가는 존재로서 고양이와 삶을 공유할 때 필요한 지식, 이해, 배려에 대해 이야기하는 책이다.
-                            </div>
-                            <div class="book_writer">이학범</div>
-                            <div class="book_stars">⭐⭐⭐⭐⭐</div>
+                        	<input type="hidden" id="bkNo" name="bkNo" value="${ bk.bkNo }">
+                            <div class="book_title">${ bk.bkTitle }</div>
+                            <div class="book_content">${ bk.bkIntroduce }</div>
+                            <div class="book_writer">${ bk.writerName }</div>
+                            <div class="book_stars">${ bl.blRate }</div>
                         </div>
                     </a>
                 </div>
@@ -206,12 +207,12 @@
                     <div class="like-wrap">
                         <button id="btn_like" type="button">
                             <img src="" alt="" style="width: 20px; height: 20px;">
-                            좋아요
+                            	좋아요
                             <span id="btn_num">${ bl.blLike }</span>
                         </button>
                         <button id="btn_scrap" type="button">
                             <img src="" alt="" style="width: 20px; height: 20px;">
-                            스크랩
+                            	스크랩
                             <span id="btn_num">${ bl.blScrap }</span>
                         </button>
                     </div>
@@ -254,17 +255,13 @@
                         </div>
                     </div>
                 </div>
-                 
-                <style>
-                </style>
-
-                
+               
                 <!--댓글-->
                 <div id="reply_area">
 
                     <!--댓글갯수-->
                     <div class="reply_info">
-                        댓글<span class="reply_count">27</span>
+                    	댓글<span id="reply_count"></span>
                     </div>
 
                     <!--댓글작성창-->
@@ -279,9 +276,9 @@
                     </div>
 
                     <!--댓글목록area-->
-                    <ul>
+                    <ul id="replyArea">
 
-                        <!--개별댓글(1):첨부파일x-->
+                        <!--개별댓글(1):첨부파일x
                         <li id="" class="comment-wrap">
                             <div class="comment_area">
                                 <!--1.(좌측)프로필썸네일이미지: 작성글/댓글페이지로이동-->
@@ -543,10 +540,67 @@
                                 </div>
                             </div>
                         </li>
-
+                        
+						
                     </ul>
 
                     <script>
+                    	$(function(){
+                    		selectReplyList();
+                    	})
+                    	
+                    	function selectReplyList(){
+                    		$.ajax({
+                    			url:"rlist.bl",
+                    			data:{ blNo:${bl.blNo} },
+                    			success: function(list){
+                    				//console.log(list);
+                    				$("#reply_count").text(list.length);
+                    				
+                    				var result = ""
+                    				for(var i in list){
+                    					result +=
+                    						
+                    						// 원댓글
+                                            '<li id="" class="comment-wrap">' +
+                                                '<div class="comment_area">' +
+                                                    '<a href="" class="comment_thumb"><img src="" width="36" height="36" id="comment_thumb_img"></a>' +
+                                                    '<input type="hidden" id="replyNo" name="replyNo" value="' + list[i].replyNo + '">' +
+                                                    '<div class="comment_box">' +
+                                                        '<div class="comment_nick_box"><div class="comment_nick_info"><a id="" href="" class="comment_nickname">' + list[i].mem_no + '</a></div></div>' +
+                                                        '<div class="comment_text_box"><p class="comment_text_view"><span class="text_comment">' + list[i].reply_content + '</span></p></div>' +
+                                                        '<div class="CommentItemImage" style="display:none;"><a href="" role="button" class="comment_image_link"><img alt="" class="image" src="" width="150px" height="150px"></a></div>
+                                                        '<div class="comment_info_box"><span class="comment_info_date">' + list[i].reply_cdate + '</span><a href="" class="btn_report">신고</a></div>
+                                                        '<div class="recomment_box"><div id="recomment_report" class="recomment_report"><a href="" class="btn_recomment" onclick="addRecomment();">답글쓰기</a></div></div>
+                                                    '</div>' +
+                                                '</div>' +
+                                           '</li>'
+											
+                                            // 대댓글
+                                            '<li id="" class="comment-wrap comment_area-recomment">' +
+                                                '<div class="comment_area">' +
+                                                    '<a href="" class="comment_thumb"><img src="" width="36" height="36" id="comment_thumb_img"></a>' +
+                                                    '<input type="hidden" id="replyNo" name="replyNo" value="' + list[i].replyNo + '">' +
+                                                    '<div class="comment_box">' +
+                                                        '<div class="comment_nick_box"><div class="comment_nick_info"><a id="" href="" class="comment_nickname">' + list[i].mem_no + '</a></div></div>'+
+                                                        '<div class="comment_text_box"><p class="comment_text_view"><span class="text_comment">' + list[i].reply_content + '</span></p></div>'+
+                                                        '<div class="CommentItemImage" style="display:none;"><a href="" role="button" class="comment_image_link"><img alt="" class="image" src="" width="150px" height="150px"></a></div>
+                                                        '<div class="comment_info_box"><span class="comment_info_date">' + list[i].reply_cdate + '</span><a href="" class="btn_report">신고</a></div>' +
+                                                        '<div class="recomment_box"><div id="recomment_report" class="recomment_report"><a href="" type="button" class="btn_recomment" onclick="addRecomment();">답글쓰기</a></div></div>
+                                                    '</div>' +
+                                                '</div>' + 
+                                            '</li>' 
+                                            
+                    					$("#replyArea").html(result);
+                    				}
+                    				
+                    			},error : function(jqXHR, textStatus, errorThrown){ 
+        		        			console.log(jqXHR); 
+        		        			console.log(textStatus); 
+        		        			console.log(errorThrown); 
+        		        		}
+                    		})
+                    	}
 
                     </script>
                     

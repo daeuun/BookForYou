@@ -18,6 +18,7 @@ import com.bookforyou.bk4u.booklist.model.service.BooklistService;
 import com.bookforyou.bk4u.booklist.model.vo.Booklist;
 import com.bookforyou.bk4u.common.model.vo.PageInfo;
 import com.bookforyou.bk4u.common.template.Pagination;
+import com.bookforyou.bk4u.reply.model.vo.Reply;
 import com.google.gson.Gson;
 
 @Controller
@@ -70,36 +71,29 @@ public class BooklistController {
 		}
 	}
 	
-	/** 도서 검색 모달창(1) : 도서 갯수 조회용
-	 * 	도서 검색 모달창(2) : 도서 조회용
-	 * @author daeunlee
-	 */
 	/*
 	@RequestMapping("searchBk.bl")
 	public ModelAndView selectBookSearchList(String condition, String keyword, ModelAndView mv,
 											@RequestParam(value="currentPage", defaultValue="1") int currentPage){
-		
 		// HashMap은 key+value 세트로 구성. Map 자료구조를 사용
 		HashMap<String, String> map = new HashMap<>();
 		map.put("condition", condition);
 		map.put("keyword", keyword);
-		
-		System.out.println(map);
-		
 		int listCount = blService.selectSearchListCount(map);
-		
 		PageInfo pi = Pagination.getpageInfo(listCount, currentPage, 10, 5);
 		ArrayList<Book> list = blService.selectSearchList(pi, map);
-		
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
 		  .addObject("condition", condition)
 		  .addObject("keyword", keyword);
-		
 		return mv;
-		
 	}
 	*/
+	
+	/** 도서 검색 모달창(1) : 도서 갯수 조회용
+	 * 	도서 검색 모달창(2) : 도서 조회용
+	 * @author daeunlee
+	 */
 	
 	@ResponseBody
 	@RequestMapping(value="searchBk.bl", produces = "application/json; charset=utf-8")
@@ -129,13 +123,24 @@ public class BooklistController {
 		if(result > 0) {
 			// 게시글 조회용 서비스 호출
 			Booklist bl = blService.selectBooklist(blNo);
-			mv.addObject("bl", bl).setViewName("booklist/booklistDetailView");
+			// 해당 게시글의 책정보 조회 서비스 호출
+			Book bk = blService.selectBook(blNo);
+			mv.addObject("bl", bl)
+			  .addObject("bk", bk)
+			  .setViewName("booklist/booklistDetailView");
 		}else {
 			mv.addObject("errorMsg", "상세조회 실패").setViewName("common/errorPage");
 		}
 		return mv;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="rlist.bl", produces="application/json; charset=utf-8")
+	public String selectReplyList(int blNo) {
+		
+		ArrayList<Reply> list = blService.selectReplyList(blNo);
+		return "booklist/booklistDetailView";
+	}
 	
 
 }

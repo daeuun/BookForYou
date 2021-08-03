@@ -214,7 +214,7 @@
 	                            <div class="booklist_container">
 	                                <div class="booklist_content">
 	                                    <a href="javascript:clickBl();" class="booklist-item">
-	                                    	<input type="hidden" name="blNo" value="${ bl.blNo }">
+	                                    	<input type="hidden" id="blNo" name="blNo" value="${ bl.blNo }">
 	                                        <div class="booklist_title">
 	                                            <span class="title_point">${ bl.blTitle }</span>
 	                                        </div>
@@ -272,7 +272,7 @@
                     
                     // 독서록상세조회 스크립트
                     function clickBl() {
-                    	location.href = "detail.bl?blno=" + $(this).children("#blNo").text();
+                    	location.href = "detail.bl?blNo=" + $("#blNo").val();
                     }
                     
                  	// 도서조회 스크립트
