@@ -130,12 +130,8 @@
                             </span>
                         </div>
                         <div class="mylist_txt">
-                            <div class="mylist_title">
-                                독서록 서재
-                            </div>
-                            <div class="mylist_info">
-                                작성한 독서록을 확인해보세요!
-                            </div>
+                            <div class="mylist_title">독서록 서재</div>
+                            <div class="mylist_info"> 작성한 독서록을 확인해보세요!</div>
                         </div>
                     </a>
                 </div>
@@ -213,7 +209,7 @@
 	                        <li class="booklist_item">
 	                            <div class="booklist_container">
 	                                <div class="booklist_content">
-	                                    <a href="javascript:clickBl();" class="booklist-item">
+	                                    <a href="#" class="booklist-item">
 	                                    	<input type="hidden" id="blNo" name="blNo" value="${ bl.blNo }">
 	                                        <div class="booklist_title">
 	                                            <span class="title_point">${ bl.blTitle }</span>
@@ -231,6 +227,7 @@
 	                                        </div>
 	                                    </a>
 	                                </div>
+	                                
 	                                <div class="booklist_book_wrap">
 	                                    <a href="javascript:clickBk()" class="book_info-area">
 	                                        <div class="book_area">
@@ -253,6 +250,18 @@
                     </ul>
                     
                     <script>
+                    // 독서록상세조회 스크립트
+                    $(function(){
+                    	$(".booklist_outer>ul>li").click(function(){
+	                    	//var blNo = $(this).children("#blNo").val();
+	                    	//후손선택 find() input요소선택 input[] ㅠㅠ
+	                    	var blNo = $(this).find("input[name=blNo]").val();
+	                    	//console.log(blNo);
+	                    	location.href = "detail.bl?blNo=" + blNo;
+                    		
+                    	})
+                    })
+                    
                     // 독서록 작성 로그인한 회원만 가능
                     function enrollClick(){
                     	
@@ -270,11 +279,6 @@
                     	};
                     }
                     
-                    // 독서록상세조회 스크립트
-                    function clickBl() {
-                    	location.href = "detail.bl?blNo=" + $("#blNo").val();
-                    }
-                    
                  	// 도서조회 스크립트
                     function clickBk() {
                     	location.href = "detail.bk?bkno=" + $(this).children("#bkNo").text();
@@ -284,13 +288,25 @@
 
                     <div id="paging-wrap">
                         <ul class="pagination">
-                            <li class="page-item disabled"><a class="page-link">이전</a></li>
-                            <li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">1</a></li>
-                            <li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">2</a></li>
-                            <li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">3</a></li>
-                            <li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">4</a></li>
-                            <li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">5</a></li>
-                            <li class="page-item disabled"><a class="page-link">다음</a></li>
+                        	<c:choose>
+                        		<c:when test="${ pi.currentPage eq 1 }">
+                            		<li class="page-item disabled"><a class="page-link">이전</a></li>
+                            	</c:when>
+                            	<c:otherwise>
+                            		<li class="page-item disabled"><a class="page-link" href="list.bl?currentPage=${ pi.currentPage -1 }">이전</a></li>
+                            	</c:otherwise>
+                            </c:choose>
+                            <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+                            	<li class="page-item"><a class="page-link" href="list.bl?currentPage=${ p }">${ p }</a></li>
+                            </c:forEach>
+                            <c:choose>
+                            	<c:when test="${ pi.currentPage eq pi.maxPage }">
+		                            <li class="page-item disabled"><a class="page-link">다음</a></li>
+                            	</c:when>
+                            	<c:otherwise>
+									<li class="page-item disabled"><a class="page-link" href="list.bl?currentPage=${ pi.currentPage + 1 }">다음</a></li>
+                            	</c:otherwise>
+                            </c:choose>
                         </ul>
                     </div>
             

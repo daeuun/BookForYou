@@ -257,7 +257,7 @@
 	        		//console.log(allData);
 		        		
 		        	 $.ajax({
-		        		url:"searchBk.bl",
+		        		url:"searchBkAjax.bl",
 		    			data:allData, 
 		    			success:function(list){
 		        			

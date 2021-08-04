@@ -198,5 +198,33 @@
 		connect by prior reply_no = reply_refno
 		order siblings by reply_cdate desc
 	</select>
+	
+	<!-- 댓글 작성 -->
+	<!-- @author daeunlee -->
+	<insert id="insertReply">
+		insert 
+		  into reply
+		     ( 
+		       reply_no
+		     , mem_no
+		     , reply_type
+		     , ref_post
+		     , reply_content
+		     , reply_cdate
+		     , reply_refno
+		     , depth
+		     )
+		values
+		     ( 
+		       seq_rno.nextval
+		     , #{memNo}
+		     , 2
+		     , #{blNo}
+		     , #{blContent}
+		     , sysdate
+		     , #{replyRefNo}
+		     , #{depth}
+		     )
+	</insert>
 
 </mapper>

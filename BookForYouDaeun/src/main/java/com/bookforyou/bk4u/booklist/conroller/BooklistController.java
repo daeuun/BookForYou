@@ -96,7 +96,7 @@ public class BooklistController {
 	 */
 	
 	@ResponseBody
-	@RequestMapping(value="searchBk.bl", produces = "application/json; charset=utf-8")
+	@RequestMapping(value="searchBkAjax.bl", produces = "application/json; charset=utf-8")
 	public String selectBookSearchList(Model model, String condition, String keyword) {
 		
 		// HashMap은 key+value 세트로 구성. Map 자료구조를 사용
@@ -118,8 +118,6 @@ public class BooklistController {
 		// 해당 게시글 조회수 증가용 서비스 호출 => update
 		int result = blService.increaseCount(blNo);
 		
-		System.out.println(blNo);
-		
 		if(result > 0) {
 			// 게시글 조회용 서비스 호출
 			Booklist bl = blService.selectBooklist(blNo);
@@ -135,12 +133,26 @@ public class BooklistController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="rlist.bl", produces="application/json; charset=utf-8")
+	@RequestMapping(value="rlistAjax.bl", produces="application/json; charset=utf-8")
 	public String selectReplyList(int blNo) {
 		
 		ArrayList<Reply> list = blService.selectReplyList(blNo);
-		return "booklist/booklistDetailView";
+		System.out.println(list);
+		return new Gson().toJson(list);
 	}
 	
+	/** 댓글 작성
+	 * @author daeunlee
+	 */
+	@ResponseBody
+	@RequestMapping(value="rinsertAjax.bl", produces="application/json; charset=utf-8")
+	public String insertReply(Reply r) {
+		int result = blService.insertReply(r);
+		if(result>0) {
+			return "success";
+		}else {
+			return "fail";
+		}
+	}
 
 }

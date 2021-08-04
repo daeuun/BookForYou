@@ -80,4 +80,11 @@ public class BooklistDao {
 	public ArrayList<Reply> selectReplyList(SqlSessionTemplate sqlSession, int blNo){
 		return (ArrayList)sqlSession.selectList("booklistMapper.selectReplyList", blNo);
 	}
+	
+	/** 댓글 작성
+	 * @author daeunlee
+	 */
+	public int insertReply(SqlSessionTemplate sqlSession, Reply r) {
+		return sqlSession.insert("booklistMapper.insertReply", r);
+	}
 }

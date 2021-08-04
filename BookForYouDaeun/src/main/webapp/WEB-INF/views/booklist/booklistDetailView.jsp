@@ -82,7 +82,7 @@
         .booklist_item_r{background:#fff; box-shadow:0 2px 5px 0 rgba(94, 94, 94, 0.19);}
         
         /**댓글area*/
-        #reply_area{border-top:1px solid #ebebeb; margin-top: 150px;}
+        #reply_area{border-top:1px solid #ebebeb; height:1000px; margin-top: 150px;}
         /*댓글갯수*/
         .reply_info{padding:20px 0; font-size:20px; font-weight:500;}
         .reply_count{color:rgb(252, 190, 52); margin-left:10px;}
@@ -145,7 +145,7 @@
                 
                 <form action="postForm" method="post">
                 	<!--글번호-->
-                	<input type="hidden" name="blNo" value="${ bl.blNo }">
+                	<input type="hidden" id="blNo" name="blNo" value="${ bl.blNo }">
                 </form>
                 
                 <script>
@@ -277,346 +277,151 @@
 
                     <!--댓글목록area-->
                     <ul id="replyArea">
-
-                        <!--개별댓글(1):첨부파일x
-                        <li id="" class="comment-wrap">
-                            <div class="comment_area">
-                                <!--1.(좌측)프로필썸네일이미지: 작성글/댓글페이지로이동-->
-                                <a href="" class="comment_thumb"><img src="" width="36" height="36" id="comment_thumb_img"></a>
-
-                                <!--2.(우측)댓글전체내용area-->
-                                <div class="comment_box">
-                                    <!--닉네임: 작성글/댓글페이지로이동-->
-                                    <div class="comment_nick_box">
-                                        <div class="comment_nick_info">
-                                            <a id="" href="" class="comment_nickname">댓글1작성자</a>
-                                        </div>
-                                    </div>
-                                    <!--댓글내용-->
-                                    <div class="comment_text_box">
-                                        <p class="comment_text_view">
-                                            <span class="text_comment">첫댓글 : 댓글에 이미지가 없어유</span>
-                                        </p>
-                                    </div>
-                                    <!--첨부파일사진-->
-                                    <div class="CommentItemImage" style="display:none;">
-                                        <a href="" role="button" class="comment_image_link">
-                                            <img alt="" class="image" src="" width="150px" height="150px">
-                                        </a>
-                                    </div>
-                                    <!--작성일/신고-->
-                                    <div class="comment_info_box">
-                                        <span class="comment_info_date">2021.07.01. 21:20</span>
-                                        <a href="" class="btn_report">신고</a>
-                                    </div>
-                                    <!--답글-->
-                                    <div class="recomment_box">
-                                        <div id="recomment_report" class="recomment_report">
-                                            <a href="" class="btn_recomment" onclick="addRecomment();">답글쓰기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        <!--대댓글:작성-->
-                        <li id="" class="comment-wrap comment_area-recomment">
-                            <!--댓글작성창-->
-                            <div class="reply-input">
-                                <div class="reply-text">
-                                    <textarea class="reply_content recomment_content" id="replyContent" cols="20" rows="1" placeholder="기분 좋은 댓글은 작성자에게 힘이 됩니다 :)"></textarea>
-                                    <button type="submit" class="replyBtn" onclick="addReply();">등록</button>
-                                </div>
-                                <div class="reply-img">
-                                    <img src="" alt="" style="width:20px; height:20px;">
-                                </div>
-                            </div>
-                        </li>
-
-                        <!--대댓글-->
-                        <li id="" class="comment-wrap comment_area-recomment">
-                            <div class="comment_area">
-                                <!--1.(좌측)프로필썸네일이미지: 작성글/댓글페이지로이동-->
-                                <a href="" class="comment_thumb"><img src="" width="36" height="36" id="comment_thumb_img"></a>
-
-                                <!--2.(우측)댓글전체내용area-->
-                                <div class="comment_box">
-                                    <!--닉네임: 작성글/댓글페이지로이동-->
-                                    <div class="comment_nick_box">
-                                        <div class="comment_nick_info">
-                                            <a id="" href="" class="comment_nickname">답글1작성자</a>
-                                        </div>
-                                    </div>
-                                    <!--댓글내용-->
-                                    <div class="comment_text_box">
-                                        <p class="comment_text_view">
-                                            <span class="text_comment">답글1입니다</span>
-                                        </p>
-                                    </div>
-                                    <!--첨부파일사진-->
-                                    <div class="CommentItemImage" style="display:none;">
-                                        <a href="" role="button" class="comment_image_link">
-                                            <img alt="" class="image" src="" width="150px" height="150px">
-                                        </a>
-                                    </div>
-                                    <!--작성일/신고-->
-                                    <div class="comment_info_box">
-                                        <span class="comment_info_date">2021.07.01. 21:20</span>
-                                        <a href="" class="btn_report">신고</a>
-                                    </div>
-                                    <!--답글-->
-                                    <div class="recomment_box">
-                                        <div id="recomment_report" class="recomment_report">
-                                            <a href="" type="button" class="btn_recomment" onclick="addRecomment();">답글쓰기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        
-                        <!--대대댓글-->
-                        <li id="" class="comment-wrap comment_area-recomment">
-                            <div class="comment_area">
-                                <!--1.(좌측)프로필썸네일이미지: 작성글/댓글페이지로이동-->
-                                <a href="" class="comment_thumb"><img src="" width="36" height="36" id="comment_thumb_img"></a>
-
-                                <!--2.(우측)댓글전체내용area-->
-                                <div class="comment_box">
-                                    <!--닉네임: 작성글/댓글페이지로이동-->
-                                    <div class="comment_nick_box">
-                                        <div class="comment_nick_info">
-                                            <a id="" href="" class="comment_nickname">답글1의 답글1작성자</a>
-                                        </div>
-                                    </div>
-                                    <!--댓글내용-->
-                                    <div class="comment_text_box">
-                                        <p class="comment_text_view">
-                                            @<a id="" href="" class="comment_nickname">답글1작성자</a>
-                                            <span class="text_comment">답글1의 답글1입니다</span>
-                                        </p>
-                                    </div>
-                                    <!--첨부파일사진-->
-                                    <div class="CommentItemImage" style="display:none;">
-                                        <a href="" role="button" class="comment_image_link">
-                                            <img alt="" class="image" src="" width="150px" height="150px">
-                                        </a>
-                                    </div>
-                                    <!--작성일/신고-->
-                                    <div class="comment_info_box">
-                                        <span class="comment_info_date">2021.07.01. 21:20</span>
-                                        <a href="" class="btn_report">신고</a>
-                                    </div>
-                                    <!--답글-->
-                                    <div class="recomment_box">
-                                        <div id="recomment_report" class="recomment_report">
-                                            <a href="" type="button" class="btn_recomment" onclick="addRecomment();">답글쓰기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        <!--대댓글-->
-                        <li id="" class="comment-wrap comment_area-recomment">
-                            <div class="comment_area">
-                                <!--1.(좌측)프로필썸네일이미지: 작성글/댓글페이지로이동-->
-                                <a href="" class="comment_thumb"><img src="" width="36" height="36" id="comment_thumb_img"></a>
-
-                                <!--2.(우측)댓글전체내용area-->
-                                <div class="comment_box">
-                                    <!--닉네임: 작성글/댓글페이지로이동-->
-                                    <div class="comment_nick_box">
-                                        <div class="comment_nick_info">
-                                            <a id="" href="" class="comment_nickname">답글2작성자</a>
-                                        </div>
-                                    </div>
-                                    <!--댓글내용-->
-                                    <div class="comment_text_box">
-                                        <p class="comment_text_view">
-                                            <span class="text_comment">답글2입니다</span>
-                                        </p>
-                                    </div>
-                                    <!--첨부파일사진-->
-                                    <div class="CommentItemImage" style="display:none;">
-                                        <a href="" role="button" class="comment_image_link">
-                                            <img alt="" class="image" src="" width="150px" height="150px">
-                                        </a>
-                                    </div>
-                                    <!--작성일/신고-->
-                                    <div class="comment_info_box">
-                                        <span class="comment_info_date">2021.07.01. 21:20</span>
-                                        <a href="" class="btn_report">신고</a>
-                                    </div>
-                                    <!--답글-->
-                                    <div class="recomment_box">
-                                        <div id="recomment_report" class="recomment_report">
-                                            <a href="" type="button" class="btn_recomment" onclick="addRecomment();">답글쓰기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        <!--대댓글-->
-                        <li id="" class="comment-wrap comment_area-recomment">
-                            <div class="comment_area">
-                                <!--1.(좌측)프로필썸네일이미지: 작성글/댓글페이지로이동-->
-                                <a href="" class="comment_thumb"><img src="" width="36" height="36" id="comment_thumb_img"></a>
-
-                                <!--2.(우측)댓글전체내용area-->
-                                <div class="comment_box">
-                                    <!--닉네임: 작성글/댓글페이지로이동-->
-                                    <div class="comment_nick_box">
-                                        <div class="comment_nick_info">
-                                            <a id="" href="" class="comment_nickname">답글1의 답글2작성자</a>
-                                        </div>
-                                    </div>
-                                    <!--댓글내용-->
-                                    <div class="comment_text_box">
-                                        <p class="comment_text_view">
-                                            @<a id="" href="" class="comment_nickname">답글1작성자</a>
-                                            <span class="text_comment">답글1의 답글2입니다</span>
-                                        </p>
-                                    </div>
-                                    <!--첨부파일사진-->
-                                    <div class="CommentItemImage" style="display:none;">
-                                        <a href="" role="button" class="comment_image_link">
-                                            <img alt="" class="image" src="" width="150px" height="150px">
-                                        </a>
-                                    </div>
-                                    <!--작성일/신고-->
-                                    <div class="comment_info_box">
-                                        <span class="comment_info_date">2021.07.01. 21:20</span>
-                                        <a href="" class="btn_report">신고</a>
-                                    </div>
-                                    <!--답글-->
-                                    <div class="recomment_box">
-                                        <div id="recomment_report" class="recomment_report">
-                                            <a href="" type="button" class="btn_recomment" onclick="addRecomment();">답글쓰기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        <!--개별댓글(2):첨부파일o-->
-                        <li id="" class="comment-wrap">
-                            <div class="comment_area">
-                                <!--1.(좌측)프로필썸네일이미지: 작성글/댓글페이지로이동-->
-                                <a href="" class="comment_thumb"><img src="" width="36" height="36" id="comment_thumb_img"></a>
-
-                                <!--2.(우측)댓글전체내용area-->
-                                <div class="comment_box">
-                                    <!--닉네임: 작성글/댓글페이지로이동-->
-                                    <div class="comment_nick_box">
-                                        <div class="comment_nick_info">
-                                            <a id="" href="" class="comment_nickname">댓글2작성자</a>
-                                        </div>
-                                    </div>
-                                    <!--댓글내용-->
-                                    <div class="comment_text_box">
-                                        <p class="comment_text_view">
-                                            <span class="text_comment">첫댓글 : 댓글에 이미지가 있어요</span>
-                                        </p>
-                                    </div>
-                                    <!--첨부파일사진-->
-                                    <div class="CommentItemImage">
-                                        <a href="" role="button" class="comment_image_link">
-                                            <img alt="" class="image" src="" width="150px" height="150px">
-                                        </a>
-                                    </div>
-                                    <!--작성일/신고-->
-                                    <div class="comment_info_box">
-                                        <span class="comment_info_date">2021.07.01. 21:20</span>
-                                        <a href="" class="btn_report">신고</a>
-                                    </div>
-                                    <!--답글-->
-                                    <div class="recomment_box">
-                                        <div id="recomment_report" class="recomment_report">
-                                            <a href="" class="btn_recomment" onclick="addRecomment();">답글쓰기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        
-						
-                    </ul>
+						<!-- 댓글 ajax결과 -->
+	                </ul>
 
                     <script>
                     	$(function(){
                     		selectReplyList();
                     	})
                     	
+                    	// 댓글 리스트 조회용 ajax
                     	function selectReplyList(){
                     		$.ajax({
-                    			url:"rlist.bl",
-                    			data:{ blNo:${bl.blNo} },
+                    			url:"rlistAjax.bl",
+                    			data:{blNo:${bl.blNo}},
                     			success: function(list){
-                    				//console.log(list);
                     				$("#reply_count").text(list.length);
-                    				
-                    				var result = ""
-                    				for(var i in list){
-                    					result +=
+                    					
+	                    				var result = "";
+	                    				var subResult = "";
+	                    				
+	                    				for(var i in list){
+	                    					
+	                    					if(list[i].replyRefNo == 0){ // 참조하는 댓글 == 0
+		                    					result +=
+		                    						
+		                    						// 원댓글
+		                                            '<li id="" class="comment-wrap">' +
+		                                                '<div class="comment_area">' +
+		                                                    '<a href="" class="comment_thumb"><img src="" width="36" height="36" id="comment_thumb_img"></a>' +
+		                                                    '<input type="hidden" id="replyNo" name="replyNo" value="' + list[i].replyNo + '">' +
+		                                                    '<input type="hidden" name="replyRefNo" value ="'+ list[i].replyRefNo +'">' +
+		                                                    '<div class="comment_box">' +
+		                                                        '<div class="comment_nick_box"><div class="comment_nick_info"><a id="" href="" class="comment_nickname">' + list[i].memNo + '</a></div></div>' +
+		                                                        '<div class="comment_text_box"><p class="comment_text_view"><span class="text_comment">' + list[i].replyContent + '</span></p></div>' +
+		                                                        '<div class="CommentItemImage" style="display:none;"><a href="" role="button" class="comment_image_link"><img alt="" class="image" src="" width="150px" height="150px"></a></div>' +
+		                                                        '<div class="comment_info_box"><span class="comment_info_date">' + list[i].replyCdate + '</span>' + '<a href="" class="btn_report">신고</a></div>' +
+		                                                        '<div class="recomment_box"><div id="recomment_report" class="recomment_report"><a href="" class="btn_recomment" onclick="addRecomment();">답글쓰기</a></div></div>' +
+		                                                    '</div>' +
+		                                                '</div>' +
+		                                           '</li>' +
+		                                           '<div class="subReply' + list[i].replyNo + '"></div>'
+	                    					}	
+                    						$("#replyArea").html(result);
                     						
-                    						// 원댓글
-                                            '<li id="" class="comment-wrap">' +
-                                                '<div class="comment_area">' +
-                                                    '<a href="" class="comment_thumb"><img src="" width="36" height="36" id="comment_thumb_img"></a>' +
-                                                    '<input type="hidden" id="replyNo" name="replyNo" value="' + list[i].replyNo + '">' +
-                                                    '<div class="comment_box">' +
-                                                        '<div class="comment_nick_box"><div class="comment_nick_info"><a id="" href="" class="comment_nickname">' + list[i].mem_no + '</a></div></div>' +
-                                                        '<div class="comment_text_box"><p class="comment_text_view"><span class="text_comment">' + list[i].reply_content + '</span></p></div>' +
-                                                        '<div class="CommentItemImage" style="display:none;"><a href="" role="button" class="comment_image_link"><img alt="" class="image" src="" width="150px" height="150px"></a></div>
-                                                        '<div class="comment_info_box"><span class="comment_info_date">' + list[i].reply_cdate + '</span><a href="" class="btn_report">신고</a></div>
-                                                        '<div class="recomment_box"><div id="recomment_report" class="recomment_report"><a href="" class="btn_recomment" onclick="addRecomment();">답글쓰기</a></div></div>
-                                                    '</div>' +
-                                                '</div>' +
-                                           '</li>'
-											
-                                            // 대댓글
-                                            '<li id="" class="comment-wrap comment_area-recomment">' +
-                                                '<div class="comment_area">' +
-                                                    '<a href="" class="comment_thumb"><img src="" width="36" height="36" id="comment_thumb_img"></a>' +
-                                                    '<input type="hidden" id="replyNo" name="replyNo" value="' + list[i].replyNo + '">' +
-                                                    '<div class="comment_box">' +
-                                                        '<div class="comment_nick_box"><div class="comment_nick_info"><a id="" href="" class="comment_nickname">' + list[i].mem_no + '</a></div></div>'+
-                                                        '<div class="comment_text_box"><p class="comment_text_view"><span class="text_comment">' + list[i].reply_content + '</span></p></div>'+
-                                                        '<div class="CommentItemImage" style="display:none;"><a href="" role="button" class="comment_image_link"><img alt="" class="image" src="" width="150px" height="150px"></a></div>
-                                                        '<div class="comment_info_box"><span class="comment_info_date">' + list[i].reply_cdate + '</span><a href="" class="btn_report">신고</a></div>' +
-                                                        '<div class="recomment_box"><div id="recomment_report" class="recomment_report"><a href="" type="button" class="btn_recomment" onclick="addRecomment();">답글쓰기</a></div></div>
-                                                    '</div>' +
-                                                '</div>' + 
-                                            '</li>' 
-                                            
-                    					$("#replyArea").html(result);
-                    				}
+                    						if(list[i].replyRefNo != 0){ // 참조하는 댓글 != 0
+	                    						
+                    							subResult +=
+	                    							
+	                    							// 대댓글
+	                                                '<li id="" class="comment-wrap comment_area-recomment">' +
+	                                                    '<div class="comment_area">' +
+	                                                        '<a href="" class="comment_thumb"><img src="" width="36" height="36" id="comment_thumb_img"></a>' +
+	                                                        '<input type="hidden" id="replyNo" name="replyNo" value="' + list[i].replyNo + '">' +
+	                                                        '<input type="hidden" name="replyRefNo" value ="'+ list[i].replyRefNo +'">' +
+	                                                        '<div class="comment_box">' +
+	                                                            '<div class="comment_nick_box"><div class="comment_nick_info"><a id="" href="" class="comment_nickname">' + list[i].memNo + '</a></div></div>'+
+	                                                            '<div class="comment_text_box"><p class="comment_text_view"><span class="text_comment">' + list[i].replyContent + '</span></p></div>'+
+	                                                            '<div class="CommentItemImage" style="display:none;"><a href="" role="button" class="comment_image_link"><img alt="" class="image" src="" width="150px" height="150px"></a></div>' +
+	                                                            '<div class="comment_info_box"><span class="comment_info_date">' + list[i].replyCdate + '</span><a href="" class="btn_report">신고</a></div>' +
+	                                                            '<div class="recomment_box"><div id="recomment_report" class="recomment_report"><a href="" type="button" class="btn_recomment" onclick="addRecomment();">답글쓰기</a></div></div>' +
+	                                                        '</div>' +
+	                                                    '</div>' + 
+	                                                '</li>' +
+	                                                '<div class="subReply' + list[i].replyNo + '"></div>'
+	                    					}
+                    						console.log(subResult);
+                    						$(".subReply"+list[i].replyRefNo).html(subResult);
+	                    				}
                     				
-                    			},error : function(jqXHR, textStatus, errorThrown){ 
+                    			},error: function(jqXHR, textStatus, errorThrown){ 
         		        			console.log(jqXHR); 
         		        			console.log(textStatus); 
         		        			console.log(errorThrown); 
         		        		}
                     		})
                     	}
+                    	
+                    	// 댓글 작성용 ajax
+                    	/*
+                    	
+                    	function addReply(){
+                    		if($("#replyContent").val().trim().length != 0){
+                    			$.ajax({
+                    				url:"rinsertAjax.bl",
+                    				data:{
+                    					memNo:,
+                    					blNo:,
+                    					replyContent:,
+                    					replyRefNo:,
+                    					depth:
+                    				},success: function(status){
+                    					
+                    					if(status == "success"){
+                    						selectReplyList();
+                    						$("#replyContent").val("");
+                    					}
+                    					
+                    					
+                    				},error: function(jqXHR, textStatus, errorThrown){ 
+            		        			console.log(jqXHR); 
+            		        			console.log(textStatus); 
+            		        			console.log(errorThrown); 
+            		        		}
+                    			})
+                    		}
+                    	}
+                    	*/
 
                     </script>
                     
+                    <script>
+                    function drawReply(replys) {
+                    	$("#cnt").text("등록된 댓글 - " + replys.length)
+                    	var html = '';
+                    	html += '<form class="form-inline" action="writeReply" method="post"><input type="hidden" name="idx" value = "' + IDX + '"><input type="hidden" name="replyIdx" value = "0"><input type="text" class="form-control mb-2 mr-sm-2" id="contents" placeholder="답글" name="contents"><button type="submit" class="btn btn-primary mb-2">등록</button></form>';
 
-                    <div id="paging-wrap">
-                        <ul class="pagination">
-                            <li class="page-item disabled"><a class="page-link">이전</a></li>
-                            <li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">1</a></li>
-                            <li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">2</a></li>
-                            <li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">3</a></li>
-                            <li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">4</a></li>
-                            <li class="page-item"><a class="page-link" href="list.bo?currentPage=${ p }">5</a></li>
-                            <li class="page-item disabled"><a class="page-link">다음</a></li>
-                        </ul>
-                    </div>
-
+                    	replys.forEach(function(reply){ 
+                    		if (reply.replyIdx == 0) {
+                    			var rc = 0;
+                    			replys.forEach(function(i){
+                    				if (reply.idx == i.replyIdx) rc++;
+                    			})
+                    			html += '<div class="row"><div class="col-sm-12">';
+                    			html += '<form class="form-inline" action="writeReply" method="post"><label for="pwd" class="mr-sm-2">' + reply.contents + '(' + rc + ')' + '</label>'
+                    			html += '<input type="hidden" name="idx" value = "' + IDX + '"><input type="hidden" name="replyIdx" value = "' + reply.idx + '"><input type="text" class="form-control mb-2 mr-sm-2" id="contents" placeholder="답글" name="contents"><button type="submit" class="btn btn-primary mb-2">등록</button></form>';
+                    			html += '<div class="row"><div class="col-sm-12 sub' + reply.idx + '"></div></div></div></div>';
+                    		}
+                    	})
+                    	$("#replyArea").append(html);
+                    	replys.forEach(function(reply){ 
+                    		if (reply.replyIdx != 0) {
+                    			var rc = 0;
+                    			replys.forEach(function(i){
+                    				if (reply.idx == i.replyIdx) rc++;
+                    			})
+                    			var subHtml = '';
+                    			subHtml = '<div class="row"><div class="col-sm-12 subReply">';
+                    			subHtml += '<form class="form-inline" action="writeReply" method="post"><label for="pwd" class="mr-sm-2">' + reply.contents + '(' + rc + ')' + '</label>'
+                    			subHtml += '<input type="hidden" name="idx" value = "' + IDX + '"><input type="hidden" name="replyIdx" value = "' + reply.idx + '"><input type="text" class="form-control mb-2 mr-sm-2" id="contents" placeholder="답글" name="contents"><button type="submit" class="btn btn-primary mb-2">등록</button></form>';
+                    			subHtml += '<div class="row"><div class="col-sm-12 sub' + reply.idx + '"></div></div></div></div>';
+                    			$(".sub" + reply.replyIdx).append(subHtml);
+                    		}
+                    	})
+                    }
+                    </script>
+                    
 
 
                 </div>

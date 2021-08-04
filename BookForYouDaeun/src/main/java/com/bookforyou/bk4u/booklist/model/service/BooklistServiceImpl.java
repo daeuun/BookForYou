@@ -105,11 +105,13 @@ public class BooklistServiceImpl implements BooklistService{
 	public ArrayList<Reply> selectReplyList(int blNo) {
 		return blDao.selectReplyList(sqlSession, blNo);
 	}
-
+	
+	/** 댓글 작성
+	 * @author daeunlee
+	 */
 	@Override
 	public int insertReply(Reply r) {
-		// TODO Auto-generated method stub
-		return 0;
+		return blDao.insertReply(sqlSession, r);
 	}
 
 
