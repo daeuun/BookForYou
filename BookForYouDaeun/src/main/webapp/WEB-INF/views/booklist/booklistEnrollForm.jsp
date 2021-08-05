@@ -193,7 +193,7 @@
        </form>
 		
 		<script>
-			// 별점
+			// *별점
 			$(function(){
 				//별 아이콘을 클릭하면 할 일
 	            $(' .make_star i ').click(function(){
@@ -211,15 +211,56 @@
 	            })
 			})
 		
-			// summernote 에디터
+			// *summernote 에디터
 			$(document).ready(function() {
+				
+				// 기본세팅
 	        	$('.summernote').summernote({
 	        		height: 750,
 	        		minHeight: null,
 	                maxHeight: null,
-	        		lang: "ko-KR"
+	        		lang: "ko-KR",
+	        		callbacks: { 
+	        			// onImageUpload 함수: '이미지를 업로드했을 때' 동작하는 함수
+	        			onImageUpload: function(files, editor, welEditable){
+	        				// 파일 업로드 (다중업로드를 위해 for문 사용)
+	        				for(var i=files.length-1; i>=0; i--){
+	        					uploadSummernoteImage(files[i], this);
+	        				}
+	        			}
+	        		}
 	        	});
+				
+				// 파일 업로드용 callbacks함수 실행
+				function uploadSummernoteImage(file, el){
+					var formData = new FormData();
+					data.append('file', file); 
+					// callbacks함수에서 받아온 file들을 data에 추가해서 => ajax로 서버에 파일업로드함
+					$.ajax({
+						url: "uploadSummernoteImageAjax",
+						data: formData,
+						type: "post",
+						enctype: 'multipart/form-data',
+						processData: false,
+						contentType: false,
+						
+						//*processData: false
+						//일반적으로 서버에 전달되는 데이터는 "query string" 형태로 전달된다.
+						//ex) http://example.com/over/there?"title=Main_page&action=raw"
+						//data 파라미터로 전달된 데이터를 jQuery 내부적으로 query string 으로 만드는데, 
+						//파일 전송의 경우 이를 하지 않아야 하고 이를 설정하는 것이 processData: false 이다.
+
+						//*contentType 
+						//default 값이 "application/x-www-form-urlencoded; charset=UTF-8" 인데, 
+						//"multipart/form-data" 로 전송이 되게 false 로 넣어준다.
+						
+						success: function(list){
+							$(editor).summernote('insertImage', list.url);
+						}
+					});
+				}
 	        	
+				// 툴바세팅
 	        	$('.summernote').summernote({
 	      		  toolbar: [
 	      			    // [groupName, [list of button]]
@@ -243,9 +284,9 @@
 	        }
 	        
 	        
-	        // 모달창:도서검색 ajax/json
-	        
+	        // *모달창:도서검색 ajax/json
 	        function searchBk(){
+	        	// 검색ajax
 	        	if($("#condition").val() != ""){
 	        		
 	        		var condition = $("#condition option:selected").val();
@@ -295,6 +336,7 @@
 	        	}
 	        }
 	        
+	        // 선택한 결과 뿌려주기
 	        function selectBk(){
 	        	var bkno = $("#dataBk").data("bkno");
 	        	var bktitle = $("#dataBk").data("bktitle");

@@ -91,11 +91,13 @@ public class BooklistServiceImpl implements BooklistService{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
+	/** 독서록 수정용
+	 * @author daeunlee
+	 */
 	@Override
 	public int updateBooklist(Booklist bl) {
-		// TODO Auto-generated method stub
-		return 0;
+		return blDao.updateBooklist(sqlSession, bl);
 	}
 	
 	/** 댓글 리스트 조회

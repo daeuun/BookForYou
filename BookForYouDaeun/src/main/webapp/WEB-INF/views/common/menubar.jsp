@@ -9,13 +9,15 @@
 <!-- jQuery 라이브러리 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <!-- 부트스트랩에서 제공하고 있는 스타일 -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"> -->
 <!-- 부트스트랩에서 제공하고 있는 스크립트 -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<!--  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>-->
 <style>
    
     #header{
-        width:80%;
+        width:1200px;
         height:100px;
         padding-top: 20px;
         margin:auto;
@@ -45,15 +47,11 @@
 
     #header a{text-decoration:none; color:black}
 
-    #search_form{
-            width:80%;
-            height:20%;
-            margin:auto;
-        }
+    /* 검색 영역 */
         #search-area{
             display:flex;
             justify-content: center;
-            margin-top:5px;
+            margin-top:40px;
         }
         #search-bar{
             border-radius: 40px;
@@ -61,13 +59,15 @@
             width:600px;
             height: 40px;
             padding:1px;
+            margin:auto;
+            vertical-align: middle;
         }
 
         /* 검색 조건 select */
         #search-condition{
             display: inline-block;
             border-right:2px solid #EC573B;
-            width:150px;
+            width:25%;
             height: 100%;
         }
         #search-condition>select{
@@ -81,21 +81,56 @@
         select:focus, #search-input>input:focus{
             outline:none;
         }
-
+        
         /* 검색어 입력 */
         #search-input{
             display: inline-block;
-            width:400px;
+            width:65%;
             height: 100%;
         }
         #search-input > input{
             border-radius: 40px;
-            width:400px;
+            width:100%;
             height: 100%;
             border:none;
             font-size: 15px;
             text-align-last: center;
             text-align: center;
+        }
+
+        /* 검색 이미지 버튼 */
+        #search-btn{
+            width: 5%;
+            float:right;
+            margin:3px 20px 3px 0;
+        }
+        #search-btn input{
+            width: 30px;
+            height: 30px;
+        }
+        
+        /**/
+        #recommand-condition{padding:15px; text-align: center;}
+        #recommand-condition>div>p {display: inline-block;}
+        #bold{font-weight: 600; font-size: 18px;}
+        
+        #recommand-condition table{width:auto; margin: auto; text-align: left;} 
+        #recommand-condition table th{font-size: 15px; width:130px;}
+        #recommand-condition ul{list-style: none; margin: 0px; padding:0px;}
+        #recommand-condition li{float:left; margin: 0 5px 0 5px;}
+        
+        /* 검색 결과 구역 */
+        #result-area{margin-top:50px;}
+        #result-title p{
+            float:left; 
+            margin:0 15px 0 0;
+            font-size:18px;
+            font-weight: 600;
+        }
+
+        /* 처리 버튼 */
+        .btn{
+            padding:0.1em 0.5em;
         }
 </style>
 </head>
@@ -109,41 +144,54 @@
             <br>
 
             <div id="header_1_center">
-                    <div class="bar-outer" id="search-area">
-                        <form action="search.bk" method="get">
-                            <div id="search-bar">
-                                <div id="search-condition">
-                                    <select name="condition" id="search-condition">
-	                                    <option value="searchAll">전체</option>
-			                            <option value="bookTitle">제목</option>
-			                            <option value="writerName">저자명</option>
-                                    </select>
-                                </div>
-                                <div id="search-input">
-                                    <input type="text" name="keyword" id="search-input">
-                                </div>
-                            </div>
-                           <br>
-                            <div id="search-btn" align="center">
-                                <button type="submit" style="color: #ec573b;">검색</button>
-                                <button type="reset">초기화</button>
-                            </div>                       
-                        </div>
-                    </form>
+                    <div id="search-area">
+			            <form action="search.bk">
+			                <div id="search-bar">
+			                    <div id="search-condition">
+			                        <select name="condition">
+			                            <option value="searchAll">전체</option>
+			                            <option value="bookName">도서명</option>
+			                            <option value="writerName">저자</option>
+			                            <option value="publisher">출판사</option>
+			                        </select>
+			                    </div>
+			                    <div id="search-input">
+			                        <input type="text" name="">
+			                    </div>
+			                    <div id="search-btn">
+			                        <input type="image" src="resources/adminCommon/images/search.png" name="Submit" value="Submit" align="absmiddle">
+			                    </div>
+			                </div>
+			            </form>
+			        </div>
                 </div>
             <div id="header_1_right">
                 <c:choose>
                     <c:when test="${ empty loginUser }">
                 <!-- 로그인 전 -->
-                        <a href="enrollForm.me">회원가입</a> | 
-                        <a href="loginForm.me">로그인</a>
+                        <a href="login-form.me" style="font-weight: bold;">로그인</a>
+                        <a href="enroll-form.me" style="font-weight: bold;">회원가입</a> 
                     </c:when>
-                    <c:otherwise>
+                    <c:otherwise>        
                 <!-- 로그인 후  -->
-                        <label>Bk4U님 환영합니다</label> &nbsp;&nbsp;
-                        <a href="">마이페이지</a>
-                        <a href="">장바구니</a>
-                        <a href="logout.me">로그아웃</a>
+                		<c:choose>
+                			<c:when test="${loginUser.memStatus eq 'A' }">
+                				<a href="amain.me" style="font-weight: bold;">관리자 전환</a> |
+                				<a href="logout.me" style="font-weight: bold;">로그아웃 </a>
+		                    </c:when>
+		     
+		                    <c:otherwise>
+		                        <label>${ loginUser.memName }님 환영합니다</label> &nbsp;&nbsp;
+		                        <a href="logout.me" style="font-weight: bold;">로그아웃 </a><br>	    
+		                        
+		                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		                        
+		                        <a href="" style="font-weight: bold;">마이페이지</a>
+		                        <a href="cart.bk?memNo=${ loginUser.memNo }" style="font-weight: bold;">장바구니</a>
+		                        
+		                   	</c:otherwise>
+		                   	
+		                </c:choose>
                     </c:otherwise>
                 </c:choose>
             </div>
@@ -153,9 +201,9 @@
         
         <div id="header_2">
             <ul>
-                <li><a href="join.sub">정기구독</a></li>
+                <li><a href="">정기구독</a></li>
                 <li><a href="">도서구매</a></li>
-                <li><a href="list.bl">커뮤니티</a></li>
+                <li><a href="">커뮤니티</a></li>
                 <li><a href="">이벤트</a></li>
                 <li><a href="">고객센터</a></li>
             </ul>

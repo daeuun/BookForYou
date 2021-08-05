@@ -23,6 +23,20 @@
 	
 	<context:component-scan base-package="com.bookforyou.bk4u" />
 	
+	<!-- 
+		* 인코딩 타입이 Multipart인 경우, 파라미터나 업로드한 파일을 구하려면 전송 데이터를 알맞게 처리해 주어야 한다.
+		    스프링은 Multipart 지원 기능을 제공하고 있기 때문에, 이 기능을 이용하면 추가적인 처리없이 Multipart 형식으로 전송된 파라미터와 파일 정보를 쉽게 구할 수 있다.
+
+		* MultipartResolver 설정
+		  Multipart 지원 기능을 이용하려면 먼저 MultipartResolver를 스프링 설정 파일에 등록해 주어야 한다. 
+		  MultipartResolver는 Multipart 형식으로 데이터가 전송된 경우, 해당 데이터를 스프링 MVC에서 사용할 수 있도록 변환해준다.
+		    스프링이 기본으로 제공하는 MultipartResolver는 CommmnosMultipartResolver이기 때문에, CommmnsMultipartResolver는 Commons FileUpload API를 이용해서 Multipart를 처리해준다.
+		  CommmonsMultipartResolver를 MultipartResolver로 사용하려면 빈 이름으로 "multipartResolver"를 등록하면 된다.
+		  => MultipartResolver는 Muiltpart객체를 컨트롤러에 전달하는 역할을 합니다.	
+	-->
 	
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="100000000"/>
+	</beans:bean>
 	
 </beans:beans>

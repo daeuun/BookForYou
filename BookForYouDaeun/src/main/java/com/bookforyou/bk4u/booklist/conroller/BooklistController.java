@@ -1,16 +1,22 @@
 package com.bookforyou.bk4u.booklist.conroller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bookforyou.bk4u.book.model.vo.Book;
@@ -20,6 +26,7 @@ import com.bookforyou.bk4u.common.model.vo.PageInfo;
 import com.bookforyou.bk4u.common.template.Pagination;
 import com.bookforyou.bk4u.reply.model.vo.Reply;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 @Controller
 public class BooklistController {
@@ -58,8 +65,6 @@ public class BooklistController {
 	@RequestMapping("insert.bl")
 	public String insertBooklist(Booklist bl, Model model, HttpSession session) {
 		
-		System.out.println(bl);
-		
 		int result = blService.insertBooklist(bl);
 		
 		if(result > 0) {
@@ -69,6 +74,36 @@ public class BooklistController {
 			model.addAttribute("errorMag", "독서록을 작성하지 못했습니다.");
 			return "common/errorPage";
 		}
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="uploadSummernoteImageAjax", produces = "application/json; charset=utf-8")
+	public String uploadSummernoteImage(@RequestParam("file") MultipartFile upfile, HttpSession session){
+		
+		JsonObject jsonObject = new JsonObject();
+		
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles");
+		// 첨부파일 원본명
+		String originName = upfile.getOriginalFilename(); 
+		// 수정명 20210805104300(년월시분초) + 23445(랜덤값) + .png(원본파일확장자)
+		String currentTime = new SimpleDateFormat("yyyymmdd").format(new Date());
+		int ranNum = (int)(Math.random()*90000 + 10000);
+		String ext = originName.substring(originName.lastIndexOf(".")); //끝에서부터 "."을 찾기 시작, subString으로 .이후 값을 가져옴
+		String changeName = currentTime + ranNum + ext;
+		
+		File file = new File(savePath+changeName);
+		
+		try {
+			//받아온 객체를 업로드 처리하지 않으면 임시파일에 저장된 파일이 자동적으로 삭제되기 때문에 MultipartFile객체의 transferTo메서드를 이용해서 업로드처리
+			upfile.transferTo(file);
+			jsonObject.addProperty("url", "resources/summernoteImage"+changeName);
+			jsonObject.addProperty("responseCode", "success");
+		} catch (IllegalStateException | IOException e) {
+			jsonObject.addProperty("responseCode", "error");
+			e.printStackTrace();
+		}
+		String list = jsonObject.toString();
+		return list;
 	}
 	
 	/*
@@ -132,12 +167,15 @@ public class BooklistController {
 		return mv;
 	}
 	
+	/** 댓글 리스트 조회
+	 * @author daeunlee
+	 */
 	@ResponseBody
 	@RequestMapping(value="rlistAjax.bl", produces="application/json; charset=utf-8")
 	public String selectReplyList(int blNo) {
 		
 		ArrayList<Reply> list = blService.selectReplyList(blNo);
-		System.out.println(list);
+		//System.out.println(list);
 		return new Gson().toJson(list);
 	}
 	
@@ -147,12 +185,68 @@ public class BooklistController {
 	@ResponseBody
 	@RequestMapping(value="rinsertAjax.bl", produces="application/json; charset=utf-8")
 	public String insertReply(Reply r) {
+		System.out.println(r);
 		int result = blService.insertReply(r);
 		if(result>0) {
 			return "success";
 		}else {
 			return "fail";
 		}
+	}
+	
+	/** 독서록 수정페이지 요청용
+	 * @author daeunlee
+	 */
+	@RequestMapping("updateForm.bl")
+	public String updateForm(int blNo, Model model) {
+		model.addAttribute("bl", blService.selectBooklist(blNo));
+		return "booklist/booklistUpdateForm";
+	}
+	
+	/** 독서록 수정용
+	 * @author daeunlee
+	 */
+	@RequestMapping("update.bl")
+	public String updateBooklist(Booklist bl, Model model, HttpSession session) {
+		int result = blService.updateBooklist(bl);
+		
+		if(result>0) {
+			session.setAttribute("alertMsg", "독서록을 수정했습니다.");
+			return "redirect:detail.bl?blNo=" + bl.getBlNo();
+		}else {
+			model.addAttribute("errorMsg", "독서록을 수정하지 못했습니다.");
+			return "common/errorPage";
+		}
+	}
+	
+	
+	
+	
+	
+	// 파일명 수정용 메소드 공동모듈화
+	public String saveFile(HttpSession session, MultipartFile upfile) {
+		// * 물리적 경로 알아내기 위해선 세션객체 필요함 why? ServletContext객체 얻어내기 위해  => 세션 매개변수에 추가하기
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles");
+		
+		// 첨부파일 원본명
+		String originName = upfile.getOriginalFilename();
+		
+		// 수정명 20210805104300(년월시분초) + 23445(랜덤값) + .png(원본파일확장자)
+		String currentTime = new SimpleDateFormat("yyyymmdd").format(new Date());
+		int ranNum = (int)(Math.random()*90000 + 10000);
+		String ext = originName.substring(originName.lastIndexOf(".")); //끝에서부터 "."을 찾기 시작, subString으로 .이후 값을 가져옴
+		
+		String changeName = currentTime + ranNum + ext;
+		
+		try {
+			//받아온 객체를 업로드 처리하지 않으면 임시파일에 저장된 파일이 자동적으로 삭제되기 때문에 MultipartFile객체의 transferTo메서드를 이용해서 업로드처리
+			upfile.transferTo(new File(savePath+changeName));
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		return changeName;
+		
 	}
 
 }

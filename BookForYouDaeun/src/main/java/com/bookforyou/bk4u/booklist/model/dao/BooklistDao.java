@@ -87,4 +87,11 @@ public class BooklistDao {
 	public int insertReply(SqlSessionTemplate sqlSession, Reply r) {
 		return sqlSession.insert("booklistMapper.insertReply", r);
 	}
+	
+	/** 독서록 수정용
+	 * @author daeunlee
+	 */
+	public int updateBooklist(SqlSessionTemplate sqlSession, Booklist bl) {
+		return sqlSession.update("booklistMapper.updateBooklist", bl);
+	}
 }

@@ -210,7 +210,6 @@
 		     , reply_type
 		     , ref_post
 		     , reply_content
-		     , reply_cdate
 		     , reply_refno
 		     , depth
 		     )
@@ -219,12 +218,22 @@
 		       seq_rno.nextval
 		     , #{memNo}
 		     , 2
-		     , #{blNo}
-		     , #{blContent}
-		     , sysdate
+		     , #{refPost}
+		     , #{replyContent}
 		     , #{replyRefNo}
 		     , #{depth}
 		     )
 	</insert>
+	
+	<update id="updateBooklist">
+		update
+		       booklist
+		   set 
+		       bl_title = #{blTitle}
+		     , bl_content = #{blContent}
+		     , bk_no = #{bkNo}
+		     , bl_rate = #{blRate}
+		 where bl_no = #{blNo}
+	</update>
 
 </mapper>

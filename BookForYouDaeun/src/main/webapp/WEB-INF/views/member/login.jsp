@@ -17,10 +17,10 @@
 	<!-- Semantic UI theme -->
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
     <style>
-    @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
-    *{
-    	font-family: "Noto Sans KR", sans-serif !important;
-    }
+    	@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+    	*{
+    		font-family: "Noto Sans KR", sans-serif !important;
+    	}
         body{
             background-color: #f6f4f4;
             width:1200px;
@@ -141,15 +141,13 @@
         </div>
         <div id="find-box">
             <div id="find-inner-box">
-                <a href="">아이디 찾기</a>
-                <span style="color:gainsboro">|</span>
-                <a href="">비밀번호 찾기</a>
+                <a href="id-find.me">아이디 찾기 | 비밀번호 찾기</a>
             </div>
         </div>
         <hr width="480px" style="margin-top: 40px;"/>
         <div id="sign-up-box">
             BK4U가 처음이라면?
-            <span><a href="enrollForm.me">회원가입</a></span>
+            <span><a href="enroll-form.me">회원가입</a></span>
         </div>
         
 

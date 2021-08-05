@@ -85,7 +85,7 @@
         #reply_area{border-top:1px solid #ebebeb; height:1000px; margin-top: 150px;}
         /*댓글갯수*/
         .reply_info{padding:20px 0; font-size:20px; font-weight:500;}
-        .reply_count{color:rgb(252, 190, 52); margin-left:10px;}
+        .reply_count{color:rgb(252, 190, 52); margin-left:20px;}
         /*댓글입력area*/
         .reply-input{border:1px solid #dedede; border-radius:5px; padding:10px;}
         .reply_content{width:760px; height:40px; resize:none; vertical-align:middle; border:none;} 
@@ -143,7 +143,7 @@
                     </div>
                 </div>
                 
-                <form action="postForm" method="post">
+                <form id="postForm" action="" method="post">
                 	<!--글번호-->
                 	<input type="hidden" id="blNo" name="blNo" value="${ bl.blNo }">
                 </form>
@@ -152,9 +152,9 @@
                 	// 수정,삭제 스크립트
                 	function postFormSubmit(num){
                 		if(num == 1){ // 수정하기 클릭
-                			$("postForm").attr("action", "updateForm.bl").submit();
+                			$("#postForm").attr("action", "updateForm.bl").submit();
                 		}else{ // 삭제하기 클릭
-                			$("postForm").attr("action", "delete.bl").submit();
+                			$("#postForm").attr("action", "delete.bl").submit();
                 		}
                 	}
                 </script>
@@ -258,15 +258,15 @@
                
                 <!--댓글-->
                 <div id="reply_area">
-
                     <!--댓글갯수-->
                     <div class="reply_info">
                     	댓글<span id="reply_count"></span>
                     </div>
-
                     <!--댓글작성창-->
                     <div class="reply-input">
                         <div class="reply-text">
+                        	<input type="hidden" name="depth" value="1">
+        					<input type="hidden" name="reply_refno" value="0">
                             <textarea class="reply_content" id="replyContent" cols="20" rows="1" placeholder="기분 좋은 댓글은 작성자에게 힘이 됩니다 :)"></textarea>
                             <button type="submit" class="replyBtn" onclick="addReply();">등록</button>
                         </div>
@@ -274,12 +274,14 @@
                             <img src="" alt="" style="width:20px; height:20px;">
                         </div>
                     </div>
-
                     <!--댓글목록area-->
-                    <ul id="replyArea">
-						<!-- 댓글 ajax결과 -->
-	                </ul>
+                    <ul id="replyArea"><!-- 댓글 ajax결과 --></ul>
+                </div>
 
+            </div>
+        </div>
+    </div>
+            
                     <script>
                     	$(function(){
                     		selectReplyList();
@@ -300,7 +302,6 @@
 	                    					
 	                    					if(list[i].replyRefNo == 0){ // 참조하는 댓글 == 0
 		                    					result +=
-		                    						
 		                    						// 원댓글
 		                                            '<li id="" class="comment-wrap">' +
 		                                                '<div class="comment_area">' +
@@ -321,9 +322,7 @@
                     						$("#replyArea").html(result);
                     						
                     						if(list[i].replyRefNo != 0){ // 참조하는 댓글 != 0
-	                    						
                     							subResult +=
-	                    							
 	                    							// 대댓글
 	                                                '<li id="" class="comment-wrap comment_area-recomment">' +
 	                                                    '<div class="comment_area">' +
@@ -341,7 +340,7 @@
 	                                                '</li>' +
 	                                                '<div class="subReply' + list[i].replyNo + '"></div>'
 	                    					}
-                    						console.log(subResult);
+                    						//console.log(subResult);
                     						$(".subReply"+list[i].replyRefNo).html(subResult);
 	                    				}
                     				
@@ -354,25 +353,22 @@
                     	}
                     	
                     	// 댓글 작성용 ajax
-                    	/*
-                    	
                     	function addReply(){
                     		if($("#replyContent").val().trim().length != 0){
                     			$.ajax({
                     				url:"rinsertAjax.bl",
                     				data:{
-                    					memNo:,
-                    					blNo:,
-                    					replyContent:,
-                    					replyRefNo:,
-                    					depth:
+                    					memNo:${loginUser.memNo},
+                    					refPost:$("input[name=blNo]").val(),
+                    					replyContent:$("#replyContent").val(),
+                    					replyRefNo:$("input[name=replyRefNo]").val(),
+                    					depth:$("input[name=depth]").val()
                     				},success: function(status){
                     					
                     					if(status == "success"){
                     						selectReplyList();
                     						$("#replyContent").val("");
                     					}
-                    					
                     					
                     				},error: function(jqXHR, textStatus, errorThrown){ 
             		        			console.log(jqXHR); 
@@ -382,59 +378,11 @@
                     			})
                     		}
                     	}
-                    	*/
 
                     </script>
-                    
-                    <script>
-                    function drawReply(replys) {
-                    	$("#cnt").text("등록된 댓글 - " + replys.length)
-                    	var html = '';
-                    	html += '<form class="form-inline" action="writeReply" method="post"><input type="hidden" name="idx" value = "' + IDX + '"><input type="hidden" name="replyIdx" value = "0"><input type="text" class="form-control mb-2 mr-sm-2" id="contents" placeholder="답글" name="contents"><button type="submit" class="btn btn-primary mb-2">등록</button></form>';
-
-                    	replys.forEach(function(reply){ 
-                    		if (reply.replyIdx == 0) {
-                    			var rc = 0;
-                    			replys.forEach(function(i){
-                    				if (reply.idx == i.replyIdx) rc++;
-                    			})
-                    			html += '<div class="row"><div class="col-sm-12">';
-                    			html += '<form class="form-inline" action="writeReply" method="post"><label for="pwd" class="mr-sm-2">' + reply.contents + '(' + rc + ')' + '</label>'
-                    			html += '<input type="hidden" name="idx" value = "' + IDX + '"><input type="hidden" name="replyIdx" value = "' + reply.idx + '"><input type="text" class="form-control mb-2 mr-sm-2" id="contents" placeholder="답글" name="contents"><button type="submit" class="btn btn-primary mb-2">등록</button></form>';
-                    			html += '<div class="row"><div class="col-sm-12 sub' + reply.idx + '"></div></div></div></div>';
-                    		}
-                    	})
-                    	$("#replyArea").append(html);
-                    	replys.forEach(function(reply){ 
-                    		if (reply.replyIdx != 0) {
-                    			var rc = 0;
-                    			replys.forEach(function(i){
-                    				if (reply.idx == i.replyIdx) rc++;
-                    			})
-                    			var subHtml = '';
-                    			subHtml = '<div class="row"><div class="col-sm-12 subReply">';
-                    			subHtml += '<form class="form-inline" action="writeReply" method="post"><label for="pwd" class="mr-sm-2">' + reply.contents + '(' + rc + ')' + '</label>'
-                    			subHtml += '<input type="hidden" name="idx" value = "' + IDX + '"><input type="hidden" name="replyIdx" value = "' + reply.idx + '"><input type="text" class="form-control mb-2 mr-sm-2" id="contents" placeholder="답글" name="contents"><button type="submit" class="btn btn-primary mb-2">등록</button></form>';
-                    			subHtml += '<div class="row"><div class="col-sm-12 sub' + reply.idx + '"></div></div></div></div>';
-                    			$(".sub" + reply.replyIdx).append(subHtml);
-                    		}
-                    	})
-                    }
-                    </script>
-                    
-
-
-                </div>
-
-
-            </div>
-            
             
 
 
-        </div>
-        
-    </div>
 
 
     <jsp:include page="../common/footer.jsp"/>

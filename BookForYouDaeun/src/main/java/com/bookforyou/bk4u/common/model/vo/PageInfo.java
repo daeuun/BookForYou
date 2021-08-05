@@ -1,6 +1,7 @@
 package com.bookforyou.bk4u.common.model.vo;
 
 public class PageInfo {
+	
 	private int listCount;
 	private int currentPage;
 	private int pageLimit;
@@ -11,7 +12,7 @@ public class PageInfo {
 	private int endPage;
 	
 	public PageInfo() {}
-
+	
 	public PageInfo(int listCount, int currentPage, int pageLimit, int boardLimit, int maxPage, int startPage,
 			int endPage) {
 		super();
@@ -86,8 +87,5 @@ public class PageInfo {
 				+ ", boardLimit=" + boardLimit + ", maxPage=" + maxPage + ", startPage=" + startPage + ", endPage="
 				+ endPage + "]";
 	}
-	
-	
-	
 
 }
