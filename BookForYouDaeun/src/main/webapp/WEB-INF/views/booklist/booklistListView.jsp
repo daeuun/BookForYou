@@ -17,10 +17,11 @@
         div{box-sizing: border-box;}
         .wrap {width: 1200px; margin: auto;}
         input:focus {outline:none;}
-        a{color: #000;}
+        a{color: #000; text-decoration:none;}
         a:hover{color: #000; text-decoration:none;}
         li{list-style-type:none;}
-
+        
+        /**헤더*/
         .head-title{
             display:flex; margin-top:150px;
             width:100%; height:100px; padding: 20px; 
@@ -32,22 +33,22 @@
         .enroll_booklist-wrap{margin-left:auto; margin-top: 13px;}
 
         /**작성하기버튼*/
-        .btn_booklist{display:inline-block; padding:6px 15px; color:rgb(165, 125, 125); background:#fff; border-radius:6px;}
+        .btn_booklist{display:inline-block; padding:6px 15px; color:rgb(165, 125, 125); background:#fff; border-radius:6px; text-decoration:none;}
         .btn_booklist:hover{text-decoration:none; color:#000; background:#ffecd2;}
         
         /**독서록서재*/
         .mylist_area{width:100%; height:100px; margin:60px 0; border:1px solid #dedede; border-radius:6px;}
-        .mylist-item{width:100%; height:100px; color:#000; padding:23px 25px; display:flex; }
-        .mylist-item:hover{text-decoration:none; color:#000;}
-        .mylist_txt{margin-left:20px;}
+        a.mylist-item{width:100%; height:100px; color:#000; padding:23px 25px; display:flex; text-decoration:none;}
+        a.mylist-item:hover{text-decoration:none; color:#000;}
+        .mylist_txt{margin-left:20px; text-decoration:none;}
         .mylist_title{font-size:20px;}
         .mylist_info{font-size:15px;}
 
         /*북포유인기독서록*/
         .top_list_head{font-size:20px; margin:40px 0;}
         .top_list_item{display:flex; width:100;}
-        .list-item, .list-item_{width:50%; height:400px; padding:25px; background:#fff9f1; border-radius:10px; color:#000;} 
-        .list-item:hover, .list-item_:hover{color:#000; text-decoration:none;}
+        a.list-item, a.list-item_{width:50%; height:400px; padding:25px; background:#fff9f1; border-radius:10px; color:#000; text-decoration:none;} 
+        a.list-item:hover, .list-item_:hover{color:#000;}
         /*타이틀*/
         .list_title{font-size:18px; text-align:center; margin-bottom:30px;}
         .title_point{position: relative;}
@@ -72,15 +73,23 @@
         
         /**독서록리스트*/
         .booklist_outer{margin-top:150px;}
-        .booklist-wrap{margin:0; padding:0; }
-        .booklist_item{margin:30px 0; height:180px; padding:10px; border:1px solid #ebebeb;}
+        .booklist-wrap{margin:0; padding:0;}
+        li.booklist_item{margin:30px 0; height:180px; padding:10px; border:1px solid #ebebeb; text-decoration:none;}
+        a.booklist-item{text-decoration:none;}
         .booklist_item a:hover{text-decoration:none;}
         /*독서록내용*/
         .booklist_container{display:flex;}
         .booklist_book_wrap{margin-left: auto; margin-right:30px; width:400px;}
+        .booklist_content{margin:10px 0; padding-left:10px; font-size:14px; color:#5c5c5c;}
+        a.book_info-area{text-decoration:none;}
         .booklist_title{color: #000;}
-        .booklist_content{width:690px; height:70px; margin:5px 0; padding-left:10px; font-size:14px; color:#5c5c5c;}
-        .booklist_writer{font-size:14px; color:#5c5c5c;}
+        .booklist_rcontent{
+        width:690px; height:70px; margin:10px 0; font-size:14px; color:#5c5c5c;
+        text-overflow:ellipsis; overflow:hidden; white-space:nowrap; line-height:10px;
+        display: -webkit-box; -webkit-line-clamp:2; /* 라인수 */
+        -webkit-box-orient: vertical; word-wrap:break-word; line-height: 1.2em; height: 3.6em;
+        }
+        .booklist_writer{width:690px; height:50px; font-size:14px; color:#5c5c5c;}
         /*독서록리스트_책정보*/
         .booklist_book_wrap .book_title{color:#000; font-weight:400;}
         
@@ -214,7 +223,7 @@
 	                                        <div class="booklist_title">
 	                                            <span class="title_point">${ bl.blTitle }</span>
 	                                        </div>
-	                                        <div class="booklist_content">
+	                                        <div class="booklist_rcontent">
 	                                            ${ bl.blContent }
 	                                        </div>
 	                                        <div class="booklist_writer_box">
@@ -249,42 +258,6 @@
 
                     </ul>
                     
-                    <script>
-                    // 독서록상세조회 스크립트
-                    $(function(){
-                    	$(".booklist_outer>ul>li").click(function(){
-	                    	//var blNo = $(this).children("#blNo").val();
-	                    	//후손선택 find() input요소선택 input[] ㅠㅠ
-	                    	var blNo = $(this).find("input[name=blNo]").val();
-	                    	//console.log(blNo);
-	                    	location.href = "detail.bl?blNo=" + blNo;
-                    		
-                    	})
-                    })
-                    
-                    // 독서록 작성 로그인한 회원만 가능
-                    function enrollClick(){
-                    	
-                    	var loginUser = "<c:out value='${loginUser}'/>";
-                    	//console.log(loginUser);
-                    	if(!loginUser){
-                    		var conf = confirm("로그인이 필요한 서비스입니다. 로그인 하시겠습니까?");
-                    		if(conf == true){ // 로그인창
-                    			location.href = "loginForm.me"
-                    		}else{ // 화면
-                    			return;
-                    		}
-                    	}else{
-                    		location.href = "enrollForm.bl"
-                    	};
-                    }
-                    
-                 	// 도서조회 스크립트
-                    function clickBk() {
-                    	location.href = "detail.bk?bkno=" + $(this).children("#bkNo").text();
-                    }
-                    
-                    </script>
 
                     <div id="paging-wrap">
                         <ul class="pagination">
@@ -311,7 +284,7 @@
                     </div>
             
                     <div id="search-wrap">
-                        <form id="searchForm" action="" method="Get" align="center">
+                        <form id="searchForm" action="search.bl" method="Get" align="center">
                             <div class="select">
                                 <select class="custom-select" name="condition">
                                     <option value="writer">작성자</option>
@@ -320,19 +293,65 @@
                                 </select>
                             </div>
                             <div class="text-input">
-                                <input type="text" class="form-control" name="keyword" placeholder="검색어를 입력해주세요">
+                                <input type="text" class="form-control" name="keyword" value="${ keyword }" placeholder="검색어를 입력해주세요">
                             </div>
                             <button type="submit" class="searchBtn">검색</button>
                         </form>
                     </div>
 
                 </div>
-                
-
             </div>
         </div>
         
     </div>
+    
+    <script>
+ 		// 독서록 검색 
+ 		$(function(){
+ 			if("${condition}" != ""){
+ 				$("option[value=${condition}]").attr("selected", true);
+ 			}
+ 		})
+    	
+        // 독서록상세조회 스크립트
+        $(function(){
+        	$(".booklist_outer>ul>li").click(function(){
+         	//var blNo = $(this).children("#blNo").val();
+         	//후손선택 find() input요소선택 input[] ㅠㅠ
+         	var blNo = $(this).find("input[name=blNo]").val();
+         	//console.log(blNo);
+         	location.href = "detail.bl?blNo=" + blNo;
+        		
+        	})
+        })
+        
+        // 독서록 작성 로그인한 회원만 가능
+        function enrollClick(){
+        	
+        	var loginUser = "<c:out value='${loginUser}'/>";
+        	//console.log(loginUser);
+        	if(!loginUser){
+        		var conf = confirm("로그인이 필요한 서비스입니다. 로그인 하시겠습니까?");
+        		if(conf == true){ // 로그인창
+        			location.href = "loginForm.me"
+        		}else{ // 화면
+        			return;
+        		}
+        	}else{
+        		location.href = "enrollForm.bl"
+        	};
+        }
+        
+     	// 도서조회 스크립트
+        function clickBk() {
+        	location.href = "detail.bk?bkno=" + $(this).children("#bkNo").text();
+        }
+     	
+     	
+     	
+        
+        </script>
+                    
     <jsp:include page="../common/footer.jsp"/>
 
 </body>
