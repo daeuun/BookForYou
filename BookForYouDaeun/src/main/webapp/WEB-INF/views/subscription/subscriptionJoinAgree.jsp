@@ -79,17 +79,19 @@
         <div class="content">
 
             <!-- 멤버십 기간/가격 넘기는 form -->
-            <form id="" name="" method="post" action="pay.sub">
-
+            <form method="post" action="pay.sub">
+	            <input type="hidden" id="subscName" name="subscName">
+	            <input type="hidden" id="subscPeriod" name="subscPeriod">
+	            <input type="hidden" id="subscPrice" name="subscPrice">
+			
                 <div class="container">
-
                     <ul class="tabs">
-                        <li class="tab-link current" data-tab="tab-1">프리미엄</li>
-                        <li class="tab-link" data-tab="tab-2">베이직</li>
+                        <li class="tab-link current" data-tab="프리미엄">프리미엄</li>
+                        <li class="tab-link" data-tab="베이직">베이직</li>
                     </ul>
-
+	
                     <!--프리미엄 내용-->
-                    <div id="tab-1" class="tab-content current">
+                    <div id="프리미엄" class="tab-content current">
                         <!-- 기간설명area -->
                         <div class="benefitArea">
                             <div class="text-box">
@@ -116,44 +118,42 @@
                                 <h4 style="text-align:center;">⏰ 멤버십 기간을 선택해주세요</h2>
         
                                 <div class="price-content_item">
-                                    <button type="button" class="price-content_items">
-                                        <span class="term_item">1개월</span>
-                                        <span class="price_item">19,900원</span>
+                                    <button type="button" class="price-content_items" id="p1">
+                                        <span class="term_item p1" id="p1_t">1개월</span>
+                                        <span class="price_item p1" id="p1_p">19,900원</span>
                                     </button>
                                 
-                                    <button type="button" class="price-content_items">
-                                        <span class="term_item">3개월</span>
+                                    <button type="button" class="price-content_items" id="p3">
+                                        <span class="term_item" id="p3_t">3개월</span>
                                         <span class="term_price-explain">
                                             1개월 결제 대비 <em class="point-B">5%</em> 더 저렴해요
                                         </span>
-                                        <span class="price_item">57,000원</span>
+                                        <span class="price_item" id="p3_p">57,000원</span>
                                     </button>
                                 
-                                    <button type="button" class="price-content_items">
-                                        <span class="term_item">6개월</span>
+                                    <button type="button" class="price-content_items" id="p6">
+                                        <span class="term_item" id="p6_t">6개월</span>
                                         <span class="term_price-explain">
                                             1개월 결제 대비 <em class="point-B">8%</em> 더 저렴해요
                                         </span>
-                                        <span class="price_item">110,000원</span>
+                                        <span class="price_item" id="p6_p">110,000원</span>
                                     </button>
                                 
-                                    <button type="button" class="price-content_items">
-                                        <span class="term_item">12개월</span>
+                                    <button type="button" class="price-content_items" id="p12">
+                                        <span class="term_item" id="p12_t">12개월</span>
                                         <span class="term_price-explain">
                                             1개월 결제 대비 <em class="point-B">10%</em> 더 저렴해요
                                         </span>
-                                        <span class="price_item">215,000원</span>
+                                        <span class="price_item" id="p12_p">215,000원</span>
                                     </button>
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
 
 
                     <!--베이직 내용-->
-                    <div id="tab-2" class="tab-content">
+                    <div id="베이직" class="tab-content">
                         <!-- 기간설명area -->
                         <div class="benefitArea">
                             <div class="text-box">
@@ -179,33 +179,33 @@
                                 <h2 style="text-align:center;">⏰ 멤버십 기간을 선택해주세요</h2>
         
                                 <div class="price-content_item">
-                                    <button type="button" class="price-content_items">
-                                        <span class="term_item">1개월</span>
-                                        <span class="price_item">9,900원</span>
+                                    <button type="button" class="price-content_items" id="b1">
+                                        <span class="term_item" id="b1_t">1개월</span>
+                                        <span class="price_item" id="b1_p">9,900원</span>
                                     </button>
                                 
-                                    <button type="button" class="price-content_items">
-                                        <span class="term_item">3개월</span>
+                                    <button type="button" class="price-content_items" id="b3">
+                                        <span class="term_item" id="b3_t">3개월</span>
                                         <span class="term_price-explain">
                                             1개월 결제 대비 <em class="point-B">5%</em> 더 저렴해요
                                         </span>
-                                        <span class="price_item">28,000원</span>
+                                        <span class="price_item" id="b3_p">28,000원</span>
                                     </button>
                                 
-                                    <button type="button" class="price-content_items">
-                                        <span class="term_item">6개월</span>
+                                    <button type="button" class="price-content_items" id="b6">
+                                        <span class="term_item" id="b6_t">6개월</span>
                                         <span class="term_price-explain">
                                             1개월 결제 대비 <em class="point-B">8%</em> 더 저렴해요
                                         </span>
-                                        <span class="price_item">54,000원</span>
+                                        <span class="price_item" id="b6_p">54,000원</span>
                                     </button>
                                 
-                                    <button type="button" class="price-content_items">
-                                        <span class="term_item">12개월</span>
+                                    <button type="button" class="price-content_items" id="b12">
+                                        <span class="term_item" id="b12_t">12개월</span>
                                         <span class="term_price-explain">
                                             1개월 결제 대비 <em class="point-B">10%</em> 더 저렴해요
                                         </span>
-                                        <span class="price_item">107,000원</span>
+                                        <span class="price_item" id="b12_p">107,000원</span>
                                     </button>
                                 </div>
                             </div>
@@ -223,21 +223,69 @@
     </div>
 
     <script>
-            $(document).ready(function(){
-                        
-                $('ul.tabs li').click(function(){
-                    var tab_id = $(this).attr('data-tab');  
-                    /*일단 li와 content에 부여된 current클래스를 모두 지워주고*/
-                    $('ul.tabs li').removeClass('current');
-                    $('.tab-content').removeClass('current');
-                    /*이벤트 발생시킨 탭에 currnet를 다시 부여한다*/
-                    $(this).addClass('current');
-                    $("#"+tab_id).addClass('current'); /*content 아이디에서 tab_id와 같은 속성(tab-1|2|3)이 발생된 클래스에 currnet부여한다*/
-                })
+	    $(document).ready(function(){
+	                
+	        $('ul.tabs li').click(function(){
+	            var tab_id = $(this).attr('data-tab');  
+	            /*일단 li와 content에 부여된 current클래스를 모두 지워주고*/
+	            $('ul.tabs li').removeClass('current');
+	            $('.tab-content').removeClass('current');
+	            /*이벤트 발생시킨 탭에 currnet를 다시 부여한다*/
+	            $(this).addClass('current');
+	            $("#"+tab_id).addClass('current'); /*content 아이디에서 tab_id와 같은 속성(tab-1|2|3)이 발생된 클래스에 currnet부여한다*/
+	        })
 
+		$(function(){
+			// 기본 멤버십이름
+			var tabValue = $(".tab-link").data("tab");
+			var tab = $('input[name=subscName]').attr('value', tabValue);
+			// 클릭시 멤버십이름 변경
+			$('ul.tabs li').click(function(){
+				var tabValue = $(this).text();
+				$('input[name=subscName]').attr('value', tabValue);
+			})
+			
+			// 프리미엄 : 기간+가격선택버튼
+			$('#p1').click(function(){
+				$('input[name=subscPeriod]').attr('value', $('#p1_t').text());
+				$('input[name=subscPrice]').attr('value', $('#p1_p').text());
+			})
+			$('#p3').click(function(){
+				$('input[name=subscPeriod]').attr('value', $('#p3_t').text());
+				$('input[name=subscPrice]').attr('value', $('#p3_p').text());
+			})
+			$('#p6').click(function(){
+				$('input[name=subscPeriod]').attr('value', $('#p6_t').text());
+				$('input[name=subscPrice]').attr('value', $('#p6_p').text());
+			})
+			$('#p12').click(function(){
+				$('input[name=subscPeriod]').attr('value', $('#p12_t').text());
+				$('input[name=subscPrice]').attr('value', $('#p12_p').text());
+			})
+			// 베이직
+			$('#b1').click(function(){
+				$('input[name=subscPeriod]').attr('value', $('#b1_t').text());
+				$('input[name=subscPrice]').attr('value', $('#b1_p').text());
+			})
+			$('#b3').click(function(){
+				$('input[name=subscPeriod]').attr('value', $('#b3_t').text());
+				$('input[name=subscPrice]').attr('value', $('#b3_p').text());
+			})
+			$('#b6').click(function(){
+				$('input[name=subscPeriod]').attr('value', $('#b6_t').text());
+				$('input[name=subscPrice]').attr('value', $('#b6_p').text());
+			})
+			$('#b12').click(function(){
+				$('input[name=subscPeriod]').attr('value', $('#b12_t').text());
+				$('input[name=subscPrice]').attr('value', $('#b12_p').text());
+			})
+		})
             })
     </script>
-
+	
+	<script>
+	
+	</script>
 
     <jsp:include page="../common/footer.jsp"/>
 

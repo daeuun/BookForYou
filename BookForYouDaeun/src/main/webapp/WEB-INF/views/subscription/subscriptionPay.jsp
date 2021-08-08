@@ -9,6 +9,9 @@
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" /> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+    <!--awesome icons--> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/69851f8880.js"></script>
     <style>
         @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
         body{font-family: "Noto Sans KR", sans-serif !important;}
@@ -74,10 +77,10 @@
         /**결제area*/
         .pay_area{display:flex; flex-direction:row;}
         /**결제수단area*/
-        .payment-btn-container{display:flex; width:280px; justify-content: space-between;}
+        .payment-btn-container{display:flex; width:180px; justify-content:space-between;}
         .payment-btn-item{width:80px; height:80px; padding:0; border:1px solid #ddd; border-radius:3px;}
         .payment-btn-item:focus{outline:1px solid rgb(252, 190, 52);}
-        .payment-btn-item img{width:40px; height:40px;}
+        .far, .fas{color:rgb(190, 190, 190);}
         /**결제금액area*/
         .paysum_area{display:flex; flex-direction:column; margin-left:auto; border:1px solid #ddd; border-radius:6px; width:390px; height:380px;}
         .paysum-item{flex:1;}
@@ -119,21 +122,21 @@
                         <div class="title">멤버십 정보</div>
                         
                         <div class="membership-wrap">
-                            <div class="mambership_name">✔ 프리미엄</div>
+                            <div class="mambership_name">✔ ${ param.subscName }</div>
         
                             <table id="membership_period">
                                 <tr>
                                     <th>이용기간</th>
                                     <td>
                                         <ul>
-                                            <li>1개월</li>
+                                            <li>${ param.subscPeriod }</li>
                                             <li>( 2021.07.04 ~ 2021.08.04 )</li>
                                         </ul>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>멤버십 금액</th>
-                                    <td><em>19,900</em>원</td>
+                                    <td><em>${ param.subscPrice }</em></td>
                                 </tr>
                                 <tr>
                                     <th>다음 결제일</th>
@@ -331,20 +334,14 @@
                             <div class="payment-btn-container">
                                 <div class="payment-item">
                                     <button type="button" class="payment-btn-item">
-                                        <img src="" alt="">
+                                        <i class="far fa-credit-card fa-2x"></i>
                                         <div class="payment_label">신용카드</div>
                                     </button>
                                 </div>
                                 <div class="payment-item">
                                     <button type="button" class="payment-btn-item">
-                                        <img src="" alt="">
+                                        <i class="fas fa-mobile-alt fa-2x"></i>
                                         <div class="payment_label">휴대폰</div>
-                                    </button>
-                                </div>
-                                <div class="payment-item">
-                                    <button type="button" class="payment-btn-item">
-                                        <img src="" alt="">
-                                        <div class="payment_label">무통장입금</div>
                                     </button>
                                 </div>
                             </div>
