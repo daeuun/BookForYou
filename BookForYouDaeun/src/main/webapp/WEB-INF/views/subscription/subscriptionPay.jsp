@@ -6,12 +6,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" /> 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" />
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="//code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
     <!--awesome icons--> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/69851f8880.js"></script>
+    <!--우편번호Api-->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <!--import--> 
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
     <style>
         @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
         body{font-family: "Noto Sans KR", sans-serif !important;}
@@ -33,7 +37,7 @@
         ul{list-style-type:none; margin:0; padding:0;}
         li{display:inline-block;}
         th, td{font-weight:normal; padding:0 40px 12px 0;}
-        .btn{border:1px solid rgb(252, 190, 52); border-radius:4px; margin-left:15px; padding:8px 15px;background:#fff; color:rgb(252, 190, 52); font-weight:600;}
+        .btn{border:1px solid rgb(252, 190, 52) !important; border-radius:4px; margin-left:15px; padding:8px 15px; background: rgb(252, 190, 52, 0.1) !important; color:rgb(252, 190, 52); font-weight:600;}
         .btn:hover{cursor:pointer; background: rgb(252, 190, 52, 0.1);}
 
         /*공통타이틀*/
@@ -50,15 +54,16 @@
         #membership_period ul{margin:0; padding:0;}
 
         /**배송지정보*/
-        .btn_address{margin:0;}
         /*받는사람/휴대폰번호/이메일*/
         .receiver_name input, .phone input, .email_box input{width:300px; height:20px; padding:18px; border:1px solid #dedede; border-radius:5px;}
         /*주소*/
         .ad_container{display:flex; flex-direction: column;}
         .ad_container input{height:20px; padding:18px; border:1px solid #dedede; border-radius:5px;}
         .find_postnum{display:flex;}
-        .btn_address{margin-right:8px;}
         .ad_item input{width:530px; margin-top:8px;}
+        .btn_address{margin:0; margin-right:8px;}
+        .address_detail input{width:322px; margin-right:8px;}
+        .address_extra input{width:200px;}
         /*요청사항*/
         #request{width:560px; padding:8px 15px; border:1px solid #dedede; border-radius:5px;}
         
@@ -72,7 +77,7 @@
         #point_table th, #coupon_table th{text-align: left;}
         .input_area{display:inline-block; width:280px; padding:8px 15px; border:1px solid #dedede; border-radius:5px;}
         .input_area input{width:220px; border:none;} .input_area input:focus{outline:none;}
-        #point_table button, #coupon_table button{background:rgb(252, 190, 52); color:#fff;}
+        #point_table button, #coupon_table button{background:rgb(252, 190, 52) !important; color:#fff !important; padding:6px 8px;}
         
         /**결제area*/
         .pay_area{display:flex; flex-direction:row;}
@@ -105,8 +110,7 @@
     </style>
 </head>
 <body>
-	<jsp:include page="../common/menubar.jsp"/>
-	
+	<jsp:include page="../common/menubar.jsp"/>	
 	<div class="wrap">
 
         <div class="header">
@@ -115,7 +119,7 @@
 
         <div class="content">
             <div class="container">
-                <form class="orderForm" id="orderForm" name="orderForm" method="post" action="payComplete.sub">
+                <form class="orderForm" id="orderForm" name="orderForm" method="post" action="payComplete.sub">-
     
                     <!--멤버십정보area-->
                     <div class="item membership_area">
@@ -153,27 +157,15 @@
                         <table id="delivery">
                             <tr>
                                 <th>받는 사람</th>
-                                <td>
-                                    <div class="receiver_name">
-                                        <input type="text" value="이다은">
-                                    </div>
-                                </td>    
+                                <td><div class="receiver_name"><input type="text" name="memName" value="${ loginUser.memName }"></div></td>    
                             </tr>
                             <tr>
                                 <th>휴대폰 번호</th>
-                                <td>
-                                    <div class="phone">
-                                        <input type="text" value="010-1111-2222">
-                                    </div>
-                                </td>
+                                <td><div class="phone"><input type="text" name="memPhone" value="${ loginUser.memPhone }"></div></td>
                             </tr>
                             <tr>
                                 <th>이메일</th>
-                                <td>
-                                    <div class="email_box">
-                                        <input type="email" value="bkbk@naver.com">
-                                    </div>
-                                </td>
+                                <td><div class="email_box"><input type="email" name="memEmail" value="${ loginUser.memEmail }"></div></td>
                             </tr>
                             
                         </table>
@@ -188,7 +180,7 @@
                                 <th>받는 사람</th>
                                 <td>
                                     <div class="receiver_name">
-                                        <input type="text" value="이다은">
+                                        <input type="text" name="subscReceiver">
                                     </div>
                                 </td>    
                             </tr>
@@ -196,7 +188,7 @@
                                 <th>휴대폰 번호</th>
                                 <td>
                                     <div class="phone">
-                                        <input type="text" value="010-1111-2222">
+                                        <input type="text" name="subscPhone">
                                     </div>
                                 </td>
                             </tr>
@@ -204,24 +196,124 @@
                                 <th style="vertical-align:baseline;">주소</th>
                                 <td>
                                     <div class="ad_container address_box">
-                                        <form action=""></form>
                                         <div class="find_postnum">
-                                            <button class="btn btn_address">주소찾기</button>
-                                            <input type="text" value="12345">
+                                            <button type="button" class="btn btn_address" onclick="daumPostcode()">주소찾기</button>
+                                            <input type="text" id="postcode" name="subscPost" placeholder="우편번호">
                                         </div>
                                         <div class="ad_item address">
-                                            <input type="text" value="서울시 강남구 가로수길 123">
+                                            <input type="text" id="address" name="subscAddress" placeholder="주소">
                                         </div>
-                                        <div class="ad_item address_detail">
-                                            <input type="text" value="1층 로비">
+                                        <div class="ad_item">
+                                        	<div class="ad_item-wrap" style="display:flex;">
+		                                        <div class="address_detail">
+		                                            <input type="text" id="detailAddress" name="addressDetail" placeholder="상세주소">
+		                                        </div>
+		                                        <div class="address_extra">
+		                                            <input type="text" id="extraAddress" name="addressRef" placeholder="참고항목">
+		                                        </div>
+	                                        </div>
                                         </div>
+            	<script>
+            	function daumPostcode() {
+                    new daum.Postcode({
+                        oncomplete: function(data) {
+                        	// 팝업창 내부 : 검색결과 항목을 클릭했을때 실행할 코드
+                            var addr = ''; 
+                            var extraAddr = ''; 
+                            
+                         	// 사용자가 선택한 주소타입에 따른 주소값
+                            if (data.userSelectedType === 'R') { // 도로명주소
+                                addr = data.roadAddress;
+                            } else { // 지번주소
+                                addr = data.jibunAddress;
+                            }
+                         	
+                         	// 선택한 주소가 도로명일 때, 참고항목
+                            if(data.userSelectedType === 'R'){
+                            	// 법정동명이 있을 경우 추가 (법정리는 제외함) 마지막 문자가 "동/로/가로 끝남"
+                                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                                    extraAddr += data.bname;
+                                }
+                             	// 건물명이 있고 공동주택일 경우
+                                if(data.buildingName !== '' && data.apartment === 'Y'){
+                                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                                }
+                             	// 참고항목이 있을 경우, 괄호를 추가한 최종 문자열 만들기
+                                if(extraAddr !== ''){
+                                    extraAddr = ' (' + extraAddr + ')';
+                                }
+                                document.getElementById("extraAddress").value = extraAddr;
+                            
+                            } else {
+                                document.getElementById("extraAddress").value = '';
+                            }
+
+                            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                            document.getElementById('postcode').value = data.zonecode;
+                            document.getElementById("address").value = addr;
+                            // 커서를 상세주소 필드로 이동한다.
+                            document.getElementById("detailAddress").focus();
+                        }
+                    }).open();
+                }
+            	
+            	$(function() { 
+                    $( "#datepicker" ).datepicker({ 
+                        dateFormat: 'yy-mm-dd'
+                        ,showMonthAfterYear:true 
+                        ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
+                        ,dayNamesMin: ['일','월','화','수','목','금','토'] 
+                        ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일']
+                    	,onSelect:function(d){
+                    		var arr=d.split("-");
+                    		var day=arr[2];
+                    		$("#dayPick").show();
+                    		$("#day").text(day);
+                    		console.log(day);
+                    	}
+                    }); 
+                });
+            	
+            	function requestPay() {
+            		IMP.init('imp01966425'); //가맹점 식별코드
+            		IMP.request_pay({
+            		    pg : 'inicis', //결제방식
+            		    pay_method : 'card', //결제수단
+            		    merchant_uid : 'merchant_' + new Date().getTime(),
+            		    name : '북포유멤버십 : ${ param.subscName }', //결제창에서 보여질 이름
+            		    amount : '${ param.subscPrice }', //실제 결제되는 가격
+            		    buyer_email : '${ loginUser.memEmail }', //구매자email
+            		    buyer_name : '${ loginUser.memName }', //구매자이름
+            		    buyer_tel : '${ loginUser.memPhone }', //구매자전화번호
+            		    buyer_postcode : '$("#postcode").val()'
+            		}, function(rsp) {
+            			if (rsp.success) {
+            				var msg = '결제가 완료되었습니다.';
+            				msg += '고유ID : ' + rsp.imp_uid;
+            				msg += '상점 거래ID : ' + rsp.merchant_uid;
+            				msg += '결제 금액 : ' + rsp.paid_amount;
+            				msg += '카드 승인번호 : ' + rsp.apply_num;
+            				$.ajax({
+            					type:"POST",
+            					url:"/verifyIamport/" + rsp.imp_uid ,
+            					headers: { "Content-Type": "application/json" },
+            					data: {payNo: rsp.imp_uid} // 결제번호
+            				});
+            			} else {
+            				var msg = '결제에 실패하였습니다.';
+            				msg += '에러내용 : ' + rsp.error_msg;
+            			}
+            			alert(msg);
+	       			})
+       		    }
+            	</script>                            
+                                        
                                         <label for="default-address">
                                             <div style="display:inline-block;">
                                                 <input type="checkbox" id="default-address" style=" width:20px; height:20px; margin-top:14px;">
                                             </div>
                                             <span style="vertical-align:4px; font-size:14px; color: #3b3b3b;">
-                                                기본 배송지로 저장
-                                            </span>
+                                                	기본 배송지로 저장
                                             </span>
                                         </label>
                                     </div>
@@ -231,19 +323,19 @@
                                 <th>배송요청사항</th>
                                 <th>
                                     <div class="delivery_request">
-                                        <select name="" id="request">
-                                            <option value="">배송 전 연락해 주세요.</option>
-                                            <option value="">부재 시 경비(관리)실에 맡겨주세요.</option>
-                                            <option value="">부재 시 택배함에 넣어주세요.</option>
-                                            <option value="">부재 시 문 앞에 놓아주세요.</option>
-                                            <option value="">직접 입력하기</option>
+                                        <select id="request" name="deliveryRequest">
+                                            <option>배송 전 연락해 주세요.</option>
+                                            <option>부재 시 경비(관리)실에 맡겨주세요.</option>
+                                            <option>부재 시 택배함에 넣어주세요.</option>
+                                            <option>부재 시 문 앞에 놓아주세요.</option>
+                                            <option>직접 입력하기</option>
                                         </select>
                                     </div>
                                 </th>
                             </tr>
                         </table>
                     </div>
-    
+                    
                     <!--배송일정보area-->
                     <div class="item deliveryDate_area">
                         <div class="title">배송일 정보</div>
@@ -258,7 +350,7 @@
                         <table>
                             <tr>
                                 <th>정기 배송 선택일</th>
-                                <td>매월 10일</td>
+                                <td id="dayPick" style="display:none;">매월 <strong id="day"></strong>일</td>
                             </tr>
                             <tr>
                                 <th>다음 배송 예정일</th>
@@ -268,19 +360,6 @@
                             </tr>
                         </table>
                     </div>
-
-                    <script>
-                        $(function() { 
-                            $( "#datepicker" ).datepicker({ 
-                                dateFormat: 'yy-mm-dd'
-                                ,showMonthAfterYear:true 
-                                ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']
-                                ,dayNamesMin: ['일','월','화','수','목','금','토'] 
-                                ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일']
-
-                            }); 
-                        });
-                    </script>
     
                     <!--포인트area-->
                     <div class="item point_area">
@@ -346,11 +425,6 @@
                                 </div>
                             </div>
                         </div>
-        
-                    <style>
-                        
-                    </style>
-                        
                         
                         <!--결제금액area-->
                         <div class="paysum_area">
@@ -387,7 +461,7 @@
                     </div>
                     
                     <div class="item btn_order_area">
-                        <button type="submit">정기배송 신청하기</button>
+                        <button type="button" onclick="requestPay()">정기배송 신청하기</button>
                     </div>
                     
                 </form>
@@ -397,7 +471,6 @@
         </div>
     </div>
 	
-	<jsp:include page="../common/footer.jsp"/>
 
 </body>
 </html>
