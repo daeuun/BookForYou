@@ -17,6 +17,9 @@ public class Book {
 
 	public int bkNo;
 	public int subCateNo;
+	public String mainCateName;
+	public String subCateName;
+	public String interestContent;
 	public String bkTitle;
 	public String bkPublish;
 	public String bkDate;
@@ -38,6 +41,7 @@ public class Book {
 	public String writerChangeName;
 	public String bkContent;
 	public double bkGrade;
+	public int bkQty;
 	public String bkIntroduce;
 	
 	public ArrayList<Book> bookList;
