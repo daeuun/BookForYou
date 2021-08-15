@@ -14,6 +14,7 @@ public class Board {
 	
 	public int boNo;
 	public int memNo;
+	public String boWriter;
 	public String boTitle;
 	public String boContent;
 	public int boCount;
