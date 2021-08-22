@@ -70,7 +70,8 @@
         .select_book_area a:hover{color:#000; text-decoration:none;}
         .book_area-wrap{display:flex; height:210px;}
         /*책이미지*/
-        .book_img{width: 30%; margin-right:40px; background-color: rgb(223, 223, 223);}
+        .book_img{margin-right:40px;}
+        #bookImage{width:170px; height:220px;}
         /*책정보내용area*/
         .book_info-wrap{width:75%;}
         .book_title{font-size:18px; font-weight:500; color:rgb(236, 87, 59);}
@@ -126,7 +127,7 @@
 	            <div class="editor_area">
 	                <div class="editor">
 	                    <div class="editor_content">
-							<textarea class="summernote" id="blContent" name="blContent" value="${ bl.blContent }"></textarea>  
+							<textarea class="summernote" id="blContent" name="blContent"></textarea>  
 	                    </div>
 	                </div>
 	            </div>
@@ -178,25 +179,30 @@
 		    <!--책선택결과-->
 	        <div class="select_book_area">
 	        	<div class="book_area-wrap">
-	        		<input type="hidden" id="bkNo">
+	        		<input type="hidden" id="bkNo" name="bkNo" value="${bk.bkNo}">
 	        		<span class="book_img">
-	        			<img src="" alt="" id="book_img-item">
+	        			<img src="${bk.introChangeName}" alt="" id="bookImage">
 	        		</span>
 	        		<div class="book_info-wrap">
-	        			<div class="book_title">고양이님, 저랑 살 만하신가요?</div>
-	        			<div class="book_content">
+	        			<div class="book_title" name="bkTitle" value="${bk.bkTitle}"></div>
+	        			<div class="book_content" name="bkIntroduce" value="${bk.bkIntroduce}">
 	        				저자가 반려묘와 10년 동안 살아오면서 겪은 현실적인 반려생활기와 함께 같은 공간을 공유하고 삶을 함께 살아가는 존재로서 고양이와 삶을 공유할 때 필요한 지식, 이해, 배려에 대해 이야기하는 책이다.
 	                    </div>
-	                    <div class="book_writer">이학범</div>
+	                    <div class="book_writer" name="writerName" value="${bk.writerName}">이학범</div>
 	                    <div class="book_stars">⭐⭐⭐⭐⭐</div>
 	        		</div>
 	        	</div>
 	       </div>
        </form>
-		
+	
 		<script>
 			// 별점
 			$(function(){
+				var star = $('input[name=blRate]').val();
+				//console.log(star);
+				$(' .make_star i ').css( {color:'#dedede'});
+                $(' .make_star i:nth-child(-n+ ' + star + ')').css({color:'rgb(252, 190, 52)'});
+				
 				//별 아이콘을 클릭하면 할 일
 	            $(' .make_star i ').click(function(){
 	            	
@@ -209,12 +215,17 @@
 	                // #blRate의 value값으로 targetNum 별점 설정함
 	                $('#blRate').val(targetNum);
 	                var blRate = $('#blRate').val();
-	                //console.log(blRate);
+	                
 	            })
+	            
+	            $('.select_book_area').show();
 			})
 		
 			// *summernote 에디터
 			$(document).ready(function() {
+				
+				var con = '<c:out value="${ bl.blContent }"/>';
+				$('textarea[name=blContent]').html(con);
 				
 				// 기본세팅
 	        	$('.summernote').summernote({
@@ -287,9 +298,9 @@
 	        }
 	        
 	        
-	        // 모달창:도서검색 ajax/json
-	        
+	     // *모달창:도서검색 ajax/json
 	        function searchBk(){
+	        	// 검색ajax
 	        	if($("#condition").val() != ""){
 	        		
 	        		var condition = $("#condition option:selected").val();
@@ -312,11 +323,11 @@
 		        				result +=
 		        					
 		        				"<li class='search_result'>" +
-		    						"<a href='#' class='bookitem_add' id='dataBk' onclick='selectBk();' data-bktitle='"+ list[i].bkTitle +"' data-introoriginname="+ list[i].introOriginName +" data-writername='"+ list[i].writerName +"' data-bkno="+ list[i].bkNo +" data-bkintroduce='"+list[i].bkIntroduce+"' '>" +
+		    						"<a href='#' class='bookitem_add' id='dataBk' onclick='selectBk();' data-bktitle='"+ list[i].bkTitle +"' data-introchangename="+ list[i].introChangeName +" data-writername='"+ list[i].writerName +"' data-bkno="+ list[i].bkNo +" data-bkintroduce='"+list[i].bkIntroduce+"' '>" +
 		    							"<div class='bookitem_wrap'>" +
 		    								"<div class='bookitem_img'>" +
 		    									"<span class='hover'>" +
-		    										"<img alt=" + list[i].bkTitle + "' src='" + list[i].introOriginName + " '>" + 
+		    										"<img class='bookimg' alt=" + list[i].bkTitle + "' src='" + list[i].introChangeName + " '>" + 
 		    									"</span>" +
 		    								"</div>" +
 		    							"</div>" +
@@ -324,7 +335,7 @@
 		    							"<p class='book_writer'>" + list[i].writerName + "</p>" +
 		    						"</a>" +
 	    						"</li>"
-		        				
+	    						console.log(list[i].introChangeName);
 		        			}
 		        		
 		        			$('#searchBk_result').html(result);
@@ -339,11 +350,12 @@
 	        	}
 	        }
 	        
+	        // 선택한 결과 뿌려주기
 	        function selectBk(){
 	        	var bkno = $("#dataBk").data("bkno");
 	        	var bktitle = $("#dataBk").data("bktitle");
 	        	var writername = $("#dataBk").data("writername");
-	        	var introoriginname = $("#dataBk").data("introoriginname");
+	        	var introchangename = $("#dataBk").data("introchangename");
 	        	var bkintroduce = $("#dataBk").data("bkintroduce");
 	        	
 	        	if($("#dataBk").data("bkno") != ""){
@@ -354,7 +366,7 @@
 	        		$(".book_title").html(bktitle);
 	        		$(".book_writer").html(writername);
 	        		$(".book_content").html(bkintroduce);
-	        		$("#book_img-item").html(introoriginname);
+	        		$("#bookImage").attr("src", introchangename);
 	        		
 	        		$('#myModal').modal("hide");
 	        		

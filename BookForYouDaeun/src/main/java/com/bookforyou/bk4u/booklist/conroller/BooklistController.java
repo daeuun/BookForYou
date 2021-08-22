@@ -29,7 +29,10 @@ import com.bookforyou.bk4u.booklist.model.service.BooklistService;
 import com.bookforyou.bk4u.booklist.model.vo.Booklist;
 import com.bookforyou.bk4u.common.model.vo.PageInfo;
 import com.bookforyou.bk4u.common.template.Pagination;
+import com.bookforyou.bk4u.like.model.vo.Like;
 import com.bookforyou.bk4u.reply.model.vo.Reply;
+import com.bookforyou.bk4u.report.model.service.ReportService;
+import com.bookforyou.bk4u.report.model.vo.Report;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -38,6 +41,8 @@ public class BooklistController {
 	
 	@Autowired
 	private BooklistService blService;
+	@Autowired
+	private ReportService rService;
 	
 	/** 독서록 리스트 조회용 + 페이징
 	 * @author daeunlee
@@ -157,7 +162,8 @@ public class BooklistController {
 	 * @author daeunlee
 	 */
 	@RequestMapping("detail.bl")
-	public ModelAndView selectBooklist(int blNo, ModelAndView mv){
+	public ModelAndView selectBooklist(Booklist booklist, Like l, ModelAndView mv){
+		int blNo = booklist.getBlNo();
 		
 		// 해당 게시글 조회수 증가용 서비스 호출 => update
 		int result = blService.increaseCount(blNo);
@@ -165,10 +171,17 @@ public class BooklistController {
 		if(result > 0) {
 			// 게시글 조회용 서비스 호출
 			Booklist bl = blService.selectBooklist(blNo);
+			
+			// 좋아요 조회용 서비스 호출
+			int likeCount =  blService.selectLikeCount(l);
+			//int scrapCount =  blService.selectScrapCount(blNo);
+			
 			// 해당 게시글의 책정보 조회 서비스 호출
 			Book bk = blService.selectBook(blNo);
+			
 			mv.addObject("bl", bl)
 			  .addObject("bk", bk)
+			  .addObject("l", l)
 			  .setViewName("booklist/booklistDetailView");
 		}else {
 			mv.addObject("errorMsg", "상세조회 실패").setViewName("common/errorPage");
@@ -182,9 +195,7 @@ public class BooklistController {
 	@ResponseBody
 	@RequestMapping(value="rlistAjax.bl", produces="application/json; charset=utf-8")
 	public String selectReplyList(int blNo) {
-		
 		ArrayList<Reply> list = blService.selectReplyList(blNo);
-		//System.out.println(list);
 		return new Gson().toJson(list);
 	}
 	
@@ -194,7 +205,6 @@ public class BooklistController {
 	@ResponseBody
 	@RequestMapping(value="rinsertAjax.bl", produces="application/json; charset=utf-8")
 	public String insertReply(Reply r) {
-		System.out.println(r);
 		int result = blService.insertReply(r);
 		if(result>0) {
 			return "success";
@@ -209,6 +219,7 @@ public class BooklistController {
 	@RequestMapping("updateForm.bl")
 	public String updateForm(int blNo, Model model) {
 		model.addAttribute("bl", blService.selectBooklist(blNo));
+		model.addAttribute("bk", blService.selectBook(blNo));
 		return "booklist/booklistUpdateForm";
 	}
 	
@@ -275,6 +286,74 @@ public class BooklistController {
 	}
 	
 	
+	/** 좋아요 조회용
+	 * @author daeunlee
+	 */
+	/*
+	@ResponseBody
+	@RequestMapping(value="selectLike.li", produces="application/json; charset=utf-8")
+	public String selectLikeCount(Like l) {
+		Like li = blService.selectLikeCount(l);
+		return new Gson().toJson(li);
+	}*/
+	
+	
+	/** 좋아요 등록용
+	 * @author daeunlee
+	 */
+	@ResponseBody
+	@RequestMapping(value="insertLike.li", produces="application/json; charset=utf-8")
+	public String insertLike(Like l) {
+		int result = blService.insertLike(l);
+		if(result>0) {
+			return "success";
+		}else {
+			return "fail";
+		}
+	}
+	
+	/** 인기독서록 조회
+	 * @author daeunlee
+	 */
+	@ResponseBody
+	@RequestMapping(value="topList.bl", produces="application/json; charset=utf-8")
+	public String selectTopBooklist(){
+		return new Gson().toJson(blService.selectTopBooklist());
+	}
+	
+	/** 독서록 신고
+	 * @author daeunlee
+	 */
+	@ResponseBody
+	@RequestMapping(value="insertReport.bl")
+	public String writeReport(Report report, HashMap<String, Object> map, MultipartFile upfile, HttpSession session){
+		System.out.println(report);
+		System.out.println(upfile);
+		System.out.println(map);
+		
+		/*
+		if (!upfile.getOriginalFilename().contentEquals("")) {
+            String changeName = saveFile(session, upfile);
+            report.setOriginName(upfile.getOriginalFilename());
+            report.setChangeName("resources/report/" + changeName); // "resources/uploadFiles/2021070217013021142.png"
+        }
+		 */
+		int result = 0;
+		if (upfile == null) { // 첨부파일없음
+			result = rService.writeReport(report);
+        }else { // 있음
+        	String changeName = saveFile(session, upfile);
+            report.setOriginName(upfile.getOriginalFilename());
+            report.setChangeName("resources/report/" + changeName);
+            
+            
+            result = rService.writeReport(report);
+        }
+		return result > 0 ? "success" : "fail";
+	}
+	
+	
+	
 	// 파일명 수정용 메소드 공동모듈화
 	public String saveFile(HttpSession session, MultipartFile upfile) {
 		// * 물리적 경로 알아내기 위해선 세션객체 필요함 why? ServletContext객체 얻어내기 위해  => 세션 매개변수에 추가하기
@@ -300,5 +379,16 @@ public class BooklistController {
 		return changeName;
 		
 	}
-
+	
+	/**
+	 * [메인] 인기 독서록 불러오기 (한진)
+	 */
+	@ResponseBody
+	@RequestMapping("getMainBookReport.bl")
+	public ArrayList selectMainBookReport() {
+		
+		ArrayList<Booklist> bl = blService.selectMainBookReport();
+		return bl;
+	}
+	
 }

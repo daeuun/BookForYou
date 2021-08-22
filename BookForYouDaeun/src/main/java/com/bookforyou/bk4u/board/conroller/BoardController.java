@@ -191,4 +191,21 @@ public class BoardController {
 		}
 	}
 	
+	/** 대댓글 작성
+	 * @author daeunlee
+	 */
+	@ResponseBody
+	@RequestMapping(value="recoinsertAjax.bo", produces="application/json; charset=utf-8")
+	public String insertReco(Reply r) {
+		int result = boService.insertReco(r);
+		System.out.println(r);
+		if(result>0) {
+			return "success";
+		}else {
+			return "fail";
+		}
+	}
+	
+	
+	
 }

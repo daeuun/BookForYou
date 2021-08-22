@@ -214,14 +214,14 @@
                 <div class="like_area">
                     <div class="like-wrap">
                         <!-- 좋아요버튼 -->
-                        <button id="btn_like" type="button" onclick="LikeAndScrap(1)">
+                        <button id="btn_like" type="button" onclick="btnLike()">
                         
                         <c:choose>
-                        	<c:when test="${ }">
-                        		<i class="far fa-heart"></i>
+                        	<c:when test="${ loginUser.memNo eq l.memNo }">
+                            	<i class="fas fa-heart"></i>
                         	</c:when>
                         	<c:otherwise>
-                            	<i class="fas fa-heart"></i>
+                        		<i class="far fa-heart"></i><!--빈하트-->
                             </c:otherwise>
                         </c:choose>
                             	좋아요
@@ -254,31 +254,7 @@
     		var memNo = ${loginUser.memNo};
     		var replyData = {"refPost" : refPost, "memNo" : memNo};
     		
-    		// 좋아요 있는지 조회
-    		$.ajax({
-                url         :   "selectLike.li",
-                dataType    :   "text",
-                type        :   "post",
-                data        :   replyData,
-                success     :   function(li){
-                    if(li == 1) { // 좋아요 있음
-                    	// 좋아요 취소
-                    	deleteLike();
-                    	
-                    	
-                    }else{ // 좋아요 없음
-                    	// 좋아요 클릭
-                    	insertLike();
-                    }
-                },
-                error:function(request, error) {
-        			alert("fail");
-        			// error 발생 이유를 알려준다.
-        			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-        		}
-            });
-    		
-    		// 좋아요 등록
+    		// 좋아요 증가용
 	    	function insertLike(){
 	    		$.ajax({
 	                url         :   "insertLike.li",
@@ -287,7 +263,8 @@
 	                data        :   replyData,
 	                success     :   function(status){
 	                    if(status == "success") { // 좋아요 like테이블 등록성공
-	                    	insertBlLike();
+	                    	$('.fas fa-heart').show();
+	                    	$('.far fa-heart').hide();
 	                    }
 	                },
 	                error:function(request, error) {
@@ -298,25 +275,7 @@
 	            });
 	    	}
     		
-    		function insertBlLike(){
-    			$.ajax({
-	                url         :   "insertBlLike.bl",
-	                dataType    :   "text",
-	                type        :   "post",
-	                data        :   replyData,
-	                success     :   function(status){
-	                    if(status == "success") { // 좋아요 like테이블 등록성공
-	                    	insertBlLike();
-	                    }
-	                },
-	                error:function(request, error) {
-	        			alert("fail");
-	        			// error 발생 이유를 알려준다.
-	        			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	        		}
-	            });
-    		}
-    	
+    		   	
     	
     	
     	};

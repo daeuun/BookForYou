@@ -112,5 +112,12 @@ public class BoardDao {
 		return sqlSession.insert("boardMapper.insertReply", r);
 	}
 	
+	/** 대댓글 작성
+	 * @author daeunlee
+	 */
+	public int insertReco(SqlSessionTemplate sqlSession, Reply r) {
+		return sqlSession.insert("boardMapper.insertReply", r);
+	}
+	
 	
 }

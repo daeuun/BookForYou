@@ -28,6 +28,13 @@ public class Booklist {
 	public String blStatus;
 	public String originName;
 	public String changeName;
-	
+	public String bkTitle;
+	public String bkPublish;
+	public String writerName;
 	public ArrayList<Booklist> booklistList;
+	public int rank;
+	public String changeImgName;
+	public String introChangeName;
+	public int brNo;
+	public Date scrapDate;
 }

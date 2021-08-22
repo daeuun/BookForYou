@@ -21,35 +21,37 @@
 
         /**글쓰기내용전체area*/
         .content{width:900px; padding:30px; margin:auto;}
-        .content_area{margin-top:150px;}
+        .content_area{margin-top:50px;}
 
         /*카테고리select*/
         .select_item{font-size:12px; color:#fff; background:rgb(252, 190, 52); padding:2px 5px; border-radius:5px;}
         /*제목전체area*/
         .title-wrap{width:100%; margin:15px 0;}
         /*제목텍스트*/
-        .title_item{font-size:20px; margin-right:15px;}
+        .title_item{display:inline-block; font-size:20px; margin-right:15px; margin-bottom:20px;}
         .title_tool a, .title_tool span{font-size:12px; color:#bebebe;}
 
         /**작성자area*/
         .writer_area{padding:5px 0;}
-        .writer_nickname{color:#000; font-size:15px;}
+        .writer_nickname{color:#000 !important; font-size:15px !important; text-decoration:none !important; margin-left:10px;}
         .writer_nickname:hover{color:#000; text-decoration:none;}
         #thumb_img{border-radius: 70%; overflow: hidden;}
         
         /**작성일/조회수*/
-        .content_info_box{color:#bebebe; font-size:12px; }
+        .content_info_date, .content_info_views{color:#9c9c9c !important; font-size:13px !important;}
         .content_info_views{margin-left: 15px;}
 
         /**에디터area*/
-        .content_viewer{width:100%; height:800px; margin:100px 0; font-size:14px;}
+        .content_viewer{width:100%; margin:100px 0; font-size:14px;}
+        .viewer_item{overflow:hidden; height:auto;}
 
         /**책정보area*/
-        .book_area{width:720px; height:310px; margin:auto; padding:50px; border:1px solid rgb(252, 190, 52); border-radius:10px;}
+        .book_area{position:relative; width:720px; height:310px; margin:auto; padding:50px; border:1px solid rgb(252, 190, 52); border-radius:10px;}
         .book_area a:hover{color:#000; text-decoration:none;}
         .book_area-wrap{display:flex; height:210px;}
         /*책이미지*/
-        .book_img{width: 30%; margin-right:40px; background-color: rgb(223, 223, 223);}
+        .book_img{margin-right:40px;}
+        #bookImage{width:170px; height:220px;}
         /*책정보내용area*/
         .book_info-wrap{width:75%;}
         .book_title{font-size:18px; font-weight:500; color:rgb(236, 87, 59);}
@@ -57,7 +59,7 @@
         .book_writer, .book_stars{font-size:13px; color:rgb(90, 90, 90);}
 
         /**좋아요/스크랩area*/
-        .like_area{width:100%; height:200px; margin:100px 0; text-align:center;}
+        .like_area{position:relative; width:100%; height:200px; margin:100px 0; text-align:center;}
         #btn_like, #btn_scrap{
             width: 140px; height: 40px;
             background:#fff; 
@@ -120,7 +122,10 @@
         /*댓글페이징*/
         #paging-wrap{width:fit-content; margin:auto; font-size:14px;}
         .page-link, .page-link:hover{color:rgb(252, 190, 52);}
-
+		
+		#reportBtn{margin-left:15px; font-size:13px; padding:0; color:#9c9c9c; border:none; background:#fff; text-decoration:none;}
+        #reportText{width:100%; height:300px; resize:none; text-aline:center; border-color:#9c9c9c; border-radius:2px; margin-top:10px;}
+        .reportR{margin:20px 0;}
         </style>
 </head>
 <body>
@@ -165,7 +170,7 @@
                 <!--작성자-->
                 <div class="writer_area">
                     <a href="" class="writer_thumb">
-                        <img src="" width="30" height="30" id="thumb_img">
+                        <img src="resources/adminCommon/images/person.png" width="30" height="30" id="thumb_img">
                     </a>
                     <div class="writer_nick_box" style="display:inline-block;">
                         <div class="writer_nick_info">
@@ -174,12 +179,137 @@
                     </div>
                 </div>
 
-                <!--작성일/조회수-->
+                <!--작성일/조회수/신고하기-->
                 <div class="content_info_box">
                     <span class="content_info_date">${ bl.blCdate }</span>
                     <span class="content_info_views">조회수 ${ bl.blCount }</span>
+                    <a data-toggle="modal" href="#myModal" id="reportBtn">신고</a>
                 </div>
-
+                
+                <!------- Modal ------->
+			    <!-- 신고 클릭 시 뜨는 모달 -->
+			    <div class="modal fade" id="myModal"> <!-- 사용자 지정 부분① : id명 -->
+			    	<div class="modal-dialog modal-lg">
+			    		<div class="modal-content">
+			    		<!-- Modal Header -->
+			    		<div class="modal-header">
+			    			<h4 class="modal-title">신고하기</h4>
+			    			<button type="button" class="close" data-dismiss="modal">&times;</button> 
+			    		</div>
+			    		<!-- Modal Body -->
+			    		<div class="modal-body">
+			    			<div class="reportTitle">
+			    				<span style="color:#000; font-size:15px;">제목 : </span>
+			    				<span style="color:#000; font-size:15px;">${ bl.blTitle }</span>
+			    			</div>
+			    			<div>
+			    				<span style="color:#000; font-size:15px;">작성자 : </span>
+			    				<span style="color:#000; font-size:15px;">${ bl.blWriter }</span>
+			    			</div>
+			    			<input type="hidden" name="memNo" value="${ loginUser.memNo }"><!--신고자 회원번호-->
+			    			<input type="hidden" name="reportRefNo" value="${ bl.blNo }"><!--신고 글번호-->
+			    			<input type="hidden" name="reportLink"><!--신고 글링크-->
+			    			<input type="hidden" name="reportType" value="2"><!--게시판 유형-->
+					        <div class="reportR">
+			    				<div>신고사유</div>
+				    				<textarea id="reportText" name="reportContent"></textarea>
+				    				<input type="file" id="upfile" class="form-control-file border" name="upfile">
+			    			</div>
+			    		</div>
+			    		<!-- Modal footer -->
+			    		<div class="modal-footer">
+			    			<button type="button" class="btn btn_choose" id="reportBl">신고하기</button>
+			    		</div>
+			    		</div>
+			    	</div>
+			    </div> <!-- 모달끝 -->
+				
+				<script>
+				$(function(){
+					
+					$('#reportBl').click(function(){
+						
+						var memNo = ${loginUser.memNo}; // 신고자 회원번호
+						var reportContent = $('textarea[name=reportContent]').val(); // 신고내용
+						var reportRefNo = $('input[name=reportRefNo]').val(); // 신고글번호
+						var reportType = $('input[name=reportType]').val(); // 게시글타입
+						
+						var url = window.location.href; // 현재 글 링크
+						if(url != null){
+							$('input[name=reportLink]').val(url);
+						}
+						var reportLink = $('input[name=reportLink]').val();
+						
+						var formData = new FormData();
+						formData.append("memNo", memNo);
+						formData.append("reportContent", reportContent);
+						formData.append("reportRefNo", reportRefNo);
+						formData.append("reportType", reportType);
+						formData.append("reportLink", reportLink);
+						var upfile = $("input[name='upfile']");
+						var files = upfile[0].files;
+						
+						for(var i=0; i<files.length; i++){
+							formData.append("upfile", files[i]);
+							console.log(formData.get("upfile"));
+						}
+						
+			        	if($("#reportContent").val() != ""){
+			        		if(formData.append("upfile", files[i]) == null){ // 첨부파일없음
+					        	 $.ajax({
+					        		url:"insertReport.bl",
+					        		type:"post",
+					    			data:{
+					    				memNo: memNo,
+					    				reportContent: reportContent,
+					    				reportRefNo: reportRefNo,
+					    				reportType: reportType,
+					    				reportLink: reportLink
+					    			},success:function(result){
+					        			if(result == "success"){
+					        				alert("독서록을 신고했습니다.");
+					        				location.reload();
+					        			}else{
+					        				alert("독서록을 신고하지 못했습니다.");
+					        			}
+					        		},error : function(jqXHR, textStatus, errorThrown){ 
+					        			console.log(jqXHR); 
+					        			console.log(textStatus); 
+					        			console.log(errorThrown); 
+					        		}
+					        	});
+			        		}else{ // 있음
+			        			$.ajax({
+					        		url:"insertReport.bl",
+					        		processData: false,
+									contentType: false,
+					        		type:"post",
+					    			data:formData
+					    			,success:function(result){
+					        			if(result == "success"){
+					        				alert("독서록을 신고했습니다.");
+					        				location.reload();
+					        			}else{
+					        				alert("독서록을 신고하지 못했습니다.");
+					        			}
+					        		},error : function(jqXHR, textStatus, errorThrown){ 
+					        			console.log(jqXHR); 
+					        			console.log(textStatus); 
+					        			console.log(errorThrown); 
+					        		}
+					        	});
+			        		}
+			        	}else{
+			        		alert("내용작성하렴");
+			        	}
+					})
+				
+				})
+					
+					
+					
+				</script>
+				
                 <!--에디터글내용area-->
                 <div class="article_content_area">
                     <div class="content_viewer">
@@ -193,7 +323,7 @@
                 <div class="book_area">
                     <a href="" class="book_area-wrap">
                         <span class="book_img">
-                            <img src="" alt="" id="book_img-item">
+                            <img src="${ bk.introChangeName }" alt="" id="bookImage">
                         </span>
                         <div class="book_info-wrap">
                         	<input type="hidden" id="bkNo" name="bkNo" value="${ bk.bkNo }">
@@ -204,23 +334,21 @@
                         </div>
                     </a>
                 </div>
-
+				  
                 <!--좋아요/스크랩-->
                 <div class="like_area">
                     <div class="like-wrap">
                         <button id="btn_like" type="button">
-                            <img src="" alt="" style="width: 20px; height: 20px;">
                             	좋아요
                             <span id="btn_num">${ bl.blLike }</span>
                         </button>
-                        <button id="btn_scrap" type="button">
-                            <img src="" alt="" style="width: 20px; height: 20px;">
+                        <button id="btn_scrap" type="button" onclick="location.href='clipping.bl?blNo=${bl.blNo}&memNo=${loginUser.memNo}'">
                             	스크랩
                             <span id="btn_num">${ bl.blScrap }</span>
                         </button>
                     </div>
                 </div>
-
+				
                 <!--작성자의 독서록area-->
                 <div class="booklist_area">
                     <div class="writer_box">
@@ -285,104 +413,153 @@
         </div>
     </div>
             
-                    <script>
-                    	$(function(){
-                    		selectReplyList();
-                    	})
-                    	
-                    	// 댓글 리스트 조회용 ajax
-                    	function selectReplyList(){
-                    		$.ajax({
-                    			url:"rlistAjax.bl",
-                    			data:{blNo:${bl.blNo}},
-                    			success: function(list){
-                    				$("#reply_count").text(list.length);
-                    					
-	                    				var result = "";
-	                    				var subResult = "";
-	                    				
-	                    				for(var i in list){
-	                    					
-	                    					if(list[i].replyRefNo == 0){ // 참조하는 댓글 == 0
-		                    					result +=
-		                    						// 원댓글
-		                                            '<li id="" class="comment-wrap">' +
-		                                                '<div class="comment_area">' +
-		                                                    '<a href="" class="comment_thumb"><img src="" width="36" height="36" id="comment_thumb_img"></a>' +
-		                                                    '<input type="hidden" id="replyNo" name="replyNo" value="' + list[i].replyNo + '">' +
-		                                                    '<input type="hidden" name="replyRefNo" value ="'+ list[i].replyRefNo +'">' +
-		                                                    '<div class="comment_box">' +
-		                                                        '<div class="comment_nick_box"><div class="comment_nick_info"><a id="" href="" class="comment_nickname">' + list[i].memNo + '</a></div></div>' +
-		                                                        '<div class="comment_text_box"><p class="comment_text_view"><span class="text_comment">' + list[i].replyContent + '</span></p></div>' +
-		                                                        '<div class="CommentItemImage" style="display:none;"><a href="" role="button" class="comment_image_link"><img alt="" class="image" src="" width="150px" height="150px"></a></div>' +
-		                                                        '<div class="comment_info_box"><span class="comment_info_date">' + list[i].replyCdate + '</span>' + '<a href="" class="btn_report">신고</a></div>' +
-		                                                        '<div class="recomment_box"><div id="recomment_report" class="recomment_report"><a href="" class="btn_recomment" onclick="addRecomment();">답글쓰기</a></div></div>' +
-		                                                    '</div>' +
-		                                                '</div>' +
-		                                           '</li>' +
-		                                           '<div class="subReply' + list[i].replyNo + '"></div>'
-	                    					}	
-                    						$("#replyArea").html(result);
-                    						
-                    						if(list[i].replyRefNo != 0){ // 참조하는 댓글 != 0
-                    							subResult +=
-	                    							// 대댓글
-	                                                '<li id="" class="comment-wrap comment_area-recomment">' +
-	                                                    '<div class="comment_area">' +
-	                                                        '<a href="" class="comment_thumb"><img src="" width="36" height="36" id="comment_thumb_img"></a>' +
-	                                                        '<input type="hidden" id="replyNo" name="replyNo" value="' + list[i].replyNo + '">' +
-	                                                        '<input type="hidden" name="replyRefNo" value ="'+ list[i].replyRefNo +'">' +
-	                                                        '<div class="comment_box">' +
-	                                                            '<div class="comment_nick_box"><div class="comment_nick_info"><a id="" href="" class="comment_nickname">' + list[i].memNo + '</a></div></div>'+
-	                                                            '<div class="comment_text_box"><p class="comment_text_view"><span class="text_comment">' + list[i].replyContent + '</span></p></div>'+
-	                                                            '<div class="CommentItemImage" style="display:none;"><a href="" role="button" class="comment_image_link"><img alt="" class="image" src="" width="150px" height="150px"></a></div>' +
-	                                                            '<div class="comment_info_box"><span class="comment_info_date">' + list[i].replyCdate + '</span><a href="" class="btn_report">신고</a></div>' +
-	                                                            '<div class="recomment_box"><div id="recomment_report" class="recomment_report"><a href="" type="button" class="btn_recomment" onclick="addRecomment();">답글쓰기</a></div></div>' +
-	                                                        '</div>' +
-	                                                    '</div>' + 
-	                                                '</li>' +
-	                                                '<div class="subReply' + list[i].replyNo + '"></div>'
-	                    					}
-                    						//console.log(subResult);
-                    						$(".subReply"+list[i].replyRefNo).html(subResult);
-	                    				}
-                    				
-                    			},error: function(jqXHR, textStatus, errorThrown){ 
-        		        			console.log(jqXHR); 
-        		        			console.log(textStatus); 
-        		        			console.log(errorThrown); 
-        		        		}
-                    		})
-                    	}
-                    	
-                    	// 댓글 작성용 ajax
-                    	function addReply(){
-                    		if($("#replyContent").val().trim().length != 0){
-                    			$.ajax({
-                    				url:"rinsertAjax.bl",
-                    				data:{
-                    					memNo:${loginUser.memNo},
-                    					refPost:$("input[name=blNo]").val(),
-                    					replyContent:$("#replyContent").val(),
-                    					replyRefNo:$("input[name=replyRefNo]").val(),
-                    					depth:$("input[name=depth]").val()
-                    				},success: function(status){
-                    					
-                    					if(status == "success"){
-                    						selectReplyList();
-                    						$("#replyContent").val("");
-                    					}
-                    					
-                    				},error: function(jqXHR, textStatus, errorThrown){ 
-            		        			console.log(jqXHR); 
-            		        			console.log(textStatus); 
-            		        			console.log(errorThrown); 
-            		        		}
-                    			})
-                    		}
-                    	}
-
-                    </script>
+	<script>
+		$(function(){
+			selectReplyList();
+		});
+		
+		// 댓글 리스트 조회용 ajax
+		function selectReplyList(){
+			$.ajax({
+				url:"rlistAjax.bl",
+				data:{blNo:${bl.blNo}},
+				success: function(list){
+					$("#reply_count").text(list.length);
+						
+	 				var result = "";
+	 				var subResult = "";
+	 				
+					for(var i in list){
+	 					
+	 					if(list[i].replyRefNo == 0){ // 참조하는 댓글 == 0
+	  					result +=
+	  						// 원댓글
+	                          '<li id="" class="comment-wrap">' +
+	                              '<div class="comment_area">' +
+	                                  '<a href="" class="comment_thumb"><img src="" width="36" height="36" id="comment_thumb_img"></a>' +
+	                                  '<input type="hidden" id="reNo" name="replyNo" value="' + list[i].replyNo + '">' +
+	                                  '<input type="hidden" name="replyRefNo" value ="'+ list[i].replyRefNo +'">' +
+	                                  '<div class="comment_box">' +
+	                                      '<div class="comment_nick_box"><div class="comment_nick_info"><a id="" href="" class="comment_nickname">' + list[i].memNo + '</a></div></div>' +
+	                                      '<div class="comment_text_box"><p class="comment_text_view"><span class="text_comment">' + list[i].replyContent + '</span></p></div>' +
+	                                      '<div class="CommentItemImage" style="display:none;"><a href="" role="button" class="comment_image_link"><img alt="" class="image" src="" width="150px" height="150px"></a></div>' +
+	                                      '<div class="comment_info_box"><span class="comment_info_date">' + list[i].replyCdate + '</span>' + '<a href="" class="btn_report">신고</a></div>' +
+	                                      '<div class="recomment_box"><div id="recomment_report" class="recomment_report"><button id="addRecomment">답글쓰기</button></div></div>' +
+	                                  '</div>' +
+	                              '</div>' +
+	                               
+	                              // 대댓글 작성창
+	                              '<div class="reply-input" id="popup" style="display:none;">' +
+                                  '<div class="reply-text">' +
+	                                  '<input type="hidden" name="depth" value="2">' +
+	                  				  '<input type="hidden" name="reply_refno" value="' + list[i].replyNo + '">' +
+	                                      '<textarea class="reply_content" id="recoContent" cols="20" rows="1" placeholder="기분 좋은 댓글은 작성자에게 힘이 됩니다 :)"></textarea>' +
+	                                      '<button type="submit" class="replyBtn" onclick="addReco();">등록</button>' +
+	                                      '<button id="removeRecomment">취소</button>' +
+                                  '</div>' +
+                                  '</div>' +
+	                         '</li>' +
+	                         '<div class="subReply' + list[i].replyNo + '"></div>'
+	 					}	
+						$("#replyArea").html(result);
+						
+						// 대댓글버튼
+						$("button[id='addRecomment']").click(function(){
+							$('#popup').show();
+						});
+						$("button[id='removeRecomment']").click(function(){
+							$('#popup').hide();
+						});
+						
+						
+							
+						if(list[i].replyRefNo != 0){ // 참조하는 댓글 != 0
+							subResult +=
+								// 대댓글
+	                            '<li id="" class="comment-wrap comment_area-recomment">' +
+	                                '<div class="comment_area">' +
+	                                    '<a href="" class="comment_thumb"><img src="" width="36" height="36" id="comment_thumb_img"></a>' +
+	                                    '<input type="hidden" id="replyNo" name="replyNo" value="' + list[i].replyNo + '">' +
+	                                    '<input type="hidden" name="replyRefNo" value ="'+ list[i].replyRefNo +'">' +
+	                                    '<div class="comment_box">' +
+	                                        '<div class="comment_nick_box"><div class="comment_nick_info"><a id="" href="" class="comment_nickname">' + list[i].memNo + '</a></div></div>'+
+	                                        '<div class="comment_text_box"><p class="comment_text_view"><span class="text_comment">' + list[i].replyContent + '</span></p></div>'+
+	                                        '<div class="CommentItemImage" style="display:none;"><a href="" role="button" class="comment_image_link"><img alt="" class="image" src="" width="150px" height="150px"></a></div>' +
+	                                        '<div class="comment_info_box"><span class="comment_info_date">' + list[i].replyCdate + '</span><a href="" class="btn_report">신고</a></div>' +
+	                                        '<div class="recomment_box"><div id="recomment_report" class="recomment_report"><a href="javascript:void(0)" id="addRecomment" onclick="addBtn();">답글쓰기</a></div></div>' +
+	                                    '</div>' +
+	                                '</div>' + 
+	                            '</li>' +
+	                            '<div class="subReply' + list[i].replyNo + '"></div>'
+	 					}
+						$(".subReply"+list[i].replyRefNo).html(subResult);
+	 				}// for문끝
+					
+				},error: function(jqXHR, textStatus, errorThrown){ 
+					console.log(jqXHR); 
+					console.log(textStatus); 
+					console.log(errorThrown); 
+				}
+			})
+		};
+		
+		// 댓글 작성용 ajax
+		function addReply(){
+			if($("#replyContent").val().trim().length != 0){
+				$.ajax({
+					url:"rinsertAjax.bl",
+					dataType:'text',
+					data:{
+						memNo:${loginUser.memNo},
+						refPost:$("input[name=blNo]").val(),
+						replyContent:$("#replyContent").val(),
+						replyRefNo:$("input[id=replyNo]").val(),
+						depth:$("input[name=depth]").val()
+					},success: function(status){
+						if(status == "success"){
+							selectReplyList();
+							$("#replyContent").val("");
+						}
+					},error: function(jqXHR, textStatus, errorThrown){ 
+			  			console.log(jqXHR); 
+			  			console.log(textStatus); 
+			  			console.log(errorThrown); 
+			  		}
+				})
+			}
+		};
+		
+		// 대댓글 작성용 ajax
+		function addReco(){
+			if($("#recoContent").val().trim().length != 0){
+				$.ajax({
+					url:"recoinsertAjax.bl",
+					dataType:'text',
+					data:{
+						memNo:${loginUser.memNo},
+						refPost:$("input[name=boNo]").val(),
+						replyContent:$("#recoContent").val(),
+						replyRefNo:$("#reNo").val(),
+						depth:$("input[name=depth]").val()
+					},success: function(status){ 
+						
+						if(status == "success"){
+							console.log('success:성공');
+							selectReplyList();
+							$("#replyContent").val("");
+						}else if(status == "fail"){
+							console.log('success:실패');
+						}else{
+							console.log('success:데이터오류?' + data);
+						}
+						
+					},error: function(request,status,error){ 
+						console.log("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+			  		}
+				})
+			}
+		}
+	</script>
             
 
 

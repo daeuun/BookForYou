@@ -36,16 +36,20 @@ public interface BoardService {
     // 7. 댓글 작성용
     int insertReply(Reply r);
     
-    // 8. 독서록 검색 : 갯수 조회용
+    // 8. 대댓글 작성용
+    int insertReco(Reply r);
+    
+    // 9. 독서록 검색 : 갯수 조회용
 	int selectSearchListCount(HashMap<String, String> map);
 	
-	// 9. 독서록 검색 : 게시글 조회용
+	// 10. 독서록 검색 : 게시글 조회용
 	ArrayList<Board> selectBoardSearchList(HashMap<String, String> map, PageInfo pi);
 	
-	// 10. 카테고리별 게시글 조회용
+	// 11. 카테고리별 게시글 조회용
 	ArrayList<Board> selectBoardCategory(String category, PageInfo pi);
 	
-	// 11. 카테고리별 갯수 조회용
+	// 12. 카테고리별 갯수 조회용
 	int selectBoardCategoryCount(String category);
-
+	
+	
 }
