@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <!-- 부트스트랩에서 제공하고 있는 스크립트 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <!--awesome icons--> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/69851f8880.js"></script>
     <style>
         @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
         body{font-family: "Noto Sans KR", sans-serif !important;}
@@ -48,7 +51,7 @@
         /**책정보area*/
         .book_area{position:relative; width:720px; height:310px; margin:auto; padding:50px; border:1px solid rgb(252, 190, 52); border-radius:10px;}
         .book_area a:hover{color:#000; text-decoration:none;}
-        .book_area-wrap{display:flex; height:210px;}
+        .book_area-wrap{display:flex; height:210px; text-decoration:none;}
         /*책이미지*/
         .book_img{margin-right:40px;}
         #bookImage{width:170px; height:220px;}
@@ -330,10 +333,29 @@
                             <div class="book_title">${ bk.bkTitle }</div>
                             <div class="book_content">${ bk.bkIntroduce }</div>
                             <div class="book_writer">${ bk.writerName }</div>
-                            <div class="book_stars">${ bl.blRate }</div>
+                            <div class="make_star">
+	                    		<input type="hidden" id="blRate" name="blRate" value="${ bl.blRate }">
+						        <div class="rating" data-rate="#" id="starRating">
+						            <i class="fas fa-star"></i>
+						            <i class="fas fa-star"></i>
+						            <i class="fas fa-star"></i>
+						            <i class="fas fa-star"></i>
+						            <i class="fas fa-star"></i>	
+						        </div>
+					    	</div>
                         </div>
                     </a>
                 </div>
+                
+                <script>
+             	// 별점
+    			$(function(){
+    				var star = $('input[name=blRate]').val();
+    				console.log(star);
+    				$(' .make_star i ').css( {color:'#dedede'});
+                    $(' .make_star i:nth-child(-n+ ' + star + ')').css({color:'rgb(252, 190, 52)'});
+    			})
+                </script>
 				  
                 <!--좋아요/스크랩-->
                 <div class="like_area">

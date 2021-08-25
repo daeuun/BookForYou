@@ -121,9 +121,17 @@
             <div class="header_area">
                 <div class="head-title">
                     <div>
-                        <span class="mylist_nickname">이다은</span> 
-                        <span class="mylist_nick_info">님 어서오세요 :)</span> 
-                        <div class="mylist_head">오늘은 무슨 책을 읽으셨나요?</div>
+                    	<c:choose>
+                    	<c:when test="${ empty loginUser.memName }">
+                    		<span class="mylist_nick_info">어서오세요 :)</span> 
+                    		<div class="mylist_head">오늘은 무슨 책을 읽으셨나요?</div>
+                    	</c:when>
+                    	<c:otherwise>
+	                        <span class="mylist_nickname">${ loginUser.memName }</span> 
+	                        <span class="mylist_nick_info">님 어서오세요 :)</span> 
+	                        <div class="mylist_head">오늘은 무슨 책을 읽으셨나요?</div>
+                    	</c:otherwise>
+                    	</c:choose>
                     </div>
                     <!--독서록작성버튼-->
                     <div class="enroll_booklist-wrap">
@@ -189,7 +197,7 @@
 	                                    <a href="javascript:clickBk()" class="book_info-area">
 	                                        <div class="book_area">
 	                                            <span class="book_img">
-	                                                <img src="" alt="" id="book_img-item" width="70px" height="100px">
+	                                            	<img src="${ bl.introChangeName }" width="70px" height="100px" id="book_img-item">
 	                                            </span>
 	                                            <div class="book_info-wrap">
 	                                                <div class="book_title">${ bl.bkTitle }</div>
@@ -273,12 +281,11 @@
     		topBooklist();
     		setInterval(topBooklist, 1000);
     		
-    		// 다음과 같은 방법으로만 동적으로 만들어진 요소에 이벤트 부여 가능
     		$(document).on("click", "#topBooklist>#btl", function(){
     			var blNo = $(this).find("input[name=blNo]").val();
 	         	var memNo = $(this).find("input[name=memNo]").val();
-	         	location.href = "detail.bl?blNo=" + $(this).children(".blno").text() + "&memNo=" + $(this).children(".memNo").text();
-	         	//location.href = "detail.bl?blNo=" + blNo + "&memNo=" + memNo;
+	         	location.href = "detail.bl?blNo=" + $(this).children(".blno").text() 
+	         					+ "&memNo=" + $(this).children(".memNo").text();
     		})
     		
     	})
@@ -307,7 +314,7 @@
 	                       '</div>'+
 	                        '<div class="book_area">'+
 	                            '<span class="book_img">'+
-	                                '<img src="" alt="" id="book_img-item" width="70px" height="100px">'+
+	                                '<img src="' + list[i].introChangeName + '" alt="" id="book_img-item" width="70px" height="100px">'+
 	                            '</span>'+
 	                            '<div class="book_info-wrap">'+
 	                                '<div class="book_title">' + list[i].bkTitle + '</div>'+
@@ -318,7 +325,6 @@
 	                        '</div>'+
 	                    	'</a>';
     				}
-    				
     				$("#topBooklist").html(value);
     			},error : function(jqXHR, textStatus, errorThrown){ 
         			console.log(jqXHR); 
@@ -326,7 +332,6 @@
         			console.log(errorThrown); 
         		}
     		})
-     	
         }
  		
         // 독서록 작성 로그인한 회원만 가능
