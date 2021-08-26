@@ -232,25 +232,25 @@
 					
 					$('#reportBl').click(function(){
 						
-						var memNo = ${loginUser.memNo}; // 신고자 회원번호
-						var reportContent = $('textarea[name=reportContent]').val(); // 신고내용
-						var reportRefNo = $('input[name=reportRefNo]').val(); // 신고글번호
-						var reportType = $('input[name=reportType]').val(); // 게시글타입
+						let memNo = ${loginUser.memNo}; // 신고자 회원번호
+						let reportContent = $('textarea[name=reportContent]').val(); // 신고내용
+						let reportRefNo = $('input[name=reportRefNo]').val(); // 신고글번호
+						let reportType = $('input[name=reportType]').val(); // 게시글타입
 						
-						var url = window.location.href; // 현재 글 링크
+						let url = window.location.href; // 현재 글 링크
 						if(url != null){
 							$('input[name=reportLink]').val(url);
 						}
-						var reportLink = $('input[name=reportLink]').val();
+						let reportLink = $('input[name=reportLink]').val();
 						
-						var formData = new FormData();
+						let formData = new FormData();
 						formData.append("memNo", memNo);
 						formData.append("reportContent", reportContent);
 						formData.append("reportRefNo", reportRefNo);
 						formData.append("reportType", reportType);
 						formData.append("reportLink", reportLink);
-						var upfile = $("input[name='upfile']");
-						var files = upfile[0].files;
+						let upfile = $("input[name='upfile']");
+						let files = upfile[0].files;
 						
 						for(var i=0; i<files.length; i++){
 							formData.append("upfile", files[i]);
@@ -302,8 +302,6 @@
 					        		}
 					        	});
 			        		}
-			        	}else{
-			        		alert("내용작성하렴");
 			        	}
 					})
 				

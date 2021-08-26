@@ -22,6 +22,8 @@ public class Reply {
 	private String deleteStatus;
 	private int replyRefNo;	// 참조하는 상위 댓글 (첫댓이면 원글0) 
 	private int depth;		// 댓글의 깊이(종류) (첫댓 0, 대댓1, 대대댓2, ...)
+	public String changeImgName;
+	public String memNickname;
 	
 	public ArrayList<Reply> replyList;
 }

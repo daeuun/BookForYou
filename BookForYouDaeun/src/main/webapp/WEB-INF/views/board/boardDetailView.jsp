@@ -76,7 +76,7 @@
         /*우측:댓글내용*/
         .comment_box{margin-left:15px; font-size:15px;}
         /*닉네임*/
-        .comment_nickname{color:#000; font-weight:500;} 
+        .comment_nickname{color:#000; font-weight:500; text-decoration:none;} 
         .comment_nickname:hover{text-decoration:none; color:#000;}
         /*내용*/
         .comment_text_box{margin:10px 0;}
@@ -142,7 +142,7 @@
                 <!--작성자-->
                 <div class="writer_area">
                     <a href="" class="writer_thumb">
-                        <img src="" width="30" height="30" id="thumb_img">
+                        <img src="${ b.changeImgName }" width="30" height="30" id="thumb_img">
                     </a>
                     <div class="writer_nick_box" style="display:inline-block;">
                         <div class="writer_nick_info">
@@ -199,22 +199,18 @@
     </div>
             
 	<script>
-		
 		$(function(){
 			selectReplyList();
 			var refNo = ${ b.boNo };
-			console.log(refNo);
 		})
 		
 		// 댓글 리스트 조회용 ajax
 		function selectReplyList(){
-			
 			$.ajax({
 				url:"rlistAjax.bo",
 				data:{boNo:${b.boNo}},
 				success: function(list){
 					$("#reply_count").text(list.length);
-						
 	 				var result = "";
 	 				var subResult = "";
 	 				
@@ -225,13 +221,12 @@
 	  						// 원댓글
 	                          '<li id="" class="comment-wrap">' +
 	                              '<div class="comment_area">' +
-	                                  '<a href="" class="comment_thumb"><img src="" width="36" height="36" id="comment_thumb_img"></a>' +
+	                                  '<a href="" class="comment_thumb"><img src="' + list[i].changeImgName + '" width="36" height="36" id="comment_thumb_img"></a>' +
 	                                  '<input type="hidden" id="reNo" name="replyNo" value="' + list[i].replyNo + '">' +
 	                                  '<input type="hidden" name="replyRefNo" value ="'+ list[i].replyRefNo +'">' +
 	                                  '<div class="comment_box">' +
-	                                      '<div class="comment_nick_box"><div class="comment_nick_info"><a id="" href="" class="comment_nickname">' + list[i].memNo + '</a></div></div>' +
+	                                      '<div class="comment_nick_box"><div class="comment_nick_info"><a id="" href="" class="comment_nickname">' + list[i].memNickname + '</a></div></div>' +
 	                                      '<div class="comment_text_box"><p class="comment_text_view"><span class="text_comment">' + list[i].replyContent + '</span></p></div>' +
-	                                      '<div class="CommentItemImage" style="display:none;"><a href="" role="button" class="comment_image_link"><img alt="" class="image" src="" width="150px" height="150px"></a></div>' +
 	                                      '<div class="comment_info_box"><span class="comment_info_date">' + list[i].replyCdate + '</span>' + 
 	                                      '<form id="reportForm" action="writeForm.re" method="post">' +                
 	                  	                  '<input type="hidden" name="reportLink" value="http://localhost:8888/bk4u/detail.bo?boNo=${b.boNo}">'+
@@ -271,11 +266,11 @@
 								// 대댓글
 	                            '<li id="" class="comment-wrap comment_area-recomment">' +
 	                                '<div class="comment_area">' +
-	                                    '<a href="" class="comment_thumb"><img src="" width="36" height="36" id="comment_thumb_img"></a>' +
+	                                    '<a href="" class="comment_thumb"><img src="' + list[i].changeImgName + '" width="36" height="36" id="comment_thumb_img"></a>' +
 	                                    '<input type="hidden" id="replyNo" name="replyNo" value="' + list[i].replyNo + '">' +
 	                                    '<input type="hidden" name="replyRefNo" value ="'+ list[i].replyRefNo +'">' +
 	                                    '<div class="comment_box">' +
-	                                        '<div class="comment_nick_box"><div class="comment_nick_info"><a id="" href="" class="comment_nickname">' + list[i].memNo + '</a></div></div>'+
+	                                        '<div class="comment_nick_box"><div class="comment_nick_info"><a id="" href="" class="comment_nickname">' + list[i].memNickname + '</a></div></div>'+
 	                                        '<div class="comment_text_box"><p class="comment_text_view"><span class="text_comment">' + list[i].replyContent + '</span></p></div>'+
 	                                        '<div class="CommentItemImage" style="display:none;"><a href="" role="button" class="comment_image_link"><img alt="" class="image" src="" width="150px" height="150px"></a></div>' +
 	                                        '<div class="comment_info_box"><span class="comment_info_date">' + list[i].replyCdate + '</span><a href="" class="btn_report">신고</a></div>' +

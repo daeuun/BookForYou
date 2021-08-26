@@ -87,7 +87,7 @@
 	        <div class="header">
 	            <div class="container">
 	                <!--로고-->
-	                <div class=""><img src="" alt="" width="140px" height="40px"></div>
+	                <div class="logoImg"><img src="resources/adminCommon/images/bk4uLogo.png" width="130" height="40" id="logoImg" onclick="goList();"></div>
 	                
 	                <!--별점-->
 	                <div class="choose_star">
@@ -196,6 +196,9 @@
        </form>
 	
 		<script>
+			function goList(){
+				location.href = "list.bl";
+			}
 			// 별점
 			$(function(){
 				var star = $('input[name=blRate]').val();

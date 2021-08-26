@@ -23,5 +23,6 @@ public class Board {
 	public Date boMdate;
 	public int boLike;
 	public String boStatus;
+	public String changeImgName;
 
 }

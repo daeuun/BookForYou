@@ -327,26 +327,14 @@ public class BooklistController {
 	@ResponseBody
 	@RequestMapping(value="insertReport.bl")
 	public String writeReport(Report report, HashMap<String, Object> map, MultipartFile upfile, HttpSession session){
-		System.out.println(report);
-		System.out.println(upfile);
-		System.out.println(map);
-		
-		/*
-		if (!upfile.getOriginalFilename().contentEquals("")) {
-            String changeName = saveFile(session, upfile);
-            report.setOriginName(upfile.getOriginalFilename());
-            report.setChangeName("resources/report/" + changeName); // "resources/uploadFiles/2021070217013021142.png"
-        }
-		 */
 		int result = 0;
 		if (upfile == null) { // 첨부파일없음
 			result = rService.writeReport(report);
+			System.out.println(report);
         }else { // 있음
         	String changeName = saveFile(session, upfile);
             report.setOriginName(upfile.getOriginalFilename());
             report.setChangeName("resources/report/" + changeName);
-            
-            
             result = rService.writeReport(report);
         }
 		return result > 0 ? "success" : "fail";
